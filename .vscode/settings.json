@@ -1,0 +1,47 @@
+{
+    "files.associations": {
+        "*.luau": "luau"
+    },
+    "editor.formatOnSave": true,
+    "[luau]": {
+        "editor.defaultFormatter": "JohnnyMorganz.stylua",
+        "editor.formatOnSave": true
+    },
+    "github.copilot.enable": {
+        "*": false,
+        "luau": true,
+        "json": true,
+        "jsonc": true,
+        "toml": true
+    },
+    "chat.autopilot.enabled": true,
+    "chat.permissions.default": "autopilot",
+    "chat.mcp.autostart": "onlyNew",
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "chat.includeApplyingInstructions": true,
+    "chat.includeReferencedInstructions": false,
+    "chat.useAgentsMdFile": true,
+    "chat.useNestedAgentsMdFiles": false,
+    "search.exclude": {
+        "Packages/**": true
+    },
+    "files.watcherExclude": {
+        "**/Packages/**": true
+    },
+    "luau-lsp.platform.type": "roblox",
+    "luau-lsp.server.baseLuaurc": ".luaurc",
+    "luau-lsp.sourcemap.enabled": true,
+    "luau-lsp.sourcemap.autogenerate": true,
+    "luau-lsp.sourcemap.rojoProjectFile": "default.project.json",
+    "luau-lsp.sourcemap.sourcemapFile": "sourcemap.json",
+    "luau-lsp.sourcemap.useVSCodeWatcher": true,
+    "luau-lsp.studioPlugin.enabled": true,
+    "luau-lsp.studioPlugin.port": 3667,
+    "luau-lsp.diagnostics.strictDatamodelTypes": true,
+    "luau-lsp.completion.imports.enabled": true,
+    "luau-lsp.completion.imports.suggestServices": true,
+    "luau-lsp.completion.imports.requireStyle": "alwaysRelative",
+    "luau-lsp.completion.imports.stringRequires.enabled": false,
+    "stylua.searchBinaryInPATH": true,
+    "stylua.verify": true
+}

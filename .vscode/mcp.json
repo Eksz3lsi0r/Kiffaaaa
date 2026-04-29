@@ -1,0 +1,40 @@
+{
+    "servers": {
+        "robloxstudio-mcp": {
+            "type": "stdio",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "npx",
+                "-y",
+                "robloxstudio-mcp@latest"
+            ],
+            "env": {
+                "ROBLOX_STUDIO_HOST": "127.0.0.1",
+                "ROBLOX_STUDIO_PORT": "58741"
+            }
+        },
+        "firecrawl/firecrawl-mcp-server": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "firecrawl-mcp@latest"
+            ],
+            "env": {
+                "FIRECRAWL_API_KEY": "${input:api_key}"
+            }
+        },
+        "io.github.github/github-mcp-server": {
+            "type": "http",
+            "url": "https://api.githubcopilot.com/mcp/"
+        }
+    },
+    "inputs": [
+        {
+            "id": "api_key",
+            "type": "promptString",
+            "description": "Firecrawl API key",
+            "password": true
+        }
+    ]
+}

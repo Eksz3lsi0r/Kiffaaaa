@@ -1,0 +1,72 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Roblox: Install toolchain",
+            "type": "shell",
+            "command": "aftman",
+            "args": [
+                "install",
+                "--no-trust-check"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Roblox: Install packages",
+            "type": "shell",
+            "command": "wally",
+            "args": [
+                "install"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Roblox: Generate sourcemap",
+            "type": "shell",
+            "command": "rojo",
+            "args": [
+                "sourcemap",
+                "default.project.json",
+                "-o",
+                "sourcemap.json"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Roblox: Serve project",
+            "type": "shell",
+            "command": "rojo",
+            "args": [
+                "serve",
+                "default.project.json"
+            ],
+            "isBackground": true,
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Luau: Lint",
+            "type": "shell",
+            "command": "selene",
+            "args": [
+                "src"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Luau: Format check",
+            "type": "shell",
+            "command": "stylua",
+            "args": [
+                "--check",
+                "src"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "name": "rblcxx",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "Shared": {
+                "$path": "src/ReplicatedStorage/Shared"
+            },
+            "Packages": {
+                "$className": "Folder",
+                "$path": "Packages"
+            }
+        },
+        "ServerScriptService": {
+            "$path": "src/ServerScriptService"
+        },
+        "StarterPlayer": {
+            "StarterPlayerScripts": {
+                "$path": "src/StarterPlayer/StarterPlayerScripts"
+            }
+        }
+    }
+}

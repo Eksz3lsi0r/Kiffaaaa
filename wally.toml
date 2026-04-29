@@ -1,0 +1,9 @@
+[package]
+name = "cooli/rblcxx"
+description = "Modern Roblox game workspace scaffolded for VS Code, Rojo, and Wally"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+private = true
+
+[dependencies]
