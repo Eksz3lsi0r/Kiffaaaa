@@ -1,3 +1,5 @@
 .aftman/bin/
 Packages/
 sourcemap.json
+*.rbxl
+*.rbxl.lock
