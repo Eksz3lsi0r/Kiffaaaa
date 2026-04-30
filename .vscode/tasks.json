@@ -1,6 +1,24 @@
 {
     "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}"
+    },
     "tasks": [
+        {
+            "label": "Roblox: Setup workspace",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Roblox: Install toolchain",
+                "Roblox: Install packages",
+                "Roblox: Generate sourcemap"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Install pinned tools, restore Wally packages, and refresh the Rojo sourcemap."
+        },
         {
             "label": "Roblox: Install toolchain",
             "type": "shell",
@@ -106,6 +124,20 @@
             ],
             "group": "test",
             "problemMatcher": []
+        },
+        {
+            "label": "Luau: Validate",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Luau: Format check",
+                "Luau: Lint"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "detail": "Run the source formatter check and Selene lint pass."
         },
         {
             "label": "Luau: Lint",

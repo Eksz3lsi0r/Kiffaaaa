@@ -46,6 +46,14 @@
 - Keep Luau LSP in Roblox mode with Rojo sourcemap support enabled.
 - If Rojo mappings or entry points change, regenerate `sourcemap.json` from `default.project.json`.
 
+## Workspace Tooling
+
+- Use `Roblox: Setup workspace` after cloning or when toolchain, Wally, or Rojo mapping config changes.
+- Wally installs packages into top-level `Packages/`, and Rojo maps that folder to `ReplicatedStorage.Packages`; treat installed package output as generated.
+- Use `Roblox: Serve project` for Rojo sync on port `34872`, then connect the Roblox Studio Rojo plugin to the local server.
+- Use `Roblox: Verify MCP bridge` before Studio automation and `Roblox: Reset MCP bridge` when the local `robloxstudio-mcp` bridge or Studio plugin state is stale.
+- Use `Luau: Validate` for the standard source check before finishing Luau code changes.
+
 ## Validation Workflow
 
 - After the first substantive edit, run the narrowest useful validation before making more changes.

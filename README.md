@@ -16,12 +16,12 @@ Roblox Studio game workspace for VS Code with Rojo, Wally, Luau LSP, StyLua, Sel
 
 ## Daily workflow
 
-1. Run `aftman install` when `aftman.toml` changes.
-2. Run `wally install` when you add or update dependencies.
-3. Start `rojo serve default.project.json --port 34872`.
-4. In Roblox Studio, connect using the Rojo plugin and edit the live game.
-5. Let Luau LSP autogenerate `sourcemap.json` for editor navigation.
-6. Before adding new gameplay data or remotes, read `copilot-instructions.md`, `default.project.json`, and the matching Shared, Server, or Client module so you extend the existing structure instead of duplicating it.
+1. Run the `Roblox: Setup workspace` task after cloning, changing `aftman.toml`, changing `wally.toml`, or editing Rojo mappings.
+2. Start the `Roblox: Serve project` task to run `rojo serve default.project.json --port 34872`.
+3. In Roblox Studio, connect using the Rojo plugin and edit the live game.
+4. Let Luau LSP autogenerate `sourcemap.json` for editor navigation; run `Roblox: Generate sourcemap` manually after Rojo mapping changes if you need an immediate refresh.
+5. Before adding new gameplay data or remotes, read `copilot-instructions.md`, `default.project.json`, and the matching Shared, Server, or Client module so you extend the existing structure instead of duplicating it.
+6. Run `Luau: Validate` before finishing Luau source changes.
 
 ## Luau LSP Studio Plugin
 
@@ -75,6 +75,7 @@ See [docs/roblox-mcp-setup.md](docs/roblox-mcp-setup.md) for the complete Roblox
 - `Roblox: Install toolchain`
 - `Roblox: Install packages`
 - `Roblox: Generate sourcemap`
+- `Roblox: Setup workspace`
 - `Roblox: Serve project`
 - `Roblox: Reset MCP bridge`
 - `Roblox: Verify MCP bridge`
@@ -82,3 +83,4 @@ See [docs/roblox-mcp-setup.md](docs/roblox-mcp-setup.md) for the complete Roblox
 - `Roblox: Clear 1vsCOM autoqueue`
 - `Luau: Lint`
 - `Luau: Format check`
+- `Luau: Validate`

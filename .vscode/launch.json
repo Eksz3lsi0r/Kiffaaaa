@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "PowerShell: Launch Current File",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "cwd": "${workspaceFolder}",
+            "args": []
+        },
+        {
+            "name": "Roblox: Verify MCP Bridge",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/scripts/verify-roblox-mcp.ps1",
+            "cwd": "${workspaceFolder}",
+            "args": []
+        },
+        {
+            "name": "Roblox: Reset MCP Bridge",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/scripts/reset-roblox-mcp.ps1",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "-InstallPlugin"
+            ]
+        },
+        {
+            "name": "Roblox: Start 1vsCOM Playtest",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/scripts/start-1vscom-playtest.ps1",
+            "cwd": "${workspaceFolder}",
+            "args": []
+        },
+        {
+            "name": "Roblox: Clear 1vsCOM Autoqueue",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/scripts/start-1vscom-playtest.ps1",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "-Clear"
+            ]
+        }
+    ]
+}

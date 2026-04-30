@@ -1,5 +1,5 @@
 param(
-    [string]$PackageVersion = "2.6.0",
+    [string]$PackageVersion = "latest",
     [switch]$InstallPlugin
 )
 

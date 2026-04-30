@@ -16,6 +16,7 @@ ArenaDuelConfig.StudioAutomation = {
 }
 
 ArenaDuelConfig.PreparationSeconds = 30
+ArenaDuelConfig.BotPreparationSeconds = 6
 ArenaDuelConfig.FinishedReturnSeconds = 7
 ArenaDuelConfig.MaxFocus = 5
 ArenaDuelConfig.DRWindowSeconds = 18

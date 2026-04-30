@@ -3,6 +3,12 @@
         "*.luau": "luau"
     },
     "editor.formatOnSave": true,
+    "editor.rulers": [
+        100
+    ],
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
     "[luau]": {
         "editor.defaultFormatter": "JohnnyMorganz.stylua",
         "editor.formatOnSave": true
@@ -23,10 +29,19 @@
     "chat.includeReferencedInstructions": true,
     "chat.useAgentsMdFile": true,
     "chat.useNestedAgentsMdFiles": true,
+    "files.exclude": {
+        ".aftman/bin/**": true,
+        "Packages/**": true,
+        "sourcemap.json": true,
+        "*.rbxl.lock": true
+    },
     "search.exclude": {
-        "Packages/**": true
+        ".aftman/bin/**": true,
+        "Packages/**": true,
+        "sourcemap.json": true
     },
     "files.watcherExclude": {
+        "**/.aftman/bin/**": true,
         "**/Packages/**": true
     },
     "luau-lsp.platform.type": "roblox",

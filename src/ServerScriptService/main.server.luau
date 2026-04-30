@@ -47,8 +47,28 @@ type EffectState = {
 type CastState = {
     abilityId: string,
     targetId: string?,
+    startedAt: number,
     endsAt: number,
+    duration: number,
     token: number,
+}
+
+type VectorPayload = {
+    x: number,
+    y: number,
+    z: number,
+}
+
+type CombatEvent = {
+    id: number,
+    kind: string,
+    text: string,
+    amount: number?,
+    sourceId: string?,
+    targetId: string?,
+    abilityName: string?,
+    position: VectorPayload?,
+    createdAt: number,
 }
 
 type FighterState = {
@@ -78,8 +98,11 @@ type MatchState = {
     mode: string,
     phase: string,
     countdown: number,
+    prepSeconds: number,
     startedAt: number,
     fighters: { FighterState },
+    combatEvents: { CombatEvent },
+    nextCombatEventId: number,
     gatesOpen: boolean,
     winnerTeam: number?,
 }
@@ -536,6 +559,18 @@ local function moveBotTo(fighter: FighterState, position: Vector3)
     end
 end
 
+local function vectorToPayload(position: Vector3?): VectorPayload?
+    if not position then
+        return nil
+    end
+
+    return {
+        x = math.floor(position.X * 10) / 10,
+        y = math.floor(position.Y * 10) / 10,
+        z = math.floor(position.Z * 10) / 10,
+    }
+end
+
 local function findFighter(matchState: MatchState, fighterId: string?): FighterState?
     if not fighterId then
         return nil
@@ -706,9 +741,12 @@ end
 local function buildFighterSnapshot(fighter: FighterState)
     local casting = nil
     if fighter.casting then
+        local ability = getAbilityConfig(fighter.classId, fighter.casting.abilityId)
         casting = {
             abilityId = fighter.casting.abilityId,
+            displayName = if ability then ability.displayName else fighter.casting.abilityId,
             remaining = math.max(0, fighter.casting.endsAt - os.clock()),
+            duration = fighter.casting.duration,
         }
     end
 
@@ -723,6 +761,7 @@ local function buildFighterSnapshot(fighter: FighterState)
         focus = fighter.focus,
         isBot = fighter.isBot,
         targetId = fighter.targetId,
+        position = vectorToPayload(getFighterPosition(fighter)),
         effects = buildEffectList(fighter),
         cooldowns = buildCooldownList(fighter),
         casting = casting,
@@ -761,6 +800,7 @@ local function broadcastMatchState(matchState: MatchState)
                 winnerTeam = matchState.winnerTeam,
                 localFighterId = fighter.id,
                 fighters = fighters,
+                combatEvents = matchState.combatEvents,
             })
         end
     end
@@ -772,6 +812,39 @@ local function broadcastMatchMessage(matchState: MatchState, text: string)
             sendMessage(fighter.player, text)
         end
     end
+end
+
+local function pushCombatEvent(
+    matchState: MatchState,
+    kind: string,
+    text: string,
+    target: FighterState?,
+    source: FighterState?,
+    amount: number?,
+    abilityName: string?
+)
+    local now = os.clock()
+    local keptEvents = {}
+    for _, event in matchState.combatEvents do
+        if now - event.createdAt <= 3.5 then
+            table.insert(keptEvents, event)
+        end
+    end
+    matchState.combatEvents = keptEvents
+
+    local position = if target then getFighterPosition(target) else nil
+    matchState.nextCombatEventId += 1
+    table.insert(matchState.combatEvents, {
+        id = matchState.nextCombatEventId,
+        kind = kind,
+        text = text,
+        amount = amount,
+        sourceId = if source then source.id else nil,
+        targetId = if target then target.id else nil,
+        abilityName = abilityName,
+        position = vectorToPayload(position),
+        createdAt = now,
+    })
 end
 
 local function damageFighter(
@@ -786,10 +859,12 @@ local function damageFighter(
     end
 
     local remainingDamage = amount
+    local absorbedDamage = 0
     if target.shield > 0 and target.shieldExpiresAt > os.clock() then
         local absorbed = math.min(target.shield, remainingDamage)
         target.shield -= absorbed
         remainingDamage -= absorbed
+        absorbedDamage = absorbed
     end
 
     if remainingDamage > 0 then
@@ -800,6 +875,28 @@ local function damageFighter(
                 humanoid.Health = math.max(1, target.health)
             end
         end
+
+        pushCombatEvent(
+            matchState,
+            "Damage",
+            string.format("-%d", math.floor(remainingDamage)),
+            target,
+            source,
+            remainingDamage,
+            reason
+        )
+    end
+
+    if absorbedDamage > 0 then
+        pushCombatEvent(
+            matchState,
+            "Absorb",
+            string.format("%d absorbiert", math.floor(absorbedDamage)),
+            target,
+            source,
+            absorbedDamage,
+            reason
+        )
     end
 
     broadcastMatchMessage(
@@ -809,7 +906,7 @@ local function damageFighter(
             source.name,
             target.name,
             reason,
-            amount
+            math.floor(remainingDamage)
         )
     )
 end
@@ -825,7 +922,9 @@ local function healFighter(
         return
     end
 
+    local previousHealth = target.health
     target.health = math.min(target.maxHealth, target.health + amount)
+    local actualHealing = target.health - previousHealth
     if target.player then
         local humanoid = getHumanoid(target.player)
         if humanoid then
@@ -833,9 +932,21 @@ local function healFighter(
         end
     end
 
+    if actualHealing > 0 then
+        pushCombatEvent(
+            matchState,
+            "Heal",
+            string.format("+%d", math.floor(actualHealing)),
+            target,
+            source,
+            actualHealing,
+            reason
+        )
+    end
+
     broadcastMatchMessage(
         matchState,
-        string.format("%s heilt %s mit %s um %d.", source.name, target.name, reason, amount)
+        string.format("%s heilt %s mit %s um %d.", source.name, target.name, reason, actualHealing)
     )
 end
 
@@ -868,6 +979,15 @@ local function applyCrowdControl(
             matchState,
             string.format("%s widersteht %s durch DR.", target.name, ability.displayName)
         )
+        pushCombatEvent(
+            matchState,
+            "Resist",
+            "Widerstanden",
+            target,
+            source,
+            nil,
+            ability.displayName
+        )
         return
     end
 
@@ -880,6 +1000,15 @@ local function applyCrowdControl(
         sourceId = source.id,
     })
     applyMovementState(target)
+    pushCombatEvent(
+        matchState,
+        "Control",
+        string.format("%s %.1fs", kind, duration),
+        target,
+        source,
+        duration,
+        ability.displayName
+    )
     broadcastMatchMessage(
         matchState,
         string.format("%s bekommt %s fuer %.1f Sekunden.", target.name, kind, duration)
@@ -962,6 +1091,15 @@ local function resolveAbility(
             target.castToken += 1
             target.casting = nil
             target.castLockedUntil = os.clock() + (ability.lockout or 0)
+            pushCombatEvent(
+                matchState,
+                "Interrupt",
+                "Unterbrochen",
+                target,
+                source,
+                nil,
+                ability.displayName
+            )
             broadcastMatchMessage(
                 matchState,
                 string.format("%s unterbricht %s.", source.name, target.name)
@@ -997,6 +1135,15 @@ local function resolveAbility(
         if ability.shield and ability.shieldDuration then
             target.shield = ability.shield
             target.shieldExpiresAt = os.clock() + ability.shieldDuration
+            pushCombatEvent(
+                matchState,
+                "Shield",
+                "Schild",
+                target,
+                source,
+                ability.shield,
+                ability.displayName
+            )
             broadcastMatchMessage(
                 matchState,
                 string.format("%s schuetzt %s.", source.name, target.name)
@@ -1064,9 +1211,20 @@ local function castAbility(source: FighterState, abilityId: string)
         source.casting = {
             abilityId = abilityId,
             targetId = targetId,
+            startedAt = now,
             endsAt = now + ability.castTime,
+            duration = ability.castTime,
             token = token,
         }
+        pushCombatEvent(
+            matchState,
+            "Cast",
+            ability.displayName,
+            source,
+            source,
+            ability.castTime,
+            ability.displayName
+        )
         broadcastMatchState(matchState)
 
         task.delay(ability.castTime, function()
@@ -1207,6 +1365,42 @@ local function startHeartbeat(matchState: MatchState)
     end)
 end
 
+local function canBotCast(bot: FighterState, abilityId: string): boolean
+    local ability = getAbilityConfig(bot.classId, abilityId)
+    if not ability then
+        return false
+    end
+
+    local now = os.clock()
+    return not bot.casting
+        and not hasActionBlockingEffect(bot)
+        and (not bot.cooldowns[abilityId] or bot.cooldowns[abilityId] <= now)
+        and (ability.castTime <= 0 or bot.castLockedUntil <= now)
+end
+
+local function chooseBotAbility(bot: FighterState, target: FighterState): string
+    if target.health / target.maxHealth <= 0.35 and canBotCast(bot, "Ability4") then
+        return "Ability4"
+    end
+
+    local botPosition = getFighterPosition(bot)
+    local targetPosition = getFighterPosition(target)
+    if
+        botPosition
+        and targetPosition
+        and (botPosition - targetPosition).Magnitude <= 16
+        and canBotCast(bot, "Ability3")
+    then
+        return "Ability3"
+    end
+
+    if canBotCast(bot, "Ability2") and math.random() < 0.45 then
+        return "Ability2"
+    end
+
+    return "Ability1"
+end
+
 local function runBotAi(matchState: MatchState, bot: FighterState)
     task.spawn(function()
         while activeMatch == matchState and matchState.phase ~= "Finished" and isAlive(bot) do
@@ -1216,23 +1410,18 @@ local function runBotAi(matchState: MatchState, bot: FighterState)
                     bot.targetId = target.id
                     local targetPosition = getFighterPosition(target)
                     if targetPosition then
-                        moveBotTo(bot, targetPosition + Vector3.new(10, 0, 0))
+                        local laneOffset = if targetPosition.X >= 0 then -18 else 18
+                        moveBotTo(
+                            bot,
+                            targetPosition + Vector3.new(laneOffset, 0, math.random(-8, 8))
+                        )
                     end
 
-                    if
-                        bot.health / bot.maxHealth < 0.35
-                        and getAbilityConfig(bot.classId, "Ability3")
-                    then
-                        castAbility(bot, "Ability3")
-                    elseif math.random() < 0.25 then
-                        castAbility(bot, "Ability2")
-                    else
-                        castAbility(bot, "Ability1")
-                    end
+                    castAbility(bot, chooseBotAbility(bot, target))
                 end
             end
 
-            task.wait(1.25)
+            task.wait(0.95)
         end
     end)
 end
@@ -1299,13 +1488,19 @@ local function startMatch(mode: string, playersForMatch: { Player }, includeBot:
         end
     end
 
+    local prepSeconds = if includeBot
+        then Config.BotPreparationSeconds
+        else Config.PreparationSeconds
     local matchState: MatchState = {
         id = matchId,
         mode = mode,
         phase = "Preparing",
-        countdown = Config.PreparationSeconds,
+        countdown = prepSeconds,
+        prepSeconds = prepSeconds,
         startedAt = os.clock(),
         fighters = fighters,
+        combatEvents = {},
+        nextCombatEventId = 0,
         gatesOpen = false,
         winnerTeam = nil,
     }
@@ -1326,7 +1521,7 @@ local function startMatch(mode: string, playersForMatch: { Player }, includeBot:
     broadcastMatchState(matchState)
 
     task.spawn(function()
-        for remaining = Config.PreparationSeconds, 1, -1 do
+        for remaining = prepSeconds, 1, -1 do
             if activeMatch ~= matchState then
                 return
             end

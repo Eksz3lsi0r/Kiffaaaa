@@ -5,6 +5,9 @@
         "johnnymorganz.stylua",
         "kampfkarren.selene-vscode",
         "wally-vscode.wally-vscode",
-        "GitHub.copilot-chat"
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-vscode.powershell",
+        "tamasfe.even-better-toml"
     ]
 }

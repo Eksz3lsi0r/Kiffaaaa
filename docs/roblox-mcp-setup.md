@@ -6,7 +6,7 @@ This repo uses the `robloxstudio-mcp` package for VS Code to Roblox Studio autom
 
 1. Install the `robloxstudio-mcp` Studio plugin from `https://github.com/boshyxd/robloxstudio-mcp/releases`.
 2. In Roblox Studio, enable `Allow HTTP Requests` in Experience Settings > Security.
-3. Start the VS Code MCP server from [.vscode/mcp.json](../.vscode/mcp.json), which runs `cmd /c npx -y robloxstudio-mcp@2.6.0` on Windows.
+3. Start the VS Code MCP server from [.vscode/mcp.json](../.vscode/mcp.json), which runs `cmd /c npx -y robloxstudio-mcp@latest` on Windows.
 4. Open Studio and wait until the plugin shows `Connected`.
 5. Run the `Roblox: Verify MCP bridge` VS Code task.
 
@@ -14,7 +14,7 @@ The `robloxstudio-mcp` bridge listens on **port 58741**. The local bridge endpoi
 
 The bridge status endpoint is `http://localhost:58741/health`. It should report `mcpServerActive: true` and `pluginConnected: true` before write tools or playtest automation can run.
 
-If Studio hangs or the health endpoint reports an unexpected server version after updating the plugin, run `Roblox: Reset MCP bridge`. That task stops stale `robloxstudio-mcp` Node processes, clears stale MCP plugin IDE/debugger state, reinstalls the pinned Studio plugin, enables local plugin auto-connect, and clears port `58741` so VS Code can start a fresh MCP server from `.vscode/mcp.json`. Then run `Roblox: Verify MCP bridge`; if the server is active but Studio has not re-registered yet, verification touches the local plugin file once so Studio hot-reloads and reconnects.
+If Studio hangs or the health endpoint reports an unexpected server version after updating the plugin, run `Roblox: Reset MCP bridge`. That task stops stale `robloxstudio-mcp` Node processes, clears stale MCP plugin IDE/debugger state, reinstalls the Studio plugin helper, enables local plugin auto-connect, and clears port `58741` so VS Code can start a fresh MCP server from `.vscode/mcp.json`. Then run `Roblox: Verify MCP bridge`; if the server is active but Studio has not re-registered yet, verification touches the local plugin file once so Studio hot-reloads and reconnects.
 
 ## Health Check
 

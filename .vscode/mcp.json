@@ -7,7 +7,7 @@
                 "/c",
                 "npx",
                 "-y",
-                "robloxstudio-mcp@2.6.0"
+                "robloxstudio-mcp@latest"
             ]
         },
         "firecrawl/firecrawl-mcp-server": {
