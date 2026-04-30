@@ -7,12 +7,8 @@
                 "/c",
                 "npx",
                 "-y",
-                "robloxstudio-mcp@latest"
-            ],
-            "env": {
-                "ROBLOX_STUDIO_HOST": "127.0.0.1",
-                "ROBLOX_STUDIO_PORT": "58741"
-            }
+                "robloxstudio-mcp@2.6.0"
+            ]
         },
         "firecrawl/firecrawl-mcp-server": {
             "type": "stdio",

@@ -9,6 +9,7 @@
     },
     "github.copilot.enable": {
         "*": false,
+        "markdown": true,
         "luau": true,
         "json": true,
         "jsonc": true,
@@ -19,9 +20,9 @@
     "chat.mcp.autostart": "onlyNew",
     "github.copilot.chat.codeGeneration.useInstructionFiles": true,
     "chat.includeApplyingInstructions": true,
-    "chat.includeReferencedInstructions": false,
+    "chat.includeReferencedInstructions": true,
     "chat.useAgentsMdFile": true,
-    "chat.useNestedAgentsMdFiles": false,
+    "chat.useNestedAgentsMdFiles": true,
     "search.exclude": {
         "Packages/**": true
     },
@@ -41,7 +42,7 @@
     "luau-lsp.completion.imports.enabled": true,
     "luau-lsp.completion.imports.suggestServices": true,
     "luau-lsp.completion.imports.requireStyle": "alwaysRelative",
-    "luau-lsp.completion.imports.stringRequires.enabled": false,
+    "luau-lsp.completion.imports.stringRequires.enabled": true,
     "stylua.searchBinaryInPATH": true,
     "stylua.verify": true
 }

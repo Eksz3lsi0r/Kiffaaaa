@@ -41,10 +41,70 @@
             "command": "rojo",
             "args": [
                 "serve",
-                "default.project.json"
+                "default.project.json",
+                "--port",
+                "34872"
             ],
             "isBackground": true,
             "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Roblox: Start 1vsCOM playtest",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "scripts/start-1vscom-playtest.ps1"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Roblox: Clear 1vsCOM autoqueue",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "scripts/start-1vscom-playtest.ps1",
+                "-Clear"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Roblox: Verify MCP bridge",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "scripts/verify-roblox-mcp.ps1"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Roblox: Reset MCP bridge",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "scripts/reset-roblox-mcp.ps1",
+                "-InstallPlugin"
+            ],
+            "group": "test",
             "problemMatcher": []
         },
         {

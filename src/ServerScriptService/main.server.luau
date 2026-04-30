@@ -1,698 +1,1520 @@
---!strict
-
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
-local Workspace = game:GetService("Workspace")
 
-type EnemyState = {
-    Model: Model,
-    Root: BasePart,
-    Head: BasePart,
-    HomePosition: Vector3,
-    WalkRadius: number,
-    WalkSpeed: number,
-    Phase: number,
-    Health: number,
-    MaxHealth: number,
-    Alive: boolean,
-    HealthFill: Frame,
-    HealthLabel: TextLabel,
+local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Config = require(Shared:WaitForChild("ArenaDuelConfig"))
+
+type AbilityConfig = {
+    displayName: string,
+    cooldown: number,
+    castTime: number,
+    range: number?,
+    radius: number?,
+    damage: number?,
+    heal: number?,
+    shield: number?,
+    shieldDuration: number?,
+    friendly: boolean?,
+    fullHeal: boolean?,
+    crowdControl: string?,
+    crowdControlDuration: number?,
+    effectName: string?,
+    slowMultiplier: number?,
+    dotDamage: number?,
+    dotDuration: number?,
+    dotInterval: number?,
+    focusGain: number?,
+    consumeFocus: boolean?,
+    focusDamage: number?,
+    executeBonus: number?,
+    executeThreshold: number?,
+    interrupt: boolean?,
+    lockout: number?,
+    area: boolean?,
 }
 
-type DragonState = {
-    Model: Model,
-    Saddle: BasePart,
-    Muzzle: BasePart,
-    RestPosition: Vector3,
-    FlightCenter: Vector3,
-    FlightRadius: number,
-    FlightDuration: number,
+type EffectState = {
+    kind: string,
+    category: string?,
+    expiresAt: number,
+    amount: number?,
+    nextTickAt: number?,
+    tickInterval: number?,
+    sourceId: string?,
 }
 
-local baseplateTopY = 0.5
-local scenarioRunning = true
-local combatRunning = false
-local enemies: { EnemyState } = {}
-local riderWeld: WeldConstraint? = nil
-local riderHumanoid: Humanoid? = nil
-local riderRootPart: BasePart? = nil
+type CastState = {
+    abilityId: string,
+    targetId: string?,
+    endsAt: number,
+    token: number,
+}
 
-local function clearWorkspace()
-    for _, child in ipairs(Workspace:GetChildren()) do
-        if child:IsA("Terrain") then
-            child:Clear()
-        elseif child.Name ~= "Baseplate" then
-            child:Destroy()
+type FighterState = {
+    id: string,
+    name: string,
+    team: number,
+    player: Player?,
+    isBot: boolean,
+    classId: string,
+    health: number,
+    maxHealth: number,
+    focus: number,
+    cooldowns: { [string]: number },
+    effects: { EffectState },
+    dr: { [string]: { count: number, expiresAt: number } },
+    targetId: string?,
+    shield: number,
+    shieldExpiresAt: number,
+    castLockedUntil: number,
+    casting: CastState?,
+    castToken: number,
+    botModel: Model?,
+}
+
+type MatchState = {
+    id: number,
+    mode: string,
+    phase: string,
+    countdown: number,
+    startedAt: number,
+    fighters: { FighterState },
+    gatesOpen: boolean,
+    winnerTeam: number?,
+}
+
+local remotesFolder = ReplicatedStorage:FindFirstChild(Config.RemoteFolderName)
+if not remotesFolder then
+    remotesFolder = Instance.new("Folder")
+    remotesFolder.Name = Config.RemoteFolderName
+    remotesFolder.Parent = ReplicatedStorage
+end
+
+local function getRemote(remoteName: string): RemoteEvent
+    local remote = remotesFolder:FindFirstChild(remoteName)
+    if not remote or not remote:IsA("RemoteEvent") then
+        if remote then
+            remote:Destroy()
         end
+
+        remote = Instance.new("RemoteEvent")
+        remote.Name = remoteName
+        remote.Parent = remotesFolder
     end
+
+    return remote :: RemoteEvent
 end
 
-local function ensureBaseplate()
-    local baseplate = Workspace:FindFirstChild("Baseplate")
-    if baseplate ~= nil and not baseplate:IsA("BasePart") then
-        baseplate:Destroy()
-        baseplate = nil
-    end
+local queueRequestEvent = getRemote(Config.Remotes.QueueRequest)
+local classSelectEvent = getRemote(Config.Remotes.ClassSelect)
+local targetSelectEvent = getRemote(Config.Remotes.TargetSelect)
+local abilityCastEvent = getRemote(Config.Remotes.AbilityCast)
+local stateUpdateEvent = getRemote(Config.Remotes.StateUpdate)
+local systemMessageEvent = getRemote(Config.Remotes.SystemMessage)
 
-    if baseplate == nil then
-        local created = Instance.new("Part")
-        created.Name = "Baseplate"
-        created.Parent = Workspace
-        baseplate = created
-    end
+local WORLD_FOLDER_NAME = "ArenaDuelWorld"
+local TEAM_ONE = 1
+local TEAM_TWO = 2
+local selectedClassByPlayer: { [Player]: string } = {}
+local playerQueues: { [Player]: string } = {}
+local queues: { [string]: { Player } } = {
+    Duel1v1 = {},
+    Duel2v2 = {},
+}
+local activeMatch: MatchState? = nil
+local nextMatchId = 1
+local arenaWorld: Folder
+local gateParts: { BasePart } = {}
+local heartbeatConnection: RBXScriptConnection? = nil
 
-    local part = baseplate :: BasePart
-    part.Anchored = true
-    part.Size = Vector3.new(512, 1, 512)
-    part.Position = Vector3.new(0, 0, 0)
-    part.Material = Enum.Material.Grass
-    part.Color = Color3.fromRGB(102, 170, 92)
-    part.TopSurface = Enum.SurfaceType.Smooth
-    part.BottomSurface = Enum.SurfaceType.Smooth
+local function sendMessage(player: Player, text: string)
+    systemMessageEvent:FireClient(player, text)
 end
 
-local function createPart(
+local function makePart(
     parent: Instance,
     name: string,
+    position: Vector3,
     size: Vector3,
-    cframe: CFrame,
     color: Color3,
     material: Enum.Material,
-    shape: Enum.PartType?
-): BasePart
+    transparency: number?
+): Part
     local part = Instance.new("Part")
     part.Name = name
     part.Anchored = true
-    part.CanCollide = false
-    part.CanTouch = false
-    part.CanQuery = false
-    part.Massless = true
     part.Size = size
-    part.CFrame = cframe
+    part.Position = position
     part.Color = color
     part.Material = material
-    if shape ~= nil then
-        part.Shape = shape
-    end
+    part.Transparency = transparency or 0
+    part.TopSurface = Enum.SurfaceType.Smooth
+    part.BottomSurface = Enum.SurfaceType.Smooth
     part.Parent = parent
     return part
 end
 
-local function createEnemyHealthGui(adornee: BasePart, title: string): (Frame, TextLabel)
-    local gui = Instance.new("BillboardGui")
-    gui.Name = title .. "HealthBar"
-    gui.Adornee = adornee
-    gui.AlwaysOnTop = true
-    gui.LightInfluence = 0
-    gui.Size = UDim2.fromOffset(120, 28)
-    gui.StudsOffset = Vector3.new(0, 4.8, 0)
-    gui.Parent = adornee
+local function buildArenaWorld()
+    local existingWorld = workspace:FindFirstChild(WORLD_FOLDER_NAME)
+    if existingWorld then
+        existingWorld:Destroy()
+    end
 
-    local root = Instance.new("Frame")
-    root.Name = "Root"
-    root.BackgroundTransparency = 1
-    root.Size = UDim2.fromScale(1, 1)
-    root.Parent = gui
+    local world = Instance.new("Folder")
+    world.Name = WORLD_FOLDER_NAME
+    world.Parent = workspace
+    arenaWorld = world
+    table.clear(gateParts)
 
-    local barBackground = Instance.new("Frame")
-    barBackground.Name = "Background"
-    barBackground.AnchorPoint = Vector2.new(0.5, 0)
-    barBackground.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-    barBackground.BorderSizePixel = 0
-    barBackground.Position = UDim2.fromScale(0.5, 0.18)
-    barBackground.Size = UDim2.fromOffset(104, 8)
-    barBackground.Parent = root
+    local stone = Color3.fromRGB(84, 86, 94)
+    local darkStone = Color3.fromRGB(43, 45, 52)
+    local sand = Color3.fromRGB(156, 137, 91)
+    local blue = Color3.fromRGB(54, 105, 170)
+    local red = Color3.fromRGB(170, 61, 54)
+    local gold = Color3.fromRGB(214, 172, 72)
 
-    local stroke = Instance.new("UIStroke")
-    stroke.Color = Color3.fromRGB(0, 0, 0)
-    stroke.Thickness = 1
-    stroke.Parent = barBackground
+    makePart(
+        world,
+        "ArenaFloor",
+        Vector3.new(0, 0, 0),
+        Vector3.new(124, 1, 74),
+        sand,
+        Enum.Material.Sand
+    )
+    makePart(
+        world,
+        "NorthWall",
+        Vector3.new(0, 5, -38),
+        Vector3.new(128, 10, 4),
+        stone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "SouthWall",
+        Vector3.new(0, 5, 38),
+        Vector3.new(128, 10, 4),
+        stone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "WestWallNorth",
+        Vector3.new(-64, 5, -28),
+        Vector3.new(4, 10, 20),
+        stone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "WestWallSouth",
+        Vector3.new(-64, 5, 28),
+        Vector3.new(4, 10, 20),
+        stone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "EastWallNorth",
+        Vector3.new(64, 5, -28),
+        Vector3.new(4, 10, 20),
+        stone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "EastWallSouth",
+        Vector3.new(64, 5, 28),
+        Vector3.new(4, 10, 20),
+        stone,
+        Enum.Material.Slate
+    )
 
-    local barFill = Instance.new("Frame")
-    barFill.Name = "Fill"
-    barFill.BackgroundColor3 = Color3.fromRGB(70, 255, 90)
-    barFill.BorderSizePixel = 0
-    barFill.Size = UDim2.fromScale(1, 1)
-    barFill.Parent = barBackground
+    makePart(
+        world,
+        "TeamOnePrepFloor",
+        Vector3.new(-96, 0.05, 0),
+        Vector3.new(34, 1, 36),
+        blue,
+        Enum.Material.Concrete,
+        0.08
+    )
+    makePart(
+        world,
+        "TeamTwoPrepFloor",
+        Vector3.new(96, 0.05, 0),
+        Vector3.new(34, 1, 36),
+        red,
+        Enum.Material.Concrete,
+        0.08
+    )
+    makePart(
+        world,
+        "TeamOnePrepBackWall",
+        Vector3.new(-114, 5, 0),
+        Vector3.new(4, 10, 38),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "TeamTwoPrepBackWall",
+        Vector3.new(114, 5, 0),
+        Vector3.new(4, 10, 38),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "TeamOnePrepNorthWall",
+        Vector3.new(-96, 5, -20),
+        Vector3.new(36, 10, 4),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "TeamOnePrepSouthWall",
+        Vector3.new(-96, 5, 20),
+        Vector3.new(36, 10, 4),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "TeamTwoPrepNorthWall",
+        Vector3.new(96, 5, -20),
+        Vector3.new(36, 10, 4),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "TeamTwoPrepSouthWall",
+        Vector3.new(96, 5, 20),
+        Vector3.new(36, 10, 4),
+        darkStone,
+        Enum.Material.Slate
+    )
+
+    local leftGate = makePart(
+        world,
+        "TeamOneGate",
+        Vector3.new(-65, 4, 0),
+        Vector3.new(3, 8, 18),
+        gold,
+        Enum.Material.Metal,
+        0.05
+    )
+    local rightGate = makePart(
+        world,
+        "TeamTwoGate",
+        Vector3.new(65, 4, 0),
+        Vector3.new(3, 8, 18),
+        gold,
+        Enum.Material.Metal,
+        0.05
+    )
+    gateParts = { leftGate, rightGate }
+
+    makePart(
+        world,
+        "LobbyFloor",
+        Vector3.new(0, 0, 92),
+        Vector3.new(72, 1, 38),
+        Color3.fromRGB(66, 74, 88),
+        Enum.Material.Concrete
+    )
+    makePart(
+        world,
+        "LobbySpawn",
+        Vector3.new(0, 2, 92),
+        Vector3.new(6, 1, 6),
+        Color3.fromRGB(101, 179, 104),
+        Enum.Material.Neon,
+        0.25
+    )
+    makePart(
+        world,
+        "TeamOnePrepSpawn",
+        Vector3.new(-98, 2, 0),
+        Vector3.new(6, 1, 6),
+        blue,
+        Enum.Material.Neon,
+        0.2
+    )
+    makePart(
+        world,
+        "TeamTwoPrepSpawn",
+        Vector3.new(98, 2, 0),
+        Vector3.new(6, 1, 6),
+        red,
+        Enum.Material.Neon,
+        0.2
+    )
+    makePart(
+        world,
+        "TeamOneArenaEntry",
+        Vector3.new(-48, 2, 0),
+        Vector3.new(5, 1, 5),
+        blue,
+        Enum.Material.Neon,
+        0.35
+    )
+    makePart(
+        world,
+        "TeamTwoArenaEntry",
+        Vector3.new(48, 2, 0),
+        Vector3.new(5, 1, 5),
+        red,
+        Enum.Material.Neon,
+        0.35
+    )
+end
+
+local function setGatesOpen(open: boolean)
+    for _, gate in gateParts do
+        gate.CanCollide = not open
+        gate.CanTouch = open
+        gate.CanQuery = true
+        gate.Transparency = if open then 0.65 else 0.05
+    end
+end
+
+local function getWorldPart(name: string): BasePart?
+    local part = arenaWorld:FindFirstChild(name)
+    if part and part:IsA("BasePart") then
+        return part
+    end
+
+    return nil
+end
+
+local function getClassConfig(classId: string)
+    return Config.Classes[classId] or Config.Classes.Warrior
+end
+
+local function getAbilityConfig(classId: string, abilityId: string): AbilityConfig?
+    local classConfig = getClassConfig(classId)
+    return classConfig.abilities[abilityId]
+end
+
+local function getRootPart(player: Player): BasePart?
+    local character = player.Character
+    if not character then
+        return nil
+    end
+
+    local root = character:FindFirstChild("HumanoidRootPart")
+    if root and root:IsA("BasePart") then
+        return root
+    end
+
+    return nil
+end
+
+local function getHumanoid(player: Player): Humanoid?
+    local character = player.Character
+    if not character then
+        return nil
+    end
+
+    return character:FindFirstChildOfClass("Humanoid")
+end
+
+local function teleportPlayer(player: Player, partName: string, offsetIndex: number)
+    local root = getRootPart(player)
+    local destination = getWorldPart(partName)
+    if not root or not destination then
+        return
+    end
+
+    local offset = Vector3.new((offsetIndex - 1) * 5, 4, 0)
+    root.CFrame = CFrame.new(destination.Position + offset)
+end
+
+local function resetPlayerCharacter(player: Player)
+    local classId = selectedClassByPlayer[player] or "Warrior"
+    local classConfig = getClassConfig(classId)
+    local humanoid = getHumanoid(player)
+    if humanoid then
+        humanoid.MaxHealth = classConfig.maxHealth
+        humanoid.Health = classConfig.maxHealth
+        humanoid.WalkSpeed = classConfig.baseWalkSpeed
+        humanoid.JumpPower = 50
+        humanoid.PlatformStand = false
+    end
+end
+
+local function makeFighter(
+    player: Player?,
+    team: number,
+    classId: string,
+    isBot: boolean
+): FighterState
+    local classConfig = getClassConfig(classId)
+    local fighterId = if player then tostring(player.UserId) else "bot_" .. tostring(nextMatchId)
+    local name = if player then player.DisplayName else "COM Gegner"
+
+    return {
+        id = fighterId,
+        name = name,
+        team = team,
+        player = player,
+        isBot = isBot,
+        classId = classId,
+        health = classConfig.maxHealth,
+        maxHealth = classConfig.maxHealth,
+        focus = 0,
+        cooldowns = {},
+        effects = {},
+        dr = {},
+        targetId = nil,
+        shield = 0,
+        shieldExpiresAt = 0,
+        castLockedUntil = 0,
+        casting = nil,
+        castToken = 0,
+        botModel = nil,
+    }
+end
+
+local function createBotModel(fighter: FighterState)
+    local model = Instance.new("Model")
+    model.Name = fighter.name
+
+    local root = Instance.new("Part")
+    root.Name = "HumanoidRootPart"
+    root.Anchored = true
+    root.Size = Vector3.new(3, 5, 3)
+    root.Position = Vector3.new(98, 3.5, 0)
+    root.Color = Color3.fromRGB(136, 54, 170)
+    root.Material = Enum.Material.Neon
+    root.Parent = model
+
+    local labelAttachment = Instance.new("Attachment")
+    labelAttachment.Position = Vector3.new(0, 3.2, 0)
+    labelAttachment.Parent = root
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Size = UDim2.fromOffset(160, 36)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = labelAttachment
 
     local label = Instance.new("TextLabel")
-    label.Name = "Label"
     label.BackgroundTransparency = 1
+    label.Size = UDim2.fromScale(1, 1)
     label.Font = Enum.Font.GothamBold
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextStrokeTransparency = 0.45
     label.TextScaled = true
-    label.Position = UDim2.fromScale(0, 0.5)
-    label.Size = UDim2.fromOffset(120, 14)
-    label.Parent = root
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextStrokeTransparency = 0.2
+    label.Text = "COM Gegner"
+    label.Parent = billboard
 
-    return barFill, label
+    model.PrimaryPart = root
+    model.Parent = arenaWorld
+    fighter.botModel = model
 end
 
-local function updateEnemyBar(enemy: EnemyState)
-    local percent = math.clamp(enemy.Health / enemy.MaxHealth, 0, 1)
-    local red = math.floor(255 * (1 - percent))
-    local green = math.floor(255 * percent)
-    enemy.HealthFill.Size = UDim2.fromScale(percent, 1)
-    enemy.HealthFill.BackgroundColor3 = Color3.fromRGB(red, green, 70)
-    enemy.HealthLabel.Text =
-        string.format("%s %d/%d", enemy.Model.Name, enemy.Health, enemy.MaxHealth)
+local function getFighterPosition(fighter: FighterState): Vector3?
+    if fighter.player then
+        local root = getRootPart(fighter.player)
+        if root then
+            return root.Position
+        end
+    elseif fighter.botModel and fighter.botModel.PrimaryPart then
+        return fighter.botModel.PrimaryPart.Position
+    end
+
+    return nil
 end
 
-local function getNearestLivingEnemy(position: Vector3): EnemyState?
-    local nearestEnemy: EnemyState? = nil
-    local nearestDistance = math.huge
+local function moveBotTo(fighter: FighterState, position: Vector3)
+    if fighter.botModel and fighter.botModel.PrimaryPart then
+        fighter.botModel.PrimaryPart.CFrame = CFrame.new(position)
+    end
+end
 
-    for _, enemy in ipairs(enemies) do
-        if enemy.Alive and enemy.Model.Parent ~= nil then
-            local distance = (enemy.Root.Position - position).Magnitude
-            if distance < nearestDistance then
-                nearestDistance = distance
-                nearestEnemy = enemy
+local function findFighter(matchState: MatchState, fighterId: string?): FighterState?
+    if not fighterId then
+        return nil
+    end
+
+    for _, fighter in matchState.fighters do
+        if fighter.id == fighterId then
+            return fighter
+        end
+    end
+
+    return nil
+end
+
+local function getFighterForPlayer(player: Player): FighterState?
+    local matchState = activeMatch
+    if not matchState then
+        return nil
+    end
+
+    for _, fighter in matchState.fighters do
+        if fighter.player == player then
+            return fighter
+        end
+    end
+
+    return nil
+end
+
+local function isAlive(fighter: FighterState): boolean
+    return fighter.health > 0
+end
+
+local function getFirstEnemy(matchState: MatchState, fighter: FighterState): FighterState?
+    for _, candidate in matchState.fighters do
+        if candidate.team ~= fighter.team and isAlive(candidate) then
+            return candidate
+        end
+    end
+
+    return nil
+end
+
+local function getFirstAlly(matchState: MatchState, fighter: FighterState): FighterState?
+    for _, candidate in matchState.fighters do
+        if
+            candidate.team == fighter.team
+            and isAlive(candidate)
+            and candidate.health < candidate.maxHealth
+        then
+            return candidate
+        end
+    end
+
+    return fighter
+end
+
+local function isInRange(source: FighterState, target: FighterState, range: number): boolean
+    local sourcePosition = getFighterPosition(source)
+    local targetPosition = getFighterPosition(target)
+    if not sourcePosition or not targetPosition then
+        return false
+    end
+
+    return (sourcePosition - targetPosition).Magnitude <= range
+end
+
+local function hasActionBlockingEffect(fighter: FighterState): boolean
+    local now = os.clock()
+    for _, effect in fighter.effects do
+        if
+            effect.expiresAt > now
+            and (effect.kind == "Stun" or effect.kind == "Fear" or effect.kind == "Blind")
+        then
+            return true
+        end
+    end
+
+    return false
+end
+
+local function removeExpiredEffects(fighter: FighterState)
+    local now = os.clock()
+    local keptEffects = {}
+    for _, effect in fighter.effects do
+        if effect.expiresAt > now then
+            table.insert(keptEffects, effect)
+        end
+    end
+    fighter.effects = keptEffects
+
+    if fighter.shieldExpiresAt <= now then
+        fighter.shield = 0
+    end
+end
+
+local function applyMovementState(fighter: FighterState)
+    if not fighter.player then
+        return
+    end
+
+    local humanoid = getHumanoid(fighter.player)
+    if not humanoid then
+        return
+    end
+
+    local classConfig = getClassConfig(fighter.classId)
+    local walkSpeed = classConfig.baseWalkSpeed
+    local rooted = false
+    local stunned = false
+    local now = os.clock()
+
+    for _, effect in fighter.effects do
+        if effect.expiresAt > now then
+            if effect.kind == "Root" then
+                rooted = true
+            elseif effect.kind == "Stun" or effect.kind == "Blind" then
+                stunned = true
+            elseif effect.kind == "Fear" then
+                walkSpeed = math.max(walkSpeed, classConfig.baseWalkSpeed + 4)
+            elseif effect.kind == "Slow" and effect.amount then
+                walkSpeed = math.min(walkSpeed, classConfig.baseWalkSpeed * effect.amount)
             end
         end
     end
 
-    return nearestEnemy
+    if rooted or stunned then
+        walkSpeed = 0
+    end
+
+    humanoid.WalkSpeed = walkSpeed
+    humanoid.JumpPower = if rooted or stunned then 0 else 50
 end
 
-local function spawnImpactFlash(position: Vector3, color: Color3)
-    local flash = Instance.new("Part")
-    flash.Name = "ImpactFlash"
-    flash.Anchored = true
-    flash.CanCollide = false
-    flash.CanTouch = false
-    flash.CanQuery = false
-    flash.Shape = Enum.PartType.Ball
-    flash.Size = Vector3.new(1.2, 1.2, 1.2)
-    flash.Material = Enum.Material.Neon
-    flash.Color = color
-    flash.Transparency = 0.2
-    flash.CFrame = CFrame.new(position)
-    flash.Parent = Workspace
+local function buildEffectList(fighter: FighterState)
+    local now = os.clock()
+    local effects = {}
 
-    local light = Instance.new("PointLight")
-    light.Color = color
-    light.Brightness = 4
-    light.Range = 14
-    light.Parent = flash
+    if fighter.shield > 0 and fighter.shieldExpiresAt > now then
+        table.insert(effects, {
+            name = "Shield",
+            remaining = math.max(0, fighter.shieldExpiresAt - now),
+            amount = math.floor(fighter.shield),
+        })
+    end
 
-    local tween = TweenService:Create(
-        flash,
-        TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-        { Size = Vector3.new(5, 5, 5), Transparency = 1 }
-    )
-    tween:Play()
-    task.delay(0.3, function()
-        if flash.Parent ~= nil then
-            flash:Destroy()
+    for _, effect in fighter.effects do
+        if effect.expiresAt > now then
+            table.insert(effects, {
+                name = effect.kind,
+                remaining = math.max(0, effect.expiresAt - now),
+            })
         end
-    end)
+    end
+
+    return effects
 end
 
-local function damageEnemy(enemy: EnemyState, amount: number)
-    if not enemy.Alive then
+local function buildCooldownList(fighter: FighterState)
+    local now = os.clock()
+    local cooldowns = {}
+    for abilityId, readyAt in fighter.cooldowns do
+        cooldowns[abilityId] = math.max(0, readyAt - now)
+    end
+    return cooldowns
+end
+
+local function buildFighterSnapshot(fighter: FighterState)
+    local casting = nil
+    if fighter.casting then
+        casting = {
+            abilityId = fighter.casting.abilityId,
+            remaining = math.max(0, fighter.casting.endsAt - os.clock()),
+        }
+    end
+
+    return {
+        id = fighter.id,
+        name = fighter.name,
+        team = fighter.team,
+        classId = fighter.classId,
+        className = getClassConfig(fighter.classId).displayName,
+        health = math.max(0, math.floor(fighter.health)),
+        maxHealth = fighter.maxHealth,
+        focus = fighter.focus,
+        isBot = fighter.isBot,
+        targetId = fighter.targetId,
+        effects = buildEffectList(fighter),
+        cooldowns = buildCooldownList(fighter),
+        casting = casting,
+        castLockedRemaining = math.max(0, fighter.castLockedUntil - os.clock()),
+    }
+end
+
+local function sendLobbyState(player: Player)
+    stateUpdateEvent:FireClient(player, {
+        kind = "Lobby",
+        selectedClass = selectedClassByPlayer[player] or "Warrior",
+        queuedMode = playerQueues[player],
+        activeMatch = activeMatch ~= nil,
+        queueSizes = {
+            Duel1v1 = #queues.Duel1v1,
+            Duel2v2 = #queues.Duel2v2,
+        },
+    })
+end
+
+local function broadcastMatchState(matchState: MatchState)
+    local fighters = {}
+    for _, fighter in matchState.fighters do
+        table.insert(fighters, buildFighterSnapshot(fighter))
+    end
+
+    for _, fighter in matchState.fighters do
+        if fighter.player then
+            stateUpdateEvent:FireClient(fighter.player, {
+                kind = "Match",
+                matchId = matchState.id,
+                mode = matchState.mode,
+                phase = matchState.phase,
+                countdown = matchState.countdown,
+                gatesOpen = matchState.gatesOpen,
+                winnerTeam = matchState.winnerTeam,
+                localFighterId = fighter.id,
+                fighters = fighters,
+            })
+        end
+    end
+end
+
+local function broadcastMatchMessage(matchState: MatchState, text: string)
+    for _, fighter in matchState.fighters do
+        if fighter.player then
+            sendMessage(fighter.player, text)
+        end
+    end
+end
+
+local function damageFighter(
+    matchState: MatchState,
+    source: FighterState,
+    target: FighterState,
+    amount: number,
+    reason: string
+)
+    if amount <= 0 or not isAlive(target) then
         return
     end
 
-    enemy.Health = math.max(0, enemy.Health - amount)
-    updateEnemyBar(enemy)
-    print(
-        ("[server] %s took %d damage (%d/%d)"):format(
-            enemy.Model.Name,
-            amount,
-            enemy.Health,
-            enemy.MaxHealth
+    local remainingDamage = amount
+    if target.shield > 0 and target.shieldExpiresAt > os.clock() then
+        local absorbed = math.min(target.shield, remainingDamage)
+        target.shield -= absorbed
+        remainingDamage -= absorbed
+    end
+
+    if remainingDamage > 0 then
+        target.health = math.max(0, target.health - remainingDamage)
+        if target.player then
+            local humanoid = getHumanoid(target.player)
+            if humanoid then
+                humanoid.Health = math.max(1, target.health)
+            end
+        end
+    end
+
+    broadcastMatchMessage(
+        matchState,
+        string.format(
+            "%s trifft %s mit %s fuer %d Schaden.",
+            source.name,
+            target.name,
+            reason,
+            amount
         )
     )
-
-    if enemy.Health <= 0 then
-        enemy.Alive = false
-        print(("[server] %s defeated"):format(enemy.Model.Name))
-        spawnImpactFlash(enemy.Root.Position, Color3.fromRGB(255, 120, 70))
-        task.delay(0.35, function()
-            if enemy.Model.Parent ~= nil then
-                enemy.Model:Destroy()
-            end
-        end)
-    end
 end
 
-local function launchFireball(startPosition: Vector3, targetEnemy: EnemyState)
-    if not targetEnemy.Alive or targetEnemy.Model.Parent == nil then
+local function healFighter(
+    matchState: MatchState,
+    source: FighterState,
+    target: FighterState,
+    amount: number,
+    reason: string
+)
+    if amount <= 0 or not isAlive(target) then
         return
     end
 
-    local fireball = Instance.new("Part")
-    fireball.Name = "Fireball"
-    fireball.Anchored = true
-    fireball.CanCollide = false
-    fireball.CanTouch = false
-    fireball.CanQuery = false
-    fireball.Shape = Enum.PartType.Ball
-    fireball.Size = Vector3.new(1.6, 1.6, 1.6)
-    fireball.Material = Enum.Material.Neon
-    fireball.Color = Color3.fromRGB(255, 117, 33)
-    fireball.CFrame = CFrame.new(startPosition)
-    fireball.Parent = Workspace
-
-    local backAttachment = Instance.new("Attachment")
-    backAttachment.Position = Vector3.new(0, 0, 0.8)
-    backAttachment.Parent = fireball
-
-    local frontAttachment = Instance.new("Attachment")
-    frontAttachment.Position = Vector3.new(0, 0, -0.8)
-    frontAttachment.Parent = fireball
-
-    local trail = Instance.new("Trail")
-    trail.Attachment0 = backAttachment
-    trail.Attachment1 = frontAttachment
-    trail.Color = ColorSequence.new(Color3.fromRGB(255, 198, 86), Color3.fromRGB(255, 92, 22))
-    trail.Lifetime = 0.16
-    trail.MinLength = 0.05
-    trail.LightEmission = 1
-    trail.Parent = fireball
-
-    local light = Instance.new("PointLight")
-    light.Color = fireball.Color
-    light.Brightness = 2.5
-    light.Range = 10
-    light.Parent = fireball
-
-    print(("[server] fireball launched at %s"):format(targetEnemy.Model.Name))
-
-    local targetPosition = targetEnemy.Root.Position + Vector3.new(0, 1.6, 0)
-    local distance = (targetPosition - startPosition).Magnitude
-    local travelTime = math.clamp(distance / 130, 0.25, 0.95)
-    local startTime = os.clock()
-
-    while fireball.Parent ~= nil do
-        local elapsed = os.clock() - startTime
-        local alpha = math.clamp(elapsed / travelTime, 0, 1)
-        local liveTargetPosition = targetEnemy.Alive
-                and targetEnemy.Model.Parent ~= nil
-                and (targetEnemy.Root.Position + Vector3.new(0, 1.6, 0))
-            or targetPosition
-        local position = startPosition:Lerp(liveTargetPosition, alpha)
-        fireball.CFrame = CFrame.new(position)
-        if alpha >= 1 then
-            break
+    target.health = math.min(target.maxHealth, target.health + amount)
+    if target.player then
+        local humanoid = getHumanoid(target.player)
+        if humanoid then
+            humanoid.Health = target.health
         end
-        RunService.Heartbeat:Wait()
     end
 
-    if fireball.Parent ~= nil then
-        local hitPosition = fireball.Position
-        fireball:Destroy()
-        spawnImpactFlash(hitPosition, Color3.fromRGB(255, 161, 52))
-        if targetEnemy.Alive and targetEnemy.Model.Parent ~= nil then
-            damageEnemy(targetEnemy, 10)
+    broadcastMatchMessage(
+        matchState,
+        string.format("%s heilt %s mit %s um %d.", source.name, target.name, reason, amount)
+    )
+end
+
+local function applyCrowdControl(
+    matchState: MatchState,
+    source: FighterState,
+    target: FighterState,
+    ability: AbilityConfig
+)
+    if not ability.crowdControl or not ability.crowdControlDuration then
+        return
+    end
+
+    local category = ability.crowdControl
+    local now = os.clock()
+    local drState = target.dr[category]
+    if not drState or drState.expiresAt <= now then
+        drState = { count = 0, expiresAt = now + Config.DRWindowSeconds }
+    end
+
+    local multiplier = Config.DRMultipliers[math.clamp(drState.count + 1, 1, #Config.DRMultipliers)]
+        or 0
+    drState.count += 1
+    drState.expiresAt = now + Config.DRWindowSeconds
+    target.dr[category] = drState
+
+    local duration = ability.crowdControlDuration * multiplier
+    if duration <= 0 then
+        broadcastMatchMessage(
+            matchState,
+            string.format("%s widersteht %s durch DR.", target.name, ability.displayName)
+        )
+        return
+    end
+
+    local kind = ability.effectName or category
+    table.insert(target.effects, {
+        kind = kind,
+        category = category,
+        expiresAt = now + duration,
+        amount = ability.slowMultiplier,
+        sourceId = source.id,
+    })
+    applyMovementState(target)
+    broadcastMatchMessage(
+        matchState,
+        string.format("%s bekommt %s fuer %.1f Sekunden.", target.name, kind, duration)
+    )
+end
+
+local function applyDot(target: FighterState, source: FighterState, ability: AbilityConfig)
+    if not ability.dotDamage or not ability.dotDuration then
+        return
+    end
+
+    table.insert(target.effects, {
+        kind = "Burn",
+        expiresAt = os.clock() + ability.dotDuration,
+        amount = ability.dotDamage,
+        nextTickAt = os.clock() + (ability.dotInterval or 1),
+        tickInterval = ability.dotInterval or 1,
+        sourceId = source.id,
+    })
+end
+
+local function resolveAbility(
+    matchState: MatchState,
+    source: FighterState,
+    abilityId: string,
+    targetId: string?
+)
+    if matchState.phase ~= "Active" or not isAlive(source) then
+        return
+    end
+
+    local ability = getAbilityConfig(source.classId, abilityId)
+    if not ability then
+        return
+    end
+
+    local targets: { FighterState } = {}
+
+    if ability.area then
+        local sourcePosition = getFighterPosition(source)
+        if sourcePosition then
+            for _, candidate in matchState.fighters do
+                local candidatePosition = getFighterPosition(candidate)
+                if candidate.team ~= source.team and isAlive(candidate) and candidatePosition then
+                    if (sourcePosition - candidatePosition).Magnitude <= (ability.radius or 0) then
+                        table.insert(targets, candidate)
+                    end
+                end
+            end
+        end
+    else
+        local target = findFighter(matchState, targetId or source.targetId)
+        if ability.friendly then
+            if not target or target.team ~= source.team then
+                target = getFirstAlly(matchState, source)
+            end
+        elseif not target or target.team == source.team then
+            target = getFirstEnemy(matchState, source)
+        end
+
+        if target and isAlive(target) then
+            local range = ability.range or 0
+            if target == source or range <= 0 or isInRange(source, target, range) then
+                table.insert(targets, target)
+            elseif source.player then
+                sendMessage(source.player, "Ziel ist ausser Reichweite.")
+            end
+        end
+    end
+
+    if #targets == 0 then
+        if source.player then
+            sendMessage(source.player, "Kein gueltiges Ziel.")
+        end
+        return
+    end
+
+    for _, target in targets do
+        if ability.interrupt and target.casting then
+            target.castToken += 1
+            target.casting = nil
+            target.castLockedUntil = os.clock() + (ability.lockout or 0)
+            broadcastMatchMessage(
+                matchState,
+                string.format("%s unterbricht %s.", source.name, target.name)
+            )
+        end
+
+        local damage = ability.damage or 0
+        if
+            ability.executeBonus
+            and ability.executeThreshold
+            and target.health / target.maxHealth <= ability.executeThreshold
+        then
+            damage += ability.executeBonus
+        end
+
+        if ability.consumeFocus then
+            damage += source.focus * (ability.focusDamage or 0)
+            source.focus = 0
+        end
+
+        if damage > 0 then
+            damageFighter(matchState, source, target, damage, ability.displayName)
+        end
+
+        if ability.heal then
+            healFighter(matchState, source, target, ability.heal, ability.displayName)
+        end
+
+        if ability.fullHeal then
+            healFighter(matchState, source, target, target.maxHealth, ability.displayName)
+        end
+
+        if ability.shield and ability.shieldDuration then
+            target.shield = ability.shield
+            target.shieldExpiresAt = os.clock() + ability.shieldDuration
+            broadcastMatchMessage(
+                matchState,
+                string.format("%s schuetzt %s.", source.name, target.name)
+            )
+        end
+
+        applyCrowdControl(matchState, source, target, ability)
+        applyDot(target, source, ability)
+    end
+
+    if ability.focusGain then
+        source.focus = math.min(Config.MaxFocus, source.focus + ability.focusGain)
+    end
+end
+
+local function castAbility(source: FighterState, abilityId: string)
+    local matchState = activeMatch
+    if not matchState or matchState.phase ~= "Active" then
+        if source.player then
+            sendMessage(source.player, "Der Kampf hat noch nicht begonnen.")
+        end
+        return
+    end
+
+    local ability = getAbilityConfig(source.classId, abilityId)
+    if not ability then
+        return
+    end
+
+    local now = os.clock()
+    if source.cooldowns[abilityId] and source.cooldowns[abilityId] > now then
+        if source.player then
+            sendMessage(source.player, "Faehigkeit ist noch auf Cooldown.")
+        end
+        return
+    end
+
+    if hasActionBlockingEffect(source) then
+        if source.player then
+            sendMessage(source.player, "Du bist kontrolliert und kannst nicht handeln.")
+        end
+        return
+    end
+
+    if source.castLockedUntil > now and ability.castTime > 0 then
+        if source.player then
+            sendMessage(source.player, "Du bist unterbrochen und kannst gerade nicht zaubern.")
+        end
+        return
+    end
+
+    if source.casting then
+        if source.player then
+            sendMessage(source.player, "Du zauberst bereits.")
+        end
+        return
+    end
+
+    source.cooldowns[abilityId] = now + ability.cooldown
+    source.castToken += 1
+    local token = source.castToken
+    local targetId = source.targetId
+
+    if ability.castTime > 0 then
+        source.casting = {
+            abilityId = abilityId,
+            targetId = targetId,
+            endsAt = now + ability.castTime,
+            token = token,
+        }
+        broadcastMatchState(matchState)
+
+        task.delay(ability.castTime, function()
+            local currentMatch = activeMatch
+            if
+                not currentMatch
+                or currentMatch.id ~= matchState.id
+                or source.castToken ~= token
+            then
+                return
+            end
+
+            source.casting = nil
+            resolveAbility(currentMatch, source, abilityId, targetId)
+            broadcastMatchState(currentMatch)
+        end)
+    else
+        resolveAbility(matchState, source, abilityId, targetId)
+        broadcastMatchState(matchState)
+    end
+end
+
+local function processEffects(matchState: MatchState)
+    local now = os.clock()
+    for _, fighter in matchState.fighters do
+        removeExpiredEffects(fighter)
+
+        for _, effect in fighter.effects do
+            if
+                effect.kind == "Burn"
+                and effect.amount
+                and effect.nextTickAt
+                and effect.tickInterval
+                and effect.nextTickAt <= now
+            then
+                local source = findFighter(matchState, effect.sourceId) or fighter
+                damageFighter(matchState, source, fighter, effect.amount, "Burn")
+                effect.nextTickAt = now + effect.tickInterval
+            end
+        end
+
+        applyMovementState(fighter)
+    end
+end
+
+local function getWinningTeam(matchState: MatchState): number?
+    local teamOneAlive = false
+    local teamTwoAlive = false
+
+    for _, fighter in matchState.fighters do
+        if isAlive(fighter) then
+            if fighter.team == TEAM_ONE then
+                teamOneAlive = true
+            elseif fighter.team == TEAM_TWO then
+                teamTwoAlive = true
+            end
+        end
+    end
+
+    if teamOneAlive and not teamTwoAlive then
+        return TEAM_ONE
+    elseif teamTwoAlive and not teamOneAlive then
+        return TEAM_TWO
+    end
+
+    return nil
+end
+
+local function cleanupMatch(matchState: MatchState)
+    if heartbeatConnection then
+        heartbeatConnection:Disconnect()
+        heartbeatConnection = nil
+    end
+
+    activeMatch = nil
+    setGatesOpen(false)
+
+    for _, fighter in matchState.fighters do
+        if fighter.botModel then
+            fighter.botModel:Destroy()
+        end
+
+        if fighter.player then
+            resetPlayerCharacter(fighter.player)
+            teleportPlayer(fighter.player, "LobbySpawn", 1)
+            sendLobbyState(fighter.player)
         end
     end
 end
 
-local function createEnemy(
-    name: string,
-    homePosition: Vector3,
-    walkRadius: number,
-    walkSpeed: number,
-    phase: number
-): EnemyState
-    local model = Instance.new("Model")
-    model.Name = name
-    model.Parent = Workspace
+local function finishMatch(matchState: MatchState, winnerTeam: number)
+    if matchState.phase == "Finished" then
+        return
+    end
 
-    local root = createPart(
-        model,
-        "HumanoidRootPart",
-        Vector3.new(2, 2, 1),
-        CFrame.new(homePosition + Vector3.new(0, 2.5, 0)),
-        Color3.fromRGB(35, 35, 35),
-        Enum.Material.SmoothPlastic,
-        nil
+    matchState.phase = "Finished"
+    matchState.winnerTeam = winnerTeam
+    matchState.countdown = Config.FinishedReturnSeconds
+    broadcastMatchMessage(
+        matchState,
+        string.format(
+            "Team %d gewinnt! Rueckkehr zur Lobby in %d Sekunden.",
+            winnerTeam,
+            Config.FinishedReturnSeconds
+        )
     )
-    root.Transparency = 1
+    broadcastMatchState(matchState)
 
-    createPart(
-        model,
-        "Torso",
-        Vector3.new(2.8, 3.6, 1.6),
-        CFrame.new(homePosition + Vector3.new(0, 4.1, 0)),
-        Color3.fromRGB(86, 108, 75),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    local head = createPart(
-        model,
-        "Head",
-        Vector3.new(2.2, 2.1, 2.2),
-        CFrame.new(homePosition + Vector3.new(0, 6.35, 0)),
-        Color3.fromRGB(127, 164, 111),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    createPart(
-        model,
-        "LeftArm",
-        Vector3.new(0.8, 2.8, 0.8),
-        CFrame.new(homePosition + Vector3.new(-2, 4.1, 0)),
-        Color3.fromRGB(66, 86, 58),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    createPart(
-        model,
-        "RightArm",
-        Vector3.new(0.8, 2.8, 0.8),
-        CFrame.new(homePosition + Vector3.new(2, 4.1, 0)),
-        Color3.fromRGB(66, 86, 58),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    createPart(
-        model,
-        "LeftLeg",
-        Vector3.new(1, 2.9, 1),
-        CFrame.new(homePosition + Vector3.new(-0.7, 1.05, 0)),
-        Color3.fromRGB(50, 64, 44),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    createPart(
-        model,
-        "RightLeg",
-        Vector3.new(1, 2.9, 1),
-        CFrame.new(homePosition + Vector3.new(0.7, 1.05, 0)),
-        Color3.fromRGB(50, 64, 44),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
+    task.delay(Config.FinishedReturnSeconds, function()
+        if activeMatch and activeMatch.id == matchState.id then
+            cleanupMatch(matchState)
+        end
+    end)
+end
 
-    model:PivotTo(CFrame.new(homePosition + Vector3.new(0, 2.5, 0)))
+local function startHeartbeat(matchState: MatchState)
+    if heartbeatConnection then
+        heartbeatConnection:Disconnect()
+    end
 
-    local healthFill, healthLabel = createEnemyHealthGui(head, name)
-    local enemy: EnemyState = {
-        Model = model,
-        Root = root,
-        Head = head,
-        HomePosition = homePosition,
-        WalkRadius = walkRadius,
-        WalkSpeed = walkSpeed,
-        Phase = phase,
-        Health = 30,
-        MaxHealth = 30,
-        Alive = true,
-        HealthFill = healthFill,
-        HealthLabel = healthLabel,
+    local lastSnapshotAt = 0
+    heartbeatConnection = RunService.Heartbeat:Connect(function()
+        if activeMatch ~= matchState or matchState.phase ~= "Active" then
+            return
+        end
+
+        processEffects(matchState)
+        local winnerTeam = getWinningTeam(matchState)
+        if winnerTeam then
+            finishMatch(matchState, winnerTeam)
+            return
+        end
+
+        if os.clock() - lastSnapshotAt >= 0.35 then
+            lastSnapshotAt = os.clock()
+            broadcastMatchState(matchState)
+        end
+    end)
+end
+
+local function runBotAi(matchState: MatchState, bot: FighterState)
+    task.spawn(function()
+        while activeMatch == matchState and matchState.phase ~= "Finished" and isAlive(bot) do
+            if matchState.phase == "Active" then
+                local target = getFirstEnemy(matchState, bot)
+                if target then
+                    bot.targetId = target.id
+                    local targetPosition = getFighterPosition(target)
+                    if targetPosition then
+                        moveBotTo(bot, targetPosition + Vector3.new(10, 0, 0))
+                    end
+
+                    if
+                        bot.health / bot.maxHealth < 0.35
+                        and getAbilityConfig(bot.classId, "Ability3")
+                    then
+                        castAbility(bot, "Ability3")
+                    elseif math.random() < 0.25 then
+                        castAbility(bot, "Ability2")
+                    else
+                        castAbility(bot, "Ability1")
+                    end
+                end
+            end
+
+            task.wait(1.25)
+        end
+    end)
+end
+
+local function prepareFighterCharacter(fighter: FighterState, spawnIndex: number)
+    if fighter.player then
+        selectedClassByPlayer[fighter.player] = fighter.classId
+        resetPlayerCharacter(fighter.player)
+        teleportPlayer(
+            fighter.player,
+            if fighter.team == TEAM_ONE then "TeamOnePrepSpawn" else "TeamTwoPrepSpawn",
+            spawnIndex
+        )
+    elseif fighter.isBot then
+        createBotModel(fighter)
+    end
+end
+
+local function startMatch(mode: string, playersForMatch: { Player }, includeBot: boolean)
+    if activeMatch then
+        for _, player in playersForMatch do
+            sendMessage(player, "Die Arena ist gerade besetzt.")
+        end
+        return
+    end
+
+    local matchId = nextMatchId
+    nextMatchId += 1
+    local fighters: { FighterState } = {}
+
+    if mode == "Duel2v2" then
+        for index, player in playersForMatch do
+            local team = if index <= 2 then TEAM_ONE else TEAM_TWO
+            table.insert(
+                fighters,
+                makeFighter(player, team, selectedClassByPlayer[player] or "Warrior", false)
+            )
+        end
+    else
+        local firstPlayer = playersForMatch[1]
+        table.insert(
+            fighters,
+            makeFighter(
+                firstPlayer,
+                TEAM_ONE,
+                selectedClassByPlayer[firstPlayer] or "Warrior",
+                false
+            )
+        )
+
+        if includeBot then
+            table.insert(fighters, makeFighter(nil, TEAM_TWO, "Mage", true))
+        else
+            local secondPlayer = playersForMatch[2]
+            table.insert(
+                fighters,
+                makeFighter(
+                    secondPlayer,
+                    TEAM_TWO,
+                    selectedClassByPlayer[secondPlayer] or "Warrior",
+                    false
+                )
+            )
+        end
+    end
+
+    local matchState: MatchState = {
+        id = matchId,
+        mode = mode,
+        phase = "Preparing",
+        countdown = Config.PreparationSeconds,
+        startedAt = os.clock(),
+        fighters = fighters,
+        gatesOpen = false,
+        winnerTeam = nil,
     }
+    activeMatch = matchState
+    setGatesOpen(false)
 
-    updateEnemyBar(enemy)
-    table.insert(enemies, enemy)
+    local spawnCounts = { [TEAM_ONE] = 0, [TEAM_TWO] = 0 }
+    for _, fighter in fighters do
+        spawnCounts[fighter.team] += 1
+        prepareFighterCharacter(fighter, spawnCounts[fighter.team])
+    end
+
+    for _, fighter in fighters do
+        fighter.targetId = (getFirstEnemy(matchState, fighter) or fighter).id
+    end
+
+    broadcastMatchMessage(matchState, "Match gefunden. Vorbereitung startet.")
+    broadcastMatchState(matchState)
 
     task.spawn(function()
-        while scenarioRunning and enemy.Alive and enemy.Model.Parent ~= nil do
-            local elapsed = os.clock()
-            local angle = elapsed * enemy.WalkSpeed + enemy.Phase
-            local x = enemy.HomePosition.X + math.cos(angle) * enemy.WalkRadius
-            local z = enemy.HomePosition.Z + math.sin(angle * 0.75) * enemy.WalkRadius * 0.7
-            local y = baseplateTopY + 2.5 + math.sin(elapsed * 8) * 0.08
-            local position = Vector3.new(x, y, z)
-            local direction = Vector3.new(-math.sin(angle), 0, math.cos(angle * 0.75))
-            if direction.Magnitude < 0.001 then
-                direction = Vector3.new(0, 0, -1)
+        for remaining = Config.PreparationSeconds, 1, -1 do
+            if activeMatch ~= matchState then
+                return
             end
-            enemy.Model:PivotTo(CFrame.lookAt(position, position + direction))
-            RunService.Heartbeat:Wait()
-        end
-    end)
 
-    return enemy
-end
-
-local function getFirstPlayer(): Player
-    local players = Players:GetPlayers()
-    if #players > 0 then
-        return players[1]
-    end
-
-    return Players.PlayerAdded:Wait()
-end
-
-local function mountPlayerOnDragon(dragon: DragonState)
-    local player = getFirstPlayer()
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:WaitForChild("Humanoid") :: Humanoid
-    local rootPart = character:WaitForChild("HumanoidRootPart") :: BasePart
-
-    rootPart.CFrame = dragon.Saddle.CFrame * CFrame.new(0, 2, 0)
-    task.wait(0.25)
-
-    if riderWeld ~= nil then
-        riderWeld:Destroy()
-        riderWeld = nil
-    end
-
-    local weld = Instance.new("WeldConstraint")
-    weld.Name = "DragonRiderWeld"
-    weld.Part0 = rootPart
-    weld.Part1 = dragon.Saddle
-    weld.Parent = rootPart
-
-    riderWeld = weld
-    riderHumanoid = humanoid
-    riderRootPart = rootPart
-
-    humanoid.Sit = true
-    humanoid.PlatformStand = true
-    humanoid.AutoRotate = false
-    humanoid:ChangeState(Enum.HumanoidStateType.Seated)
-
-    print(("[server] dragon rider mounted: %s"):format(player.Name))
-end
-
-local function unmountRider(restPosition: Vector3)
-    if riderWeld ~= nil then
-        riderWeld:Destroy()
-        riderWeld = nil
-    end
-
-    if riderHumanoid ~= nil then
-        riderHumanoid.Sit = false
-        riderHumanoid.PlatformStand = false
-        riderHumanoid.AutoRotate = true
-        riderHumanoid:ChangeState(Enum.HumanoidStateType.Running)
-    end
-
-    if riderRootPart ~= nil then
-        riderRootPart.CFrame = CFrame.new(restPosition + Vector3.new(0, 4, 8))
-    end
-
-    riderHumanoid = nil
-    riderRootPart = nil
-end
-
-local function createDragon(): DragonState
-    local model = Instance.new("Model")
-    model.Name = "MCPDemoDragon"
-    model.Parent = Workspace
-
-    local restPosition = Vector3.new(0, 10, -44)
-    local flightCenter = Vector3.new(0, 26, 0)
-    local flightRadius = 46
-    local flightDuration = 30
-    local origin = CFrame.new(restPosition)
-
-    local function addPart(
-        name: string,
-        size: Vector3,
-        offset: CFrame,
-        color: Color3,
-        material: Enum.Material,
-        shape: Enum.PartType?
-    ): BasePart
-        return createPart(model, name, size, origin * offset, color, material, shape)
-    end
-
-    addPart(
-        "Body",
-        Vector3.new(16, 5, 9),
-        CFrame.new(0, 4, 0),
-        Color3.fromRGB(62, 149, 86),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "Neck",
-        Vector3.new(4, 4, 5),
-        CFrame.new(0, 5, -6) * CFrame.Angles(math.rad(-20), 0, 0),
-        Color3.fromRGB(70, 160, 94),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "Head",
-        Vector3.new(5, 4, 5),
-        CFrame.new(0, 6, -10),
-        Color3.fromRGB(58, 136, 80),
-        Enum.Material.SmoothPlastic,
-        Enum.PartType.Ball
-    )
-    addPart(
-        "Snout",
-        Vector3.new(3, 2, 4),
-        CFrame.new(0, 5.5, -13),
-        Color3.fromRGB(47, 112, 66),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "HornLeft",
-        Vector3.new(0.35, 2, 0.35),
-        CFrame.new(-1.1, 8, -10.5) * CFrame.Angles(math.rad(-20), 0, math.rad(18)),
-        Color3.fromRGB(235, 225, 188),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "HornRight",
-        Vector3.new(0.35, 2, 0.35),
-        CFrame.new(1.1, 8, -10.5) * CFrame.Angles(math.rad(-20), 0, math.rad(-18)),
-        Color3.fromRGB(235, 225, 188),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "WingLeft",
-        Vector3.new(10, 0.4, 8),
-        CFrame.new(-8, 8, -1) * CFrame.Angles(0, 0, math.rad(-22)),
-        Color3.fromRGB(52, 124, 72),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "WingRight",
-        Vector3.new(10, 0.4, 8),
-        CFrame.new(8, 8, -1) * CFrame.Angles(0, 0, math.rad(22)),
-        Color3.fromRGB(52, 124, 72),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "TailBase",
-        Vector3.new(3, 3, 7),
-        CFrame.new(0, 4, 9) * CFrame.Angles(math.rad(18), 0, 0),
-        Color3.fromRGB(58, 136, 80),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    addPart(
-        "TailTip",
-        Vector3.new(2, 2, 6),
-        CFrame.new(0, 3.6, 14) * CFrame.Angles(math.rad(28), 0, 0),
-        Color3.fromRGB(47, 112, 66),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    local saddle = addPart(
-        "Saddle",
-        Vector3.new(3, 1, 3),
-        CFrame.new(0, 7, -1),
-        Color3.fromRGB(114, 74, 45),
-        Enum.Material.Leather,
-        nil
-    )
-    local muzzle = addPart(
-        "Muzzle",
-        Vector3.new(1, 1, 1),
-        CFrame.new(0, 5.6, -14),
-        Color3.fromRGB(255, 255, 255),
-        Enum.Material.SmoothPlastic,
-        nil
-    )
-    muzzle.Transparency = 1
-
-    model:PivotTo(CFrame.lookAt(restPosition, restPosition + Vector3.new(0, 0, -1)))
-
-    local dragon = {
-        Model = model,
-        Saddle = saddle,
-        Muzzle = muzzle,
-        RestPosition = restPosition,
-        FlightCenter = flightCenter,
-        FlightRadius = flightRadius,
-        FlightDuration = flightDuration,
-    } :: DragonState
-    return dragon
-end
-
-local function runFireLoop(dragon: DragonState)
-    combatRunning = true
-    task.spawn(function()
-        while scenarioRunning and combatRunning and dragon.Model.Parent ~= nil do
+            matchState.countdown = remaining
+            broadcastMatchState(matchState)
             task.wait(1)
-            if not (scenarioRunning and combatRunning and dragon.Model.Parent ~= nil) then
-                break
-            end
+        end
 
-            local target = getNearestLivingEnemy(dragon.Muzzle.Position)
-            if target ~= nil then
-                task.spawn(launchFireball, dragon.Muzzle.Position, target)
+        if activeMatch ~= matchState then
+            return
+        end
+
+        matchState.phase = "Active"
+        matchState.countdown = 0
+        matchState.gatesOpen = true
+        setGatesOpen(true)
+        broadcastMatchMessage(matchState, "Die Tore sind offen. Kampf beginnt!")
+        broadcastMatchState(matchState)
+        startHeartbeat(matchState)
+
+        for _, fighter in fighters do
+            if fighter.isBot then
+                runBotAi(matchState, fighter)
             end
         end
     end)
 end
 
-local function flyDragon(dragon: DragonState)
-    print("[server] dragon flight started")
-    runFireLoop(dragon)
-
-    local startTime = os.clock()
-    while os.clock() - startTime < dragon.FlightDuration do
-        local elapsed = os.clock() - startTime
-        local angle = elapsed * 0.55
-        local radius = dragon.FlightRadius + math.sin(elapsed * 0.7) * 3
-        local altitude = 26 + math.sin(elapsed * 1.3) * 3
-        local position = dragon.FlightCenter
-            + Vector3.new(math.cos(angle) * radius, altitude, math.sin(angle) * radius)
-        local facing = position + Vector3.new(-math.sin(angle), 0, math.cos(angle))
-        dragon.Model:PivotTo(CFrame.lookAt(position, facing))
-        RunService.Heartbeat:Wait()
+local function removeFromQueues(player: Player)
+    local queuedMode = playerQueues[player]
+    if not queuedMode then
+        return
     end
 
-    print("[server] dragon landing")
-    combatRunning = false
-
-    local landingStart = dragon.Model:GetPivot()
-    local landingTarget = CFrame.new(dragon.RestPosition)
-    for step = 1, 90 do
-        dragon.Model:PivotTo(landingStart:Lerp(landingTarget, step / 90))
-        RunService.Heartbeat:Wait()
+    local queue = queues[queuedMode]
+    if queue then
+        local index = table.find(queue, player)
+        if index then
+            table.remove(queue, index)
+        end
     end
 
-    unmountRider(dragon.RestPosition)
-    scenarioRunning = false
-    print("[server] dragon landed")
+    playerQueues[player] = nil
 end
 
-local function startDemo()
-    clearWorkspace()
-    ensureBaseplate()
+local function tryStartQueuedMatch(mode: string)
+    local modeConfig = Config.MatchModes[mode]
+    local queue = queues[mode]
+    if not modeConfig or not queue or activeMatch or #queue < modeConfig.playersNeeded then
+        return
+    end
 
-    local dragon = createDragon()
-    print(("[server] dragon ready at %s"):format(dragon.Model:GetFullName()))
+    local playersForMatch = {}
+    for _ = 1, modeConfig.playersNeeded do
+        local player = table.remove(queue, 1)
+        if player then
+            playerQueues[player] = nil
+            table.insert(playersForMatch, player)
+        end
+    end
 
-    createEnemy("Zombie 1", Vector3.new(-52, baseplateTopY, -18), 10, 0.62, 0)
-    createEnemy("Zombie 2", Vector3.new(0, baseplateTopY, 32), 10, 0.7, 2.1)
-    createEnemy("Zombie 3", Vector3.new(52, baseplateTopY, -18), 10, 0.58, 4.2)
+    startMatch(mode, playersForMatch, false)
+end
 
-    print("[server] 3 enemies ready with 30 HP each")
+queueRequestEvent.OnServerEvent:Connect(function(player: Player, mode: string)
+    if typeof(mode) ~= "string" or not Config.MatchModes[mode] then
+        return
+    end
 
-    task.spawn(function()
-        task.wait(2)
-        mountPlayerOnDragon(dragon)
-        flyDragon(dragon)
+    if activeMatch then
+        sendMessage(player, "Die Arena ist gerade besetzt. Warte kurz bis zum naechsten Match.")
+        return
+    end
+
+    removeFromQueues(player)
+
+    if mode == "Bot" then
+        startMatch("Bot", { player }, true)
+        return
+    end
+
+    local queue = queues[mode]
+    if not queue then
+        return
+    end
+
+    if not table.find(queue, player) then
+        table.insert(queue, player)
+        playerQueues[player] = mode
+        sendMessage(
+            player,
+            string.format("Du bist in der %s Warteschlange.", Config.MatchModes[mode].displayName)
+        )
+    end
+
+    sendLobbyState(player)
+    tryStartQueuedMatch(mode)
+end)
+
+classSelectEvent.OnServerEvent:Connect(function(player: Player, classId: string)
+    if typeof(classId) ~= "string" or not Config.Classes[classId] then
+        return
+    end
+
+    if getFighterForPlayer(player) then
+        sendMessage(player, "Klassenwechsel ist erst nach dem Match moeglich.")
+        return
+    end
+
+    selectedClassByPlayer[player] = classId
+    resetPlayerCharacter(player)
+    sendLobbyState(player)
+    sendMessage(player, "Klasse gewaehlt: " .. Config.Classes[classId].displayName)
+end)
+
+targetSelectEvent.OnServerEvent:Connect(function(player: Player, targetId: string)
+    if typeof(targetId) ~= "string" then
+        return
+    end
+
+    local matchState = activeMatch
+    local fighter = getFighterForPlayer(player)
+    if not matchState or not fighter then
+        return
+    end
+
+    local target = findFighter(matchState, targetId)
+    if target and isAlive(target) then
+        fighter.targetId = target.id
+        broadcastMatchState(matchState)
+    end
+end)
+
+abilityCastEvent.OnServerEvent:Connect(function(player: Player, abilityId: string)
+    if typeof(abilityId) ~= "string" then
+        return
+    end
+
+    local fighter = getFighterForPlayer(player)
+    if not fighter then
+        sendMessage(player, "Du bist in keinem Match.")
+        return
+    end
+
+    castAbility(fighter, abilityId)
+end)
+
+Players.PlayerAdded:Connect(function(player: Player)
+    selectedClassByPlayer[player] = selectedClassByPlayer[player] or "Warrior"
+    player.CharacterAdded:Connect(function()
+        task.wait(0.2)
+        resetPlayerCharacter(player)
+        if not getFighterForPlayer(player) then
+            teleportPlayer(player, "LobbySpawn", 1)
+        end
     end)
-end
 
-startDemo()
+    task.defer(function()
+        sendLobbyState(player)
+    end)
+end)
+
+Players.PlayerRemoving:Connect(function(player: Player)
+    removeFromQueues(player)
+    selectedClassByPlayer[player] = nil
+
+    local matchState = activeMatch
+    if not matchState then
+        return
+    end
+
+    local fighter = getFighterForPlayer(player)
+    if fighter then
+        fighter.health = 0
+        local winnerTeam = getWinningTeam(matchState)
+        if winnerTeam then
+            finishMatch(matchState, winnerTeam)
+        end
+    end
+end)
+
+buildArenaWorld()
+setGatesOpen(false)
+
+for _, player in Players:GetPlayers() do
+    selectedClassByPlayer[player] = selectedClassByPlayer[player] or "Warrior"
+    resetPlayerCharacter(player)
+    teleportPlayer(player, "LobbySpawn", 1)
+    sendLobbyState(player)
+end
