@@ -45,14 +45,31 @@
 - Older docs may still mention `luau-lsp.plugin.enabled` and `luau-lsp.plugin.port`; those names are deprecated aliases and should not be reintroduced unless compatibility requires them.
 - Keep Luau LSP in Roblox mode with Rojo sourcemap support enabled.
 - If Rojo mappings or entry points change, regenerate `sourcemap.json` from `default.project.json`.
+- **Studio plugin port reference (all three are distinct):**
+  | Plugin | Purpose | Port |
+  |---|---|---|
+  | Rojo Studio Plugin | Filesystem ↔ Studio live sync | `34872` |
+  | Luau LSP Companion Plugin | Live DataModel instance types for IntelliSense | `3667` |
+  | robloxstudio-mcp Plugin | AI/Copilot → Studio automation via MCP bridge | `58741` |
+- This repo sets `luau-lsp.studioPlugin.port` to `3667` in `.vscode/settings.json` and `luau-lsp-studio-plugin.luau`. The upstream extension default differs; always verify the local setting before referencing port numbers.
 
 ## Workspace Tooling
 
 - Use `Roblox: Setup workspace` after cloning or when toolchain, Wally, or Rojo mapping config changes.
-- Wally installs packages into top-level `Packages/`, and Rojo maps that folder to `ReplicatedStorage.Packages`; treat installed package output as generated.
+- Wally is the package manager for third-party Luau libraries. The manifest lives in `wally.toml`, resolved dependencies are written into `Packages/`, and Rojo maps that folder to `ReplicatedStorage.Packages`; treat installed package output as generated.
+- After editing `wally.toml`, run `Roblox: Install packages` to refresh `Packages/`, then run `Roblox: Generate sourcemap` or `Roblox: Setup workspace` so Luau LSP sees the new package tree.
+- Keep `Packages/` and other generated package output out of manual edits; update dependencies in `wally.toml`, install them, then validate the affected gameplay code.
 - Use `Roblox: Serve project` for Rojo sync on port `34872`, then connect the Roblox Studio Rojo plugin to the local server.
 - Use `Roblox: Verify MCP bridge` before Studio automation and `Roblox: Reset MCP bridge` when the local `robloxstudio-mcp` bridge or Studio plugin state is stale.
 - Use `Luau: Validate` for the standard source check before finishing Luau code changes.
+
+## Game Concept Refinement Loop
+
+- Treat the user's game prompt as the current product brief, then refine it in a loop: understand the core fantasy, identify the smallest playable slice, implement it, validate it, and repeat.
+- Keep aiming for a premium-feeling result: readable UI, strong motion, clear input feedback, polished projectiles, and responsive camera and animation timing.
+- When inspiration from similar games is useful, use it only at a high level for mechanics, pacing, readability, UI hierarchy, or feel. Do not copy proprietary assets, code, level layouts, or distinctive expression.
+- Use workspace search, `mcp_robloxstudio-_search_files`, and `get_changed_files` to find the owning implementation before editing; use external web search only for public facts or broad pattern research that the repo cannot answer.
+- Prefer iterative, local improvements over broad rewrites. After each meaningful change, validate it in the narrowest available way, then continue the loop until the user is satisfied or no local improvement remains.
 
 ## Validation Workflow
 

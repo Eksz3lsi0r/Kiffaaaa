@@ -14,8 +14,10 @@
         "editor.formatOnSave": true
     },
     "github.copilot.enable": {
-        "*": false,
+        "*": true,
+        "plaintext": true,
         "markdown": true,
+        "scminput": false,
         "luau": true,
         "json": true,
         "jsonc": true,
@@ -59,5 +61,13 @@
     "luau-lsp.completion.imports.requireStyle": "alwaysRelative",
     "luau-lsp.completion.imports.stringRequires.enabled": true,
     "stylua.searchBinaryInPATH": true,
-    "stylua.verify": true
+    "stylua.verify": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell (Store)": {
+            "path": "C:\\Users\\cooli\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell (Store)",
+    "powershell.powerShellDefaultVersion": "PowerShell (Store)"
 }

@@ -9,6 +9,7 @@ Roblox Studio game workspace for VS Code with Rojo, Wally, Luau LSP, StyLua, Sel
 - Server gameplay systems in `src/ServerScriptService`
 - Client HUD and input code in `src/StarterPlayer/StarterPlayerScripts`
 - Wally package manifest in `wally.toml`
+- Generated package output in `Packages/`
 - Aftman-managed CLI toolchain in `aftman.toml`
 - Luau formatter and linter configuration
 - VS Code recommendations, settings, tasks, and Copilot instructions
@@ -41,6 +42,14 @@ That example is tuned for this workspace instead of using the broad generic watc
 - `include` limited to `Workspace`, `ReplicatedStorage`, `ServerScriptService`, and `StarterPlayer`, which matches the services this repo actively owns
 
 This Luau LSP plugin is separate from `robloxstudio-mcp`, which uses its own Studio plugin and local bridge on port `58741`.
+
+## Wally Package Manager
+
+Wally is the package manager for third-party Roblox Luau libraries. In this repo, `wally.toml` is the source of truth for dependencies, `wally install` restores them into top-level `Packages/`, and Rojo maps that folder to `ReplicatedStorage.Packages` through `default.project.json`.
+
+Use the existing VS Code task `Roblox: Install packages` after changing `wally.toml`. That refreshes `Packages/` and the generated `wally.lock` state. If package changes affect types or module paths, follow it with `Roblox: Generate sourcemap` or just run `Roblox: Setup workspace`.
+
+Keep `Packages/` treated as generated output. Do not hand-edit it; update dependency versions in `wally.toml`, reinstall, and then validate the gameplay code that consumes those packages.
 
 ## Roblox Studio MCP 1vsCOM Test
 

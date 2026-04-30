@@ -88,8 +88,27 @@ function Request-RobloxMcpPluginReconnect {
 
 Write-Host "Checking Roblox Studio MCP bridge at $BridgeUrl"
 
+# After Roblox: Reset MCP bridge the npx-launched bridge process is gone until
+# VS Code spawns it again on first MCP traffic. Retry the initial probe so the
+# verify task does not flake right after a reset.
+$health = $null
+$probeAttempts = 20
+for ($probe = 1; $probe -le $probeAttempts; $probe++) {
+    try {
+        $health = Invoke-RestMethod -Uri "$bridgeRootUrl/health" -Method Get -TimeoutSec 3
+        break
+    }
+    catch {
+        if ($probe -eq $probeAttempts) {
+            Write-Error "Roblox Studio MCP bridge offline at $bridgeRootUrl/health after $($probeAttempts * 2)s. Open VS Code and use a Copilot tool that touches the MCP server, or run 'MCP: List Servers' to start it, then re-run this task. $($_.Exception.Message)"
+            exit 1
+        }
+        Write-Host ("Bridge not up yet (attempt {0}/{1}); waiting 2s..." -f $probe, $probeAttempts) -ForegroundColor DarkGray
+        Start-Sleep -Seconds 2
+    }
+}
+
 try {
-    $health = Invoke-RestMethod -Uri "$bridgeRootUrl/health" -Method Get
     Write-Host "Server version: $($health.version)"
     Write-Host "MCP server active: $($health.mcpServerActive)"
     Write-Host "Studio plugin connected: $($health.pluginConnected)"

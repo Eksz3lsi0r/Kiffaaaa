@@ -11,6 +11,10 @@
 --- and the local bridge at `http://localhost:58741/mcp`.
 --- luacheck: ignore robloxstudio Rojo
 
+local function service(name)
+    return game:GetService(name)
+end
+
 return {
     --- Match the local VS Code language server host.
     host = "http://localhost",
@@ -25,10 +29,10 @@ return {
     --- Track the services this repo actively owns plus Workspace for live place edits.
     --- If `default.project.json` gains new top-level services, add them here too.
     include = {
-        game:GetService("Workspace") :: Instance,
-        game:GetService("ReplicatedStorage") :: Instance,
-        game:GetService("ServerScriptService") :: Instance,
-        game:GetService("StarterPlayer") :: Instance,
+        service("Workspace"),
+        service("ReplicatedStorage"),
+        service("ServerScriptService"),
+        service("StarterPlayer"),
     },
 
     --- Use INFO while wiring the workflow up; WARN is fine once stable.

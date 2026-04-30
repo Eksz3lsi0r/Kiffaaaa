@@ -15,12 +15,34 @@ ArenaDuelConfig.StudioAutomation = {
     AutoQueueModeAttribute = "ArenaDuelAutoQueueMode",
 }
 
-ArenaDuelConfig.PreparationSeconds = 30
-ArenaDuelConfig.BotPreparationSeconds = 6
-ArenaDuelConfig.FinishedReturnSeconds = 7
+ArenaDuelConfig.PreparationSeconds = 12
+ArenaDuelConfig.BotPreparationSeconds = 4
+ArenaDuelConfig.FinishedReturnSeconds = 5
 ArenaDuelConfig.MaxFocus = 5
 ArenaDuelConfig.DRWindowSeconds = 18
 ArenaDuelConfig.DRMultipliers = { 1, 0.5, 0.25, 0 }
+ArenaDuelConfig.GlobalCooldownSeconds = 0.95
+
+ArenaDuelConfig.Dampening = {
+    startsAfterSeconds = 20,
+    stepIntervalSeconds = 5,
+    stepPercent = 4,
+    maxPercent = 60,
+}
+
+ArenaDuelConfig.BotAi = {
+    tickSeconds = 0.55,
+    meleePreferredDistance = 7,
+    rangedPreferredDistance = 26,
+    strafeDistance = 9,
+}
+
+ArenaDuelConfig.BotClassRotation = {
+    "Mage",
+    "Priest",
+    "Rogue",
+    "Warrior",
+}
 
 ArenaDuelConfig.MatchModes = {
     Duel1v1 = {

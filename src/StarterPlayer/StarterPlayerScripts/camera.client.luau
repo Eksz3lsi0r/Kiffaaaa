@@ -30,6 +30,8 @@ local messageExpiresAt = 0
 local messageFading = false
 local messageTween: Tween? = nil
 local studioAutoQueueRequested = false
+local cameraShakeIntensity = 0
+local cameraShakeSeed = 0
 
 local function getStudioAutoQueueMode(): string?
     if not RunService:IsStudio() then
@@ -759,10 +761,20 @@ local function processCombatEvents()
         return
     end
 
+    local localFighterId = currentState.localFighterId
     for _, event in currentState.combatEvents do
         if typeof(event.id) == "number" and not seenCombatEvents[event.id] then
             seenCombatEvents[event.id] = true
             spawnCombatText(event)
+
+            if localFighterId and event.targetId == localFighterId and event.kind == "Damage" then
+                local amount = tonumber(event.amount) or 0
+                local impulse = math.clamp(0.35 + amount / 80, 0.4, 1.6)
+                if impulse > cameraShakeIntensity then
+                    cameraShakeIntensity = impulse
+                    cameraShakeSeed = os.clock()
+                end
+            end
         end
     end
 end
@@ -842,6 +854,41 @@ task.spawn(function()
         updatePanelVisibility()
         task.wait(0.2)
     end
+end)
+
+local function getLocalHumanoid(): Humanoid?
+    local character = player.Character
+    if not character then
+        return nil
+    end
+
+    return character:FindFirstChildOfClass("Humanoid")
+end
+
+RunService.Heartbeat:Connect(function(deltaTime)
+    if cameraShakeIntensity <= 0.001 then
+        cameraShakeIntensity = 0
+        local humanoid = getLocalHumanoid()
+        if humanoid and humanoid.CameraOffset.Magnitude > 0.001 then
+            humanoid.CameraOffset = Vector3.zero
+        end
+        return
+    end
+
+    local humanoid = getLocalHumanoid()
+    if not humanoid then
+        cameraShakeIntensity = 0
+        return
+    end
+
+    local t = (os.clock() - cameraShakeSeed) * 38
+    local offset = Vector3.new(
+        math.sin(t * 1.7) * cameraShakeIntensity,
+        math.sin(t * 2.3 + 1.2) * cameraShakeIntensity * 0.6,
+        math.sin(t * 1.1 + 2.4) * cameraShakeIntensity * 0.4
+    )
+    humanoid.CameraOffset = offset
+    cameraShakeIntensity = math.max(0, cameraShakeIntensity - deltaTime * 4.5)
 end)
 
 render()

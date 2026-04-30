@@ -1,164 +1,34 @@
 {
-    "version": "2.0.0",
-    "options": {
-        "cwd": "${workspaceFolder}"
-    },
-    "tasks": [
-        {
-            "label": "Roblox: Setup workspace",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "Roblox: Install toolchain",
-                "Roblox: Install packages",
-                "Roblox: Generate sourcemap"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [],
-            "detail": "Install pinned tools, restore Wally packages, and refresh the Rojo sourcemap."
-        },
-        {
-            "label": "Roblox: Install toolchain",
-            "type": "shell",
-            "command": "aftman",
-            "args": [
-                "install",
-                "--no-trust-check"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Roblox: Install packages",
-            "type": "shell",
-            "command": "wally",
-            "args": [
-                "install"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Roblox: Generate sourcemap",
-            "type": "shell",
-            "command": "rojo",
-            "args": [
-                "sourcemap",
-                "default.project.json",
-                "-o",
-                "sourcemap.json"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Roblox: Serve project",
-            "type": "shell",
-            "command": "rojo",
-            "args": [
-                "serve",
-                "default.project.json",
-                "--port",
-                "34872"
-            ],
-            "isBackground": true,
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Roblox: Start 1vsCOM playtest",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "scripts/start-1vscom-playtest.ps1"
-            ],
-            "group": "test",
-            "problemMatcher": []
-        },
-        {
-            "label": "Roblox: Clear 1vsCOM autoqueue",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "scripts/start-1vscom-playtest.ps1",
-                "-Clear"
-            ],
-            "group": "test",
-            "problemMatcher": []
-        },
-        {
-            "label": "Roblox: Verify MCP bridge",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "scripts/verify-roblox-mcp.ps1"
-            ],
-            "group": "test",
-            "problemMatcher": []
-        },
-        {
-            "label": "Roblox: Reset MCP bridge",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-NoProfile",
-                "-ExecutionPolicy",
-                "Bypass",
-                "-File",
-                "scripts/reset-roblox-mcp.ps1",
-                "-InstallPlugin"
-            ],
-            "group": "test",
-            "problemMatcher": []
-        },
-        {
-            "label": "Luau: Validate",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "Luau: Format check",
-                "Luau: Lint"
-            ],
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-            "problemMatcher": [],
-            "detail": "Run the source formatter check and Selene lint pass."
-        },
-        {
-            "label": "Luau: Lint",
-            "type": "shell",
-            "command": "selene",
-            "args": [
-                "src"
-            ],
-            "group": "test",
-            "problemMatcher": []
-        },
-        {
-            "label": "Luau: Format check",
-            "type": "shell",
-            "command": "stylua",
-            "args": [
-                "--check",
-                "src"
-            ],
-            "group": "test",
-            "problemMatcher": []
-        }
-    ]
+	"version": "2.0.0",
+	"options": {
+		"cwd": "${workspaceFolder}"
+	},
+	"tasks": [
+		{
+			"label": "Roblox: Do all tasks",
+			"type": "shell",
+			"command": "${env:LOCALAPPDATA}\\Microsoft\\WindowsApps\\pwsh.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"scripts/do-all-tasks.ps1",
+				"-McpRetryAttempts",
+				"3"
+			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": false,
+				"showReuseMessage": false
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"detail": "Single entrypoint: setup, connect, and iterative Roblox dev loop until Ctrl+C or DONE sentinel."
+		}
+	]
 }

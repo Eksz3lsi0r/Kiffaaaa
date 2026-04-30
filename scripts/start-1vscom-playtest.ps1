@@ -77,12 +77,21 @@ try {
         code = 'game:GetService("ReplicatedStorage"):SetAttribute("ArenaDuelAutoQueueMode", "Bot")'
     } | Out-Null
 
-    Invoke-RobloxMcpEndpoint -Name "start_playtest" -Body @{
-        mode = "play"
-        numPlayers = 1
-    } | Out-Null
-
-    Write-Host "Started Studio Play mode with ArenaDuelAutoQueueMode=Bot."
+    try {
+        Invoke-RobloxMcpEndpoint -Name "start_playtest" -Body @{
+            mode       = "play"
+            numPlayers = 1
+        } | Out-Null
+        Write-Host "Started Studio Play mode with ArenaDuelAutoQueueMode=Bot."
+    }
+    catch {
+        if ($_.Exception.Message -match "already running") {
+            Write-Host "Playtest already running — ArenaDuelAutoQueueMode=Bot set."
+        }
+        else {
+            throw
+        }
+    }
 } catch {
     Write-Error "Could not run the 1vsCOM Studio automation through $bridgeUrl. Install/enable the robloxstudio-mcp Studio plugin, enable Allow HTTP Requests, make sure the plugin shows Connected, then rerun this task. $($_.Exception.Message)"
     exit 1
