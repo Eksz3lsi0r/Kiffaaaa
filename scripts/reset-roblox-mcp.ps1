@@ -30,7 +30,7 @@ function Enable-McpPluginAutoConnect {
 
     $replacement = $anchor.Replace("Communication.checkForUpdates()", "Communication.activatePlugin(0)`r`nCommunication.checkForUpdates()")
     $source = $source.Replace($anchor, $replacement)
-    Set-Content -Path $pluginPath -Value $source -NoNewline
+    [System.IO.File]::WriteAllText($pluginPath, $source, [System.Text.UTF8Encoding]::new($false))
     Write-Host "Enabled Roblox Studio MCP plugin auto-connect."
 }
 

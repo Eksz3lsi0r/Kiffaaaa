@@ -14,7 +14,7 @@ The `robloxstudio-mcp` bridge listens on **port 58741**. The local bridge endpoi
 
 The bridge status endpoint is `http://localhost:58741/health`. It should report `mcpServerActive: true` and `pluginConnected: true` before write tools or playtest automation can run.
 
-If Studio hangs or the health endpoint reports an unexpected server version after updating the plugin, run `Roblox: Reset MCP bridge`. That task stops stale `robloxstudio-mcp` Node processes, clears stale MCP plugin IDE/debugger state, reinstalls the pinned Studio plugin, enables local plugin auto-connect, and clears port `58741` so VS Code can start a fresh MCP server from `.vscode/mcp.json`.
+If Studio hangs or the health endpoint reports an unexpected server version after updating the plugin, run `Roblox: Reset MCP bridge`. That task stops stale `robloxstudio-mcp` Node processes, clears stale MCP plugin IDE/debugger state, reinstalls the pinned Studio plugin, enables local plugin auto-connect, and clears port `58741` so VS Code can start a fresh MCP server from `.vscode/mcp.json`. Then run `Roblox: Verify MCP bridge`; if the server is active but Studio has not re-registered yet, verification touches the local plugin file once so Studio hot-reloads and reconnects.
 
 ## Health Check
 
@@ -38,7 +38,7 @@ Run `Roblox: Clear 1vsCOM autoqueue` to remove the attribute before manual playt
 
 - If `Roblox: Verify MCP bridge` cannot reach `58741`, start Studio, enable the `robloxstudio-mcp` plugin, and confirm the plugin says `Connected`.
 - If `/health` reports `pluginConnected: false`, the MCP server is running but Studio is not connected to it yet.
-- If `pluginConnected: false` appears right after a reset, wait for Studio to hot-reload `MCPPlugin.rbxmx`; the reset task patches the local plugin to auto-connect on reload. If Studio was already open and does not reconnect, reload Studio once.
+- If `pluginConnected: false` appears right after a reset, run `Roblox: Verify MCP bridge` again. Verification hot-reloads the local plugin after the MCP server is back; if Studio still does not reconnect, reload Studio once.
 - If `/health` reports an older server version than `.vscode/mcp.json`, run `Roblox: Reset MCP bridge`, then restart the VS Code MCP server and reload Studio.
 - If requests time out, confirm `Allow HTTP Requests` is enabled for the experience.
 - If `get_connected_instances` returns `count: 0` but `get_services` succeeds, continue using the edit-side automation path.

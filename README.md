@@ -32,7 +32,7 @@ The workspace already uses the current VS Code settings in `.vscode/settings.jso
 
 Older snippets may still mention `luau-lsp.plugin.enabled` and `luau-lsp.plugin.port`. Those names are deprecated aliases and should be updated to the `studioPlugin` form.
 
-The recommended copy-paste config for this repo lives in `luau-lsp-studio-plugin.example.luau`.
+The recommended copy-paste config for this repo lives in `luau-lsp-studio-plugin.luau`.
 
 That example is tuned for this workspace instead of using the broad generic watch list:
 
@@ -50,7 +50,7 @@ The `robloxstudio-mcp` bridge may expose only the edit instance during playtests
 
 The `Roblox: Serve project` task pins Rojo to `localhost:34872`, which keeps the Studio Rojo plugin connection stable across restarts.
 
-Run `Roblox: Verify MCP bridge` first when diagnosing setup issues. It uses `get_services` as the health check and prints `get_connected_instances` only as informational output.
+Run `Roblox: Verify MCP bridge` first when diagnosing setup issues. It uses `get_services` as the health check, prints `get_connected_instances` as informational output, and can hot-reload the local MCP plugin if the bridge is active but Studio has not registered yet.
 
 The task uses `robloxstudio-mcp` to set a replicated Studio attribute before starting Play mode:
 

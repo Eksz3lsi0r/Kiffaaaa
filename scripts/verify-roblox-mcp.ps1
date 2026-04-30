@@ -132,7 +132,8 @@ try {
     Write-Host "Playtest running: $($playtest.isRunning)"
 
     Write-Host "Roblox Studio MCP bridge is callable."
-} catch {
+}
+catch {
     Write-Error "Roblox Studio MCP bridge verification failed. $($_.Exception.Message)"
     exit 1
 }
