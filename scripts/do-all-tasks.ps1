@@ -48,6 +48,32 @@ function Write-Banner {
     Write-Host $bar -ForegroundColor $Color
 }
 
+function Write-WaitHeartbeat {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Label,
+
+        [Parameter(Mandatory = $true)]
+        [datetime]$StartedAt,
+
+        [Parameter(Mandatory = $true)]
+        [datetime]$Deadline,
+
+        [string]$Status = ""
+    )
+
+    $now = Get-Date
+    $elapsedSeconds = [Math]::Round(($now - $StartedAt).TotalSeconds, 1)
+    $remainingSeconds = [Math]::Max(0, [Math]::Ceiling(($Deadline - $now).TotalSeconds))
+    $message = "   wait: {0} | elapsed={1}s remaining~{2}s" -f $Label, $elapsedSeconds, $remainingSeconds
+
+    if (-not [string]::IsNullOrWhiteSpace($Status)) {
+        $message += " | " + $Status
+    }
+
+    Write-Host $message -ForegroundColor DarkGray
+}
+
 function Invoke-Step {
     param(
         [string]$Label,
@@ -164,6 +190,7 @@ function Get-McpHealth {
 function Wait-ForMcpPlugin {
     param([int]$TimeoutSeconds)
 
+    $startedAt = Get-Date
     $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
     while ((Get-Date) -lt $deadline) {
         $health = Get-McpHealth
@@ -171,7 +198,14 @@ function Wait-ForMcpPlugin {
             return $true
         }
 
-        Write-Host "   waiting for MCP bridge/plugin connection..." -ForegroundColor DarkGray
+        $status = if ($health) {
+            "pluginConnected=" + $health.pluginConnected
+        }
+        else {
+            "health=unreachable"
+        }
+
+        Write-WaitHeartbeat -Label "MCP bridge/plugin connection" -StartedAt $startedAt -Deadline $deadline -Status $status
         Start-Sleep -Seconds 2
     }
 
@@ -414,6 +448,7 @@ function Invoke-PlaytestCycle {
     if ($playtestRunning) {
         Write-Host "   Playtest already running; stopping it first..." -ForegroundColor DarkGray
         try { Invoke-McpTool -Tool "stop_playtest" -Body @{} | Out-Null } catch {}
+        Write-Host "   Waiting 3s for the previous playtest to shut down cleanly..." -ForegroundColor DarkGray
         Start-Sleep -Seconds 3
     }
 
@@ -428,15 +463,15 @@ function Invoke-PlaytestCycle {
 
     $gameBriefText = Get-GameBriefText -Path $GameBriefPath
     $liveTelemetry = [ordered]@{
-        timestamp         = (Get-Date -Format "o")
-        iteration         = $script:iteration
-        runSeconds        = $RunSeconds
-        pollSeconds       = $PollSeconds
-        gameBriefPath     = $GameBriefPath
-        gameBrief         = $gameBriefText
-        reportPath        = $ReportPath
-        playtestLivePath  = $LivePath
-        samples           = @()
+        timestamp        = (Get-Date -Format "o")
+        iteration        = $script:iteration
+        runSeconds       = $RunSeconds
+        pollSeconds      = $PollSeconds
+        gameBriefPath    = $GameBriefPath
+        gameBrief        = $gameBriefText
+        reportPath       = $ReportPath
+        playtestLivePath = $LivePath
+        samples          = @()
     }
     Write-JsonFile -Path $LivePath -Value $liveTelemetry
 
@@ -461,9 +496,39 @@ function Invoke-PlaytestCycle {
         $liveTelemetry.isRunning = $snapshot.isRunning
         Write-JsonFile -Path $LivePath -Value $liveTelemetry
 
-        Write-Host (
-            "   live sample t=" + $elapsedSeconds + "s running=" + $snapshot.isRunning
-        ) -ForegroundColor DarkGray
+        $playtestOutputCount = if (
+            $snapshot.playtestOutput -and $snapshot.playtestOutput.PSObject.Properties.Name -contains "outputCount"
+        ) {
+            $snapshot.playtestOutput.outputCount
+        }
+        else {
+            "n/a"
+        }
+
+        $outputLogCount = if (
+            $snapshot.outputLog -and $snapshot.outputLog.PSObject.Properties.Name -contains "count"
+        ) {
+            $snapshot.outputLog.count
+        }
+        else {
+            "n/a"
+        }
+
+        $statusParts = @(
+            ("running=" + $snapshot.isRunning),
+            ("playtestOutputCount=" + $playtestOutputCount),
+            ("outputLogCount=" + $outputLogCount)
+        )
+
+        if ($snapshot.playtestError) {
+            $statusParts += "playtestError"
+        }
+
+        if ($snapshot.outputLogError) {
+            $statusParts += "outputLogError"
+        }
+
+        Write-WaitHeartbeat -Label "playtest telemetry" -StartedAt $startedAt -Deadline $deadline -Status ($statusParts -join " ")
 
         Start-Sleep -Seconds ([Math]::Max(1, $PollSeconds))
     }
@@ -624,6 +689,8 @@ elseif (Test-IsPortListening -Port 34872) {
 else {
     Invoke-Step "start rojo serve on port 34872" {
         $proc = Start-Process -FilePath "rojo" -ArgumentList @("serve", "default.project.json", "--port", "34872") -WorkingDirectory $repoRoot -PassThru
+        $rojoWaitStartedAt = Get-Date
+        $rojoWaitDeadline = $rojoWaitStartedAt.AddSeconds(20)
         $ready = $false
         for ($attempt = 1; $attempt -le 20; $attempt++) {
             if (Test-IsPortListening -Port 34872) {
@@ -631,6 +698,7 @@ else {
                 break
             }
 
+            Write-WaitHeartbeat -Label "rojo serve port 34872" -StartedAt $rojoWaitStartedAt -Deadline $rojoWaitDeadline -Status ("attempt " + $attempt + "/20")
             Start-Sleep -Seconds 1
         }
 
@@ -781,6 +849,7 @@ while ($MaxIterations -le 0 -or $iteration -lt $MaxIterations) {
                 Write-Host ("=" * 72) -ForegroundColor Yellow
 
                 $analysisApplied = $false
+                $analysisStartedAt = Get-Date
                 $aiDeadline = (Get-Date).AddSeconds($AiAnalysisTimeoutSeconds)
                 while ((Get-Date) -lt $aiDeadline) {
                     if (Test-Path -LiteralPath $doneSentinel) {
@@ -791,7 +860,31 @@ while ($MaxIterations -le 0 -or $iteration -lt $MaxIterations) {
                         break
                     }
 
-                    if (Test-QualityReached -Path $QualityFile) { break }
+                    $qualityReached = Test-QualityReached -Path $QualityFile
+                    if ($qualityReached) { break }
+
+                    $reportLastWrite = if (Test-Path -LiteralPath $reportPath) {
+                        (Get-Item -LiteralPath $reportPath).LastWriteTime.ToString("HH:mm:ss")
+                    }
+                    else {
+                        "missing"
+                    }
+
+                    $liveLastWrite = if (Test-Path -LiteralPath $LiveTelemetryPath) {
+                        (Get-Item -LiteralPath $LiveTelemetryPath).LastWriteTime.ToString("HH:mm:ss")
+                    }
+                    else {
+                        "missing"
+                    }
+
+                    $status = @(
+                        "waiting for Copilot mission handoff",
+                        ("doneSentinel=missing"),
+                        ("reportUpdated=" + $reportLastWrite),
+                        ("liveUpdated=" + $liveLastWrite)
+                    ) -join " | "
+
+                    Write-WaitHeartbeat -Label "AI analysis handoff" -StartedAt $analysisStartedAt -Deadline $aiDeadline -Status $status
                     Start-Sleep -Seconds 3
                 }
 
@@ -828,6 +921,9 @@ while ($MaxIterations -le 0 -or $iteration -lt $MaxIterations) {
     }
 
     Write-Host "Press Ctrl+C to stop, or write DONE to .refine-quality.txt to finish automatically." -ForegroundColor Cyan
+    $loopPauseStartedAt = Get-Date
+    $loopPauseDeadline = $loopPauseStartedAt.AddSeconds($LoopDelaySeconds)
+    Write-WaitHeartbeat -Label "next do-all cycle" -StartedAt $loopPauseStartedAt -Deadline $loopPauseDeadline -Status "cooldown before the next iteration"
     Start-Sleep -Seconds $LoopDelaySeconds
 }
 

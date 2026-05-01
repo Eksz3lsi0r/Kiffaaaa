@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-05-01T12:07:51.8874148+07:00",
-  "iteration": 8,
+  "timestamp": "2026-05-01T13:36:46.4264032+07:00",
+  "iteration": 12,
   "runSeconds": 35,
   "pollSeconds": 3,
-  "gameBriefPath": "C:\\Users\\cooli\\rblcxx\\.game-brief.txt",
+  "gameBriefPath": "C:\\Users\\cooli\\rblcxx\\scripts\\..\\.game-brief.txt",
   "gameBrief": "WoW Arena Clone mit Vorbereitungsraum, Countdown, Toren, sauberem Combat-Feedback, Fehlerbehebung und logischen Verbesserungen waehrend der Iterationen",
   "reportPath": "C:\\Users\\cooli\\rblcxx\\.playtest-report.json",
-  "playtestLivePath": "C:\\Users\\cooli\\rblcxx\\.playtest-live.json",
+  "playtestLivePath": "C:\\Users\\cooli\\rblcxx\\scripts\\..\\.playtest-live.json",
   "samples": [
     {
-      "timestamp": "2026-05-01T12:07:59.4936617+07:00",
-      "elapsedSeconds": 7.6,
+      "timestamp": "2026-05-01T13:37:01.9147392+07:00",
+      "elapsedSeconds": 15.1,
       "isRunning": true,
       "playtestOutput": {
         "output": [],
@@ -18,507 +18,507 @@
         "isRunning": true
       },
       "outputLog": {
-        "totalAvailable": 277,
+        "totalAvailable": 392,
         "count": 100,
         "entries": [
           {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611452.167,
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777613013.74,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "Players.Superman1337XD.PlayerScripts.ChatScript:116: Error calling SetCore CoreGuiChatConnections: SetCore: CoreGuiChatConnections has not been registered by the CoreScripts",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 116 - function SetCoreGuiChatConnections",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 104 - function DoEverything",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
             "message": "__MCP_STOP__",
-            "timestamp": 1777611458.217,
+            "timestamp": 1777613017.591,
             "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611463.204,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-            "timestamp": 1777611473.883,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "Script timeout: exhausted allowed execution time",
-            "timestamp": 1777611567.6,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.635,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.637,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChatCore.VoiceChatCore', Line 1",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChatCore', Line 6",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat.dependencies', Line 8",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.666,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.674,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.698,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat', Line 19",
-            "timestamp": 1777611567.699,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.699,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.VoiceChat', Line 6",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore.createVoiceStore', Line 9",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore', Line 5",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.702,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.withSignalsData', Line 18",
-            "timestamp": 1777611567.736,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.737,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.BubbleChatApp', Line 20",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp', Line 1",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.768,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.771,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat', Line 1",
-            "timestamp": 1777611567.786,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.787,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.787,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.App', Line 10",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.mountClientApp', Line 43",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.866,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat', Line 11",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages.ExpChat', Line 6",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Script Context.StarterScript', Line 149",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.936,
-            "messageType": "Enum.MessageType.MessageInfo"
           },
           {
             "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611571.908,
+            "timestamp": 1777613052.222,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611571.961,
+            "timestamp": 1777613052.224,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "Players.Superman1337XD.PlayerScripts.ChatScript:116: Error calling SetCore CoreGuiChatConnections: SetCore: CoreGuiChatConnections has not been registered by the CoreScripts",
-            "timestamp": 1777611579.115,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-            "timestamp": 1777611579.134,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611579.134,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "ServerScriptService.main:999: attempt to call a nil value",
-            "timestamp": 1777611582.173,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611582.176,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'ServerScriptService.main', Line 999 - function moveBotTo",
-            "timestamp": 1777611582.18,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'ServerScriptService.main', Line 1941",
-            "timestamp": 1777611582.185,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611591.407,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
             "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-            "timestamp": 1777611617.834,
+            "timestamp": 1777613054.589,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611696.887,
+            "timestamp": 1777613222.298,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611696.893,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "ArenaDuelAutoQueueMode= Bot",
-            "timestamp": 1777611705.332,
+            "timestamp": 1777613222.307,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-            "timestamp": 1777611711.017,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611712.497,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611852.742,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611852.753,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-            "timestamp": 1777611866.289,
+            "timestamp": 1777613236.236,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611872.554,
+            "timestamp": 1777613241.299,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #2 gestartet: Bot",
-            "timestamp": 1777611872.73,
+            "timestamp": 1777613241.306,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777613254.136,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "__MCP_STOP__",
-            "timestamp": 1777611885.253,
+            "timestamp": 1777613256.984,
             "messageType": "Enum.MessageType.MessageWarning"
           },
           {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777613599.011,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777613599.016,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777613612.555,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777613617.621,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777613617.622,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
             "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
-            "timestamp": 1777611886.219,
+            "timestamp": 1777613631.521,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "hasMain true",
-            "timestamp": 1777611997.24,
+            "message": "__MCP_STOP__",
+            "timestamp": 1777613634.338,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777613973.39,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "moveIndex 30447",
-            "timestamp": 1777611997.25,
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777613973.397,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "movementIndex 29534",
-            "timestamp": 1777611997.25,
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777613986.726,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "movementBeforeMove true",
-            "timestamp": 1777611997.25,
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777613991.792,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777613991.795,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777614005.659,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777614008.041,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777614349.579,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777614349.583,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777614363.118,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777614368.2,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777614368.205,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777614381.48,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777614385.562,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777614722.927,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777614722.932,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777614736.252,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777614741.317,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777614741.318,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777614754.635,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777614759.7,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 gestartet: Bot",
+            "timestamp": 1777614759.701,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777614764.816,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777614766.987,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615102.999,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777615103.006,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777615116.455,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615121.522,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777615121.523,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777615134.938,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615140.003,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 gestartet: Bot",
+            "timestamp": 1777615140.004,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777615144.237,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777615147.74,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777615147.792,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615487.553,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777615487.561,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777615500.976,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615506.095,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777615506.099,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777615519.458,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615524.524,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 gestartet: Bot",
+            "timestamp": 1777615524.532,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777615527.709,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777615534.858,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615879.566,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777615879.569,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777615893.454,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777615898.532,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777615898.537,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777615911.863,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777615915.18,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777616258.303,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777616258.307,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777616272.121,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777616277.185,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777616277.187,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777616289.985,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777616295.036,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 gestartet: Bot",
+            "timestamp": 1777616295.037,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777616295.061,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777616300.982,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777616642.406,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777616655.755,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777616660.822,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777616660.823,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777616674.688,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777616679.754,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 gestartet: Bot",
+            "timestamp": 1777616679.755,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777616679.871,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777616689.032,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777617035.881,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 gestartet: Bot",
+            "timestamp": 1777617035.888,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
+            "timestamp": 1777617049.315,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777617054.375,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 gestartet: Bot",
+            "timestamp": 1777617054.381,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777617067.743,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "__MCP_STOP__",
+            "timestamp": 1777617071.576,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777617073.737,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 gestartet: Bot",
+            "timestamp": 1777617073.765,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777617080.823,
             "messageType": "Enum.MessageType.MessageOutput"
           }
         ]
@@ -527,1045 +527,952 @@
       "outputLogError": null
     },
     {
-      "timestamp": "2026-05-01T12:08:21.7168895+07:00",
-      "elapsedSeconds": 29.8,
-      "isRunning": true,
-      "playtestOutput": {
-        "output": [],
-        "outputCount": 0,
-        "isRunning": true
-      },
-      "outputLog": {
-        "totalAvailable": 279,
-        "count": 100,
-        "entries": [
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 116 - function SetCoreGuiChatConnections",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 104 - function DoEverything",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611458.217,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611463.204,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-            "timestamp": 1777611473.883,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "Script timeout: exhausted allowed execution time",
-            "timestamp": 1777611567.6,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.635,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.637,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChatCore.VoiceChatCore', Line 1",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChatCore', Line 6",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat.dependencies', Line 8",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.666,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.674,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.698,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat', Line 19",
-            "timestamp": 1777611567.699,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.699,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.VoiceChat', Line 6",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore.createVoiceStore', Line 9",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore', Line 5",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.702,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.withSignalsData', Line 18",
-            "timestamp": 1777611567.736,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.737,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.BubbleChatApp', Line 20",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp', Line 1",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.768,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.771,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat', Line 1",
-            "timestamp": 1777611567.786,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.787,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.787,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.App', Line 10",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.mountClientApp', Line 43",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.866,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat', Line 11",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages.ExpChat', Line 6",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Script Context.StarterScript', Line 149",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.936,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611571.908,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611571.961,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "Players.Superman1337XD.PlayerScripts.ChatScript:116: Error calling SetCore CoreGuiChatConnections: SetCore: CoreGuiChatConnections has not been registered by the CoreScripts",
-            "timestamp": 1777611579.115,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-            "timestamp": 1777611579.134,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611579.134,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "ServerScriptService.main:999: attempt to call a nil value",
-            "timestamp": 1777611582.173,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611582.176,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'ServerScriptService.main', Line 999 - function moveBotTo",
-            "timestamp": 1777611582.18,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'ServerScriptService.main', Line 1941",
-            "timestamp": 1777611582.185,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611591.407,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-            "timestamp": 1777611617.834,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611696.887,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611696.893,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "ArenaDuelAutoQueueMode= Bot",
-            "timestamp": 1777611705.332,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-            "timestamp": 1777611711.017,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611712.497,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611852.742,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611852.753,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-            "timestamp": 1777611866.289,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611872.554,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #2 gestartet: Bot",
-            "timestamp": 1777611872.73,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611885.253,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
-            "timestamp": 1777611886.219,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "hasMain true",
-            "timestamp": 1777611997.24,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "moveIndex 30447",
-            "timestamp": 1777611997.25,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "movementIndex 29534",
-            "timestamp": 1777611997.25,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "movementBeforeMove true",
-            "timestamp": 1777611997.25,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777612097.439,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777612097.462,
-            "messageType": "Enum.MessageType.MessageOutput"
-          }
-        ]
-      },
-      "playtestError": null,
-      "outputLogError": null
-    },
-    {
-      "timestamp": "2026-05-01T12:08:29.8038673+07:00",
-      "elapsedSeconds": 37.9,
+      "timestamp": "2026-05-01T13:37:20.9191823+07:00",
+      "elapsedSeconds": 34.5,
       "isRunning": true,
       "playtestOutput": {
         "output": [
           {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777637300.0555406,
-            "messageType": "MessageOutput"
+            "message": "Script timeout: exhausted allowed execution time",
+            "timestamp": 1777642632.9666348,
+            "messageType": "MessageError"
           },
           {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777637300.056034,
-            "messageType": "MessageOutput"
-          }
-        ],
-        "outputCount": 2,
-        "isRunning": true
-      },
-      "outputLog": {
-        "totalAvailable": 279,
-        "count": 100,
-        "entries": [
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.9673395,
+            "messageType": "MessageError"
+          },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642632.9678118,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 116 - function SetCoreGuiChatConnections",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceTimedOptions', Line 6",
+            "timestamp": 1777642632.9686396,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 104 - function DoEverything",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Stack End",
+            "timestamp": 1777642632.968892,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-            "timestamp": 1777611452.815,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.969202,
+            "messageType": "MessageError"
           },
           {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611458.217,
-            "messageType": "Enum.MessageType.MessageWarning"
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useItemCardRowProps', Line 11",
+            "timestamp": 1777642632.9695137,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611463.204,
-            "messageType": "Enum.MessageType.MessageWarning"
+            "message": "Stack End",
+            "timestamp": 1777642632.9697573,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-            "timestamp": 1777611473.883,
-            "messageType": "Enum.MessageType.MessageOutput"
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.9699948,
+            "messageType": "MessageError"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.ItemCardRowContainer', Line 6",
+            "timestamp": 1777642632.9703467,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.9705718,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.9707773,
+            "messageType": "MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777642632.971157,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.971362,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777642632.9715662,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.AvatarItemsViewLayout', Line 37",
+            "timestamp": 1777642632.9718099,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.9720197,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.9722908,
+            "messageType": "MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777642632.9751258,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useResponsivePanelLayoutProps', Line 24",
+            "timestamp": 1777642632.9759066,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.9780693,
+            "messageType": "MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777642632.9786985,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy', Line 5",
+            "timestamp": 1777642632.979009,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.9792776,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.9798012,
+            "messageType": "MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777642632.9800484,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages.AvatarExperienceInspectAndBuy', Line 6",
+            "timestamp": 1777642632.980369,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.9806275,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777642632.9808745,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.981096,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777642632.9813094,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.InspectAndBuy.Components.InspectAndBuy', Line 40",
+            "timestamp": 1777642632.982359,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.982661,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642632.982955,
+            "messageType": "MessageError"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.CoreScripts/InspectAndBuy', Line 10",
+            "timestamp": 1777642632.9833963,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642632.9836767,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Script timeout: exhausted allowed execution time",
-            "timestamp": 1777611567.6,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.635,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.637,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642632.9839058,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642632.9841268,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChatCore.VoiceChatCore', Line 1",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'Script Context.StarterScript', Line 367",
+            "timestamp": 1777642632.984424,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642632.9846573,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.646,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.587603,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.5880706,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChatCore', Line 6",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.AvatarExperienceInspectAndBuy', Line 6",
+            "timestamp": 1777642633.5930524,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.593325,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.5935588,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.5939496,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat.dependencies', Line 8",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Common.Types', Line 5",
+            "timestamp": 1777642633.5945668,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.647,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.5948627,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.666,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.674,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.5950992,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.698,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.595358,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat', Line 19",
-            "timestamp": 1777611567.699,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.ProfileTypes.Community', Line 6",
+            "timestamp": 1777642633.5956376,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777642633.5959406,
+            "messageType": "MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777642633.5979643,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.699,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.5982811,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.VoiceChat', Line 6",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.Profiles', Line 5",
+            "timestamp": 1777642633.598597,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.5988882,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.5991433,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.7,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.5994194,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore.createVoiceStore', Line 9",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.installReducer', Line 16",
+            "timestamp": 1777642633.599679,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.5998948,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.6010857,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.6013875,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore', Line 5",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CorePackages.Workspace.Packages.ProfilePlatform.installReducer', Line 5",
+            "timestamp": 1777642633.601651,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.601886,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.701,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.6030824,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.702,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.6032996,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.withSignalsData', Line 18",
-            "timestamp": 1777611567.736,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.737,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile.PlayerProfileContainer', Line 21",
+            "timestamp": 1777642633.603894,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.6041324,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.6043427,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.BubbleChatApp', Line 20",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile', Line 7",
+            "timestamp": 1777642633.6046038,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.743,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.6076458,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.6080847,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.6085174,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp', Line 1",
-            "timestamp": 1777611567.744,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 3829 - function CreateSettingsHub",
+            "timestamp": 1777642633.6091757,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Stack End",
-            "timestamp": 1777611567.768,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.771,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat', Line 1",
-            "timestamp": 1777611567.786,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 4165",
+            "timestamp": 1777642633.6094623,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.787,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.6097298,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.787,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.610039,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.6103165,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.App', Line 10",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CoreGui.RobloxGui.Modules.TopBar.Components.TopBarApp', Line 41",
+            "timestamp": 1777642633.8363068,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.833,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.836862,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageError"
+            "timestamp": 1777642633.8371217,
+            "messageType": "MessageError"
           },
           {
             "message": "Stack Begin",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.8383849,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.mountClientApp', Line 43",
-            "timestamp": 1777611567.834,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.866,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat', Line 11",
-            "timestamp": 1777611567.867,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script 'CoreGui.RobloxGui.Modules.TopBar', Line 84",
+            "timestamp": 1777642633.8387346,
+            "messageType": "MessageInfo"
           },
           {
             "message": "Stack End",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "timestamp": 1777642633.8390112,
+            "messageType": "MessageInfo"
           },
           {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageError"
+            "message": "Failure to Start CoreScript module TopBar.\nRequested module experienced an error while loading",
+            "timestamp": 1777642633.8394918,
+            "messageType": "MessageWarning"
           },
           {
-            "message": "Script 'CorePackages.Workspace.Packages.ExpChat', Line 6",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
+            "message": "Script that implemented this callback has been destroyed while calling callback",
+            "timestamp": 1777642634.2444105,
+            "messageType": "MessageError"
           },
           {
-            "message": "Stack End",
-            "timestamp": 1777611567.901,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
+            "message": "Script that implemented this callback has been destroyed while calling callback",
+            "timestamp": 1777642634.2446709,
+            "messageType": "MessageError"
+          }
+        ],
+        "outputCount": 87,
+        "isRunning": true
+      },
+      "outputLog": {
+        "totalAvailable": 481,
+        "count": 100,
+        "entries": [
           {
-            "message": "Requested module experienced an error while loading",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'Script Context.StarterScript', Line 149",
-            "timestamp": 1777611567.912,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611567.936,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611571.908,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611571.961,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "Players.Superman1337XD.PlayerScripts.ChatScript:116: Error calling SetCore CoreGuiChatConnections: SetCore: CoreGuiChatConnections has not been registered by the CoreScripts",
-            "timestamp": 1777611579.115,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-            "timestamp": 1777611579.134,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Stack End",
-            "timestamp": 1777611579.134,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "ServerScriptService.main:999: attempt to call a nil value",
-            "timestamp": 1777611582.173,
-            "messageType": "Enum.MessageType.MessageError"
-          },
-          {
-            "message": "Stack Begin",
-            "timestamp": 1777611582.176,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'ServerScriptService.main', Line 999 - function moveBotTo",
-            "timestamp": 1777611582.18,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "Script 'ServerScriptService.main', Line 1941",
-            "timestamp": 1777611582.185,
-            "messageType": "Enum.MessageType.MessageInfo"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611591.407,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-            "timestamp": 1777611617.834,
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777616689.032,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611696.887,
+            "timestamp": 1777617035.881,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611696.893,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "ArenaDuelAutoQueueMode= Bot",
-            "timestamp": 1777611705.332,
+            "timestamp": 1777617035.888,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-            "timestamp": 1777611711.017,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "__MCP_STOP__",
-            "timestamp": 1777611712.497,
-            "messageType": "Enum.MessageType.MessageWarning"
-          },
-          {
-            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611852.742,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777611852.753,
-            "messageType": "Enum.MessageType.MessageOutput"
-          },
-          {
-            "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-            "timestamp": 1777611866.289,
+            "timestamp": 1777617049.315,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777611872.554,
+            "timestamp": 1777617054.375,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #2 gestartet: Bot",
-            "timestamp": 1777611872.73,
+            "timestamp": 1777617054.381,
+            "messageType": "Enum.MessageType.MessageOutput"
+          },
+          {
+            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+            "timestamp": 1777617067.743,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "__MCP_STOP__",
-            "timestamp": 1777611885.253,
+            "timestamp": 1777617071.576,
             "messageType": "Enum.MessageType.MessageWarning"
           },
           {
-            "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
-            "timestamp": 1777611886.219,
+            "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+            "timestamp": 1777617073.737,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "hasMain true",
-            "timestamp": 1777611997.24,
+            "message": "[Arena] Match #3 gestartet: Bot",
+            "timestamp": 1777617073.765,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "moveIndex 30447",
-            "timestamp": 1777611997.25,
+            "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+            "timestamp": 1777617080.823,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
-            "message": "movementIndex 29534",
-            "timestamp": 1777611997.25,
-            "messageType": "Enum.MessageType.MessageOutput"
+            "message": "Script timeout: exhausted allowed execution time",
+            "timestamp": 1777617433.508,
+            "messageType": "Enum.MessageType.MessageError"
           },
           {
-            "message": "movementBeforeMove true",
-            "timestamp": 1777611997.25,
-            "messageType": "Enum.MessageType.MessageOutput"
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.511,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.511,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceTimedOptions', Line 6",
+            "timestamp": 1777617433.511,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.511,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.512,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useItemCardRowProps', Line 11",
+            "timestamp": 1777617433.512,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.512,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.512,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.ItemCardRowContainer', Line 6",
+            "timestamp": 1777617433.513,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.513,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.513,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.513,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.513,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.514,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.AvatarItemsViewLayout', Line 37",
+            "timestamp": 1777617433.514,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.514,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.514,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.514,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useResponsivePanelLayoutProps', Line 24",
+            "timestamp": 1777617433.514,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.515,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.515,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy', Line 5",
+            "timestamp": 1777617433.515,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.515,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.515,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.515,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages.AvatarExperienceInspectAndBuy', Line 6",
+            "timestamp": 1777617433.515,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.516,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.516,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.516,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.516,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.InspectAndBuy.Components.InspectAndBuy', Line 40",
+            "timestamp": 1777617433.519,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.519,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617433.52,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.CoreScripts/InspectAndBuy', Line 10",
+            "timestamp": 1777617433.52,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.52,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script timeout: exhausted allowed execution time",
+            "timestamp": 1777617433.52,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617433.521,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'Script Context.StarterScript', Line 367",
+            "timestamp": 1777617433.521,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617433.521,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.131,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.131,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.AvatarExperienceInspectAndBuy', Line 6",
+            "timestamp": 1777617434.132,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.132,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.132,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.133,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Common.Types', Line 5",
+            "timestamp": 1777617434.136,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.136,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.136,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.137,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.ProfileTypes.Community', Line 6",
+            "timestamp": 1777617434.137,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.137,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.137,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.Profiles', Line 5",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.installReducer', Line 16",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.141,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.143,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CorePackages.Workspace.Packages.ProfilePlatform.installReducer', Line 5",
+            "timestamp": 1777617434.145,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.145,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.145,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.145,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile.PlayerProfileContainer', Line 21",
+            "timestamp": 1777617434.146,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.146,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.146,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile', Line 7",
+            "timestamp": 1777617434.146,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.146,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.146,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.146,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 3829 - function CreateSettingsHub",
+            "timestamp": 1777617434.147,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 4165",
+            "timestamp": 1777617434.147,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.147,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.147,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.147,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.TopBar.Components.TopBarApp', Line 41",
+            "timestamp": 1777617434.147,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.147,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Requested module experienced an error while loading",
+            "timestamp": 1777617434.148,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Stack Begin",
+            "timestamp": 1777617434.148,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Script 'CoreGui.RobloxGui.Modules.TopBar', Line 84",
+            "timestamp": 1777617434.148,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Stack End",
+            "timestamp": 1777617434.149,
+            "messageType": "Enum.MessageType.MessageInfo"
+          },
+          {
+            "message": "Failure to Start CoreScript module TopBar.\nRequested module experienced an error while loading",
+            "timestamp": 1777617434.149,
+            "messageType": "Enum.MessageType.MessageWarning"
+          },
+          {
+            "message": "Script that implemented this callback has been destroyed while calling callback",
+            "timestamp": 1777617434.785,
+            "messageType": "Enum.MessageType.MessageError"
+          },
+          {
+            "message": "Script that implemented this callback has been destroyed while calling callback",
+            "timestamp": 1777617434.785,
+            "messageType": "Enum.MessageType.MessageError"
           },
           {
             "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-            "timestamp": 1777612097.439,
+            "timestamp": 1777617435.487,
             "messageType": "Enum.MessageType.MessageOutput"
           },
           {
             "message": "[Arena] Match #1 gestartet: Bot",
-            "timestamp": 1777612097.462,
+            "timestamp": 1777617435.493,
             "messageType": "Enum.MessageType.MessageOutput"
           }
         ]
@@ -1575,527 +1482,952 @@
     }
   ],
   "lastSample": {
-    "timestamp": "2026-05-01T12:08:29.8038673+07:00",
-    "elapsedSeconds": 37.9,
+    "timestamp": "2026-05-01T13:37:20.9191823+07:00",
+    "elapsedSeconds": 34.5,
     "isRunning": true,
     "playtestOutput": {
       "output": [
         {
-          "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-          "timestamp": 1777637300.0555406,
-          "messageType": "MessageOutput"
+          "message": "Script timeout: exhausted allowed execution time",
+          "timestamp": 1777642632.9666348,
+          "messageType": "MessageError"
         },
         {
-          "message": "[Arena] Match #1 gestartet: Bot",
-          "timestamp": 1777637300.056034,
-          "messageType": "MessageOutput"
-        }
-      ],
-      "outputCount": 2,
-      "isRunning": true
-    },
-    "outputLog": {
-      "totalAvailable": 279,
-      "count": 100,
-      "entries": [
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.9673395,
+          "messageType": "MessageError"
+        },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611452.815,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642632.9678118,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 116 - function SetCoreGuiChatConnections",
-          "timestamp": 1777611452.815,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceTimedOptions', Line 6",
+          "timestamp": 1777642632.9686396,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 104 - function DoEverything",
-          "timestamp": 1777611452.815,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Stack End",
+          "timestamp": 1777642632.968892,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-          "timestamp": 1777611452.815,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.969202,
+          "messageType": "MessageError"
         },
         {
-          "message": "__MCP_STOP__",
-          "timestamp": 1777611458.217,
-          "messageType": "Enum.MessageType.MessageWarning"
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useItemCardRowProps', Line 11",
+          "timestamp": 1777642632.9695137,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "__MCP_STOP__",
-          "timestamp": 1777611463.204,
-          "messageType": "Enum.MessageType.MessageWarning"
+          "message": "Stack End",
+          "timestamp": 1777642632.9697573,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-          "timestamp": 1777611473.883,
-          "messageType": "Enum.MessageType.MessageOutput"
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.9699948,
+          "messageType": "MessageError"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.ItemCardRowContainer', Line 6",
+          "timestamp": 1777642632.9703467,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.9705718,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.9707773,
+          "messageType": "MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777642632.971157,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.971362,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777642632.9715662,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.AvatarItemsViewLayout', Line 37",
+          "timestamp": 1777642632.9718099,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.9720197,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.9722908,
+          "messageType": "MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777642632.9751258,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useResponsivePanelLayoutProps', Line 24",
+          "timestamp": 1777642632.9759066,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.9780693,
+          "messageType": "MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777642632.9786985,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy', Line 5",
+          "timestamp": 1777642632.979009,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.9792776,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.9798012,
+          "messageType": "MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777642632.9800484,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages.AvatarExperienceInspectAndBuy', Line 6",
+          "timestamp": 1777642632.980369,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.9806275,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777642632.9808745,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.981096,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777642632.9813094,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.InspectAndBuy.Components.InspectAndBuy', Line 40",
+          "timestamp": 1777642632.982359,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.982661,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642632.982955,
+          "messageType": "MessageError"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.CoreScripts/InspectAndBuy', Line 10",
+          "timestamp": 1777642632.9833963,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642632.9836767,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Script timeout: exhausted allowed execution time",
-          "timestamp": 1777611567.6,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Stack End",
-          "timestamp": 1777611567.635,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.637,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642632.9839058,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.646,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642632.9841268,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChatCore.VoiceChatCore', Line 1",
-          "timestamp": 1777611567.646,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'Script Context.StarterScript', Line 367",
+          "timestamp": 1777642632.984424,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.646,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642632.9846573,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.646,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.587603,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.647,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.5880706,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChatCore', Line 6",
-          "timestamp": 1777611567.647,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.AvatarExperienceInspectAndBuy', Line 6",
+          "timestamp": 1777642633.5930524,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.647,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.593325,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.647,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.5935588,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.647,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.5939496,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat.dependencies', Line 8",
-          "timestamp": 1777611567.647,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Common.Types', Line 5",
+          "timestamp": 1777642633.5945668,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.647,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.5948627,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.666,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.674,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.5950992,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.698,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.595358,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.VoiceChat.VoiceChat', Line 19",
-          "timestamp": 1777611567.699,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.ProfileTypes.Community', Line 6",
+          "timestamp": 1777642633.5956376,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777642633.5959406,
+          "messageType": "MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777642633.5979643,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.699,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.5982811,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.VoiceChat', Line 6",
-          "timestamp": 1777611567.7,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.Profiles', Line 5",
+          "timestamp": 1777642633.598597,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.7,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.5988882,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.7,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.5991433,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.7,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.5994194,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore.createVoiceStore', Line 9",
-          "timestamp": 1777611567.701,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.installReducer', Line 16",
+          "timestamp": 1777642633.599679,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.701,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.5998948,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.701,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.6010857,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.701,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.6013875,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.Stores.GetVoiceStore', Line 5",
-          "timestamp": 1777611567.701,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CorePackages.Workspace.Packages.ProfilePlatform.installReducer', Line 5",
+          "timestamp": 1777642633.601651,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.701,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.601886,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.701,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.6030824,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.702,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.6032996,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.withSignalsData', Line 18",
-          "timestamp": 1777611567.736,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Stack End",
-          "timestamp": 1777611567.737,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile.PlayerProfileContainer', Line 21",
+          "timestamp": 1777642633.603894,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.743,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.6041324,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.743,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.6043427,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp.BubbleChatApp', Line 20",
-          "timestamp": 1777611567.743,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile', Line 7",
+          "timestamp": 1777642633.6046038,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.743,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.6076458,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.744,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.6080847,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.744,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.6085174,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat.BubbleChatApp', Line 1",
-          "timestamp": 1777611567.744,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 3829 - function CreateSettingsHub",
+          "timestamp": 1777642633.6091757,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Stack End",
-          "timestamp": 1777611567.768,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.771,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.BubbleChat', Line 1",
-          "timestamp": 1777611567.786,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 4165",
+          "timestamp": 1777642633.6094623,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.787,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.6097298,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.787,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.833,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.610039,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.833,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.6103165,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.App', Line 10",
-          "timestamp": 1777611567.833,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CoreGui.RobloxGui.Modules.TopBar.Components.TopBarApp', Line 41",
+          "timestamp": 1777642633.8363068,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.833,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.836862,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.834,
-          "messageType": "Enum.MessageType.MessageError"
+          "timestamp": 1777642633.8371217,
+          "messageType": "MessageError"
         },
         {
           "message": "Stack Begin",
-          "timestamp": 1777611567.834,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.8383849,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat.mountClientApp', Line 43",
-          "timestamp": 1777611567.834,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Stack End",
-          "timestamp": 1777611567.866,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.867,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Stack Begin",
-          "timestamp": 1777611567.867,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ExpChat.ExpChat', Line 11",
-          "timestamp": 1777611567.867,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script 'CoreGui.RobloxGui.Modules.TopBar', Line 84",
+          "timestamp": 1777642633.8387346,
+          "messageType": "MessageInfo"
         },
         {
           "message": "Stack End",
-          "timestamp": 1777611567.901,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "timestamp": 1777642633.8390112,
+          "messageType": "MessageInfo"
         },
         {
-          "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.901,
-          "messageType": "Enum.MessageType.MessageError"
+          "message": "Failure to Start CoreScript module TopBar.\nRequested module experienced an error while loading",
+          "timestamp": 1777642633.8394918,
+          "messageType": "MessageWarning"
         },
         {
-          "message": "Script 'CorePackages.Workspace.Packages.ExpChat', Line 6",
-          "timestamp": 1777611567.901,
-          "messageType": "Enum.MessageType.MessageInfo"
+          "message": "Script that implemented this callback has been destroyed while calling callback",
+          "timestamp": 1777642634.2444105,
+          "messageType": "MessageError"
         },
         {
-          "message": "Stack End",
-          "timestamp": 1777611567.901,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
+          "message": "Script that implemented this callback has been destroyed while calling callback",
+          "timestamp": 1777642634.2446709,
+          "messageType": "MessageError"
+        }
+      ],
+      "outputCount": 87,
+      "isRunning": true
+    },
+    "outputLog": {
+      "totalAvailable": 481,
+      "count": 100,
+      "entries": [
         {
-          "message": "Requested module experienced an error while loading",
-          "timestamp": 1777611567.912,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Stack Begin",
-          "timestamp": 1777611567.912,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Script 'Script Context.StarterScript', Line 149",
-          "timestamp": 1777611567.912,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Stack End",
-          "timestamp": 1777611567.936,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-          "timestamp": 1777611571.908,
-          "messageType": "Enum.MessageType.MessageOutput"
-        },
-        {
-          "message": "[Arena] Match #1 gestartet: Bot",
-          "timestamp": 1777611571.961,
-          "messageType": "Enum.MessageType.MessageOutput"
-        },
-        {
-          "message": "Players.Superman1337XD.PlayerScripts.ChatScript:116: Error calling SetCore CoreGuiChatConnections: SetCore: CoreGuiChatConnections has not been registered by the CoreScripts",
-          "timestamp": 1777611579.115,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Script 'Players.Superman1337XD.PlayerScripts.ChatScript', Line 133",
-          "timestamp": 1777611579.134,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Stack End",
-          "timestamp": 1777611579.134,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "ServerScriptService.main:999: attempt to call a nil value",
-          "timestamp": 1777611582.173,
-          "messageType": "Enum.MessageType.MessageError"
-        },
-        {
-          "message": "Stack Begin",
-          "timestamp": 1777611582.176,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Script 'ServerScriptService.main', Line 999 - function moveBotTo",
-          "timestamp": 1777611582.18,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "Script 'ServerScriptService.main', Line 1941",
-          "timestamp": 1777611582.185,
-          "messageType": "Enum.MessageType.MessageInfo"
-        },
-        {
-          "message": "__MCP_STOP__",
-          "timestamp": 1777611591.407,
-          "messageType": "Enum.MessageType.MessageWarning"
-        },
-        {
-          "message": "[Arena] Match #1 beendet: Team 2 gewinnt",
-          "timestamp": 1777611617.834,
+          "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+          "timestamp": 1777616689.032,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
           "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-          "timestamp": 1777611696.887,
+          "timestamp": 1777617035.881,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
           "message": "[Arena] Match #1 gestartet: Bot",
-          "timestamp": 1777611696.893,
-          "messageType": "Enum.MessageType.MessageOutput"
-        },
-        {
-          "message": "ArenaDuelAutoQueueMode= Bot",
-          "timestamp": 1777611705.332,
+          "timestamp": 1777617035.888,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
           "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-          "timestamp": 1777611711.017,
-          "messageType": "Enum.MessageType.MessageOutput"
-        },
-        {
-          "message": "__MCP_STOP__",
-          "timestamp": 1777611712.497,
-          "messageType": "Enum.MessageType.MessageWarning"
-        },
-        {
-          "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-          "timestamp": 1777611852.742,
-          "messageType": "Enum.MessageType.MessageOutput"
-        },
-        {
-          "message": "[Arena] Match #1 gestartet: Bot",
-          "timestamp": 1777611852.753,
-          "messageType": "Enum.MessageType.MessageOutput"
-        },
-        {
-          "message": "[Arena] Match #1 beendet: Team 1 gewinnt",
-          "timestamp": 1777611866.289,
+          "timestamp": 1777617049.315,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
           "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-          "timestamp": 1777611872.554,
+          "timestamp": 1777617054.375,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
           "message": "[Arena] Match #2 gestartet: Bot",
-          "timestamp": 1777611872.73,
+          "timestamp": 1777617054.381,
+          "messageType": "Enum.MessageType.MessageOutput"
+        },
+        {
+          "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
+          "timestamp": 1777617067.743,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
           "message": "__MCP_STOP__",
-          "timestamp": 1777611885.253,
+          "timestamp": 1777617071.576,
           "messageType": "Enum.MessageType.MessageWarning"
         },
         {
-          "message": "[Arena] Match #2 beendet: Team 1 gewinnt",
-          "timestamp": 1777611886.219,
+          "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
+          "timestamp": 1777617073.737,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
-          "message": "hasMain true",
-          "timestamp": 1777611997.24,
+          "message": "[Arena] Match #3 gestartet: Bot",
+          "timestamp": 1777617073.765,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
-          "message": "moveIndex 30447",
-          "timestamp": 1777611997.25,
+          "message": "[Arena] Match #3 beendet: Team 2 gewinnt",
+          "timestamp": 1777617080.823,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
-          "message": "movementIndex 29534",
-          "timestamp": 1777611997.25,
-          "messageType": "Enum.MessageType.MessageOutput"
+          "message": "Script timeout: exhausted allowed execution time",
+          "timestamp": 1777617433.508,
+          "messageType": "Enum.MessageType.MessageError"
         },
         {
-          "message": "movementBeforeMove true",
-          "timestamp": 1777611997.25,
-          "messageType": "Enum.MessageType.MessageOutput"
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.511,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.511,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceTimedOptions', Line 6",
+          "timestamp": 1777617433.511,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.511,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.512,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useItemCardRowProps', Line 11",
+          "timestamp": 1777617433.512,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.512,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.512,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.ItemCardRowContainer', Line 6",
+          "timestamp": 1777617433.513,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.513,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.513,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.513,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.513,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.514,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.ItemsView.AvatarItemsViewLayout', Line 37",
+          "timestamp": 1777617433.514,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.514,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.514,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.514,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy.Components.useResponsivePanelLayoutProps', Line 24",
+          "timestamp": 1777617433.514,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.515,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.515,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.AvatarExperienceInspectAndBuy.AvatarExperienceInspectAndBuy', Line 5",
+          "timestamp": 1777617433.515,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.515,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.515,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.515,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages.AvatarExperienceInspectAndBuy', Line 6",
+          "timestamp": 1777617433.515,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.516,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.516,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.516,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.516,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.InspectAndBuy.Components.InspectAndBuy', Line 40",
+          "timestamp": 1777617433.519,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.519,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617433.52,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.CoreScripts/InspectAndBuy', Line 10",
+          "timestamp": 1777617433.52,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.52,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script timeout: exhausted allowed execution time",
+          "timestamp": 1777617433.52,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617433.521,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'Script Context.StarterScript', Line 367",
+          "timestamp": 1777617433.521,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617433.521,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.131,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.131,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.AvatarExperienceInspectAndBuy', Line 6",
+          "timestamp": 1777617434.132,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.132,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.132,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.133,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Common.Types', Line 5",
+          "timestamp": 1777617434.136,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.136,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.136,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.137,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.ProfileTypes.Community', Line 6",
+          "timestamp": 1777617434.137,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.137,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.137,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.Profiles', Line 5",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages._Workspace.ProfilePlatform.ProfilePlatform.Rodux.installReducer', Line 16",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.141,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.143,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CorePackages.Workspace.Packages.ProfilePlatform.installReducer', Line 5",
+          "timestamp": 1777617434.145,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.145,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.145,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.145,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile.PlayerProfileContainer', Line 21",
+          "timestamp": 1777617434.146,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.146,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.146,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.Pages.PlayerProfile', Line 7",
+          "timestamp": 1777617434.146,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.146,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.146,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.146,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 3829 - function CreateSettingsHub",
+          "timestamp": 1777617434.147,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.Settings.SettingsHub', Line 4165",
+          "timestamp": 1777617434.147,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.147,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.147,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.147,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.TopBar.Components.TopBarApp', Line 41",
+          "timestamp": 1777617434.147,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.147,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Requested module experienced an error while loading",
+          "timestamp": 1777617434.148,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Stack Begin",
+          "timestamp": 1777617434.148,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Script 'CoreGui.RobloxGui.Modules.TopBar', Line 84",
+          "timestamp": 1777617434.148,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Stack End",
+          "timestamp": 1777617434.149,
+          "messageType": "Enum.MessageType.MessageInfo"
+        },
+        {
+          "message": "Failure to Start CoreScript module TopBar.\nRequested module experienced an error while loading",
+          "timestamp": 1777617434.149,
+          "messageType": "Enum.MessageType.MessageWarning"
+        },
+        {
+          "message": "Script that implemented this callback has been destroyed while calling callback",
+          "timestamp": 1777617434.785,
+          "messageType": "Enum.MessageType.MessageError"
+        },
+        {
+          "message": "Script that implemented this callback has been destroyed while calling callback",
+          "timestamp": 1777617434.785,
+          "messageType": "Enum.MessageType.MessageError"
         },
         {
           "message": "[Arena] Superman1337XD stellt sich fuer 1vsCOM an",
-          "timestamp": 1777612097.439,
+          "timestamp": 1777617435.487,
           "messageType": "Enum.MessageType.MessageOutput"
         },
         {
           "message": "[Arena] Match #1 gestartet: Bot",
-          "timestamp": 1777612097.462,
+          "timestamp": 1777617435.493,
           "messageType": "Enum.MessageType.MessageOutput"
         }
       ]
