@@ -14,6 +14,8 @@
 				"Bypass",
 				"-File",
 				"scripts/do-all-tasks.ps1",
+				"-MaxIterations",
+				"12",
 				"-McpRetryAttempts",
 				"3",
 				"-GameBrief",
@@ -48,6 +50,8 @@
 				"Bypass",
 				"-File",
 				"scripts/do-all-tasks.ps1",
+				"-MaxIterations",
+				"12",
 				"-McpRetryAttempts",
 				"3",
 				"-GameBriefFile",
@@ -65,6 +69,88 @@
 			},
 			"problemMatcher": [],
 			"detail": "Runs the same iterative loop, but reuses the last saved .game-brief.txt without prompting again."
+		},
+		{
+			"label": "Roblox: Verify MCP bridge",
+			"type": "shell",
+			"command": "${env:LOCALAPPDATA}\\Microsoft\\WindowsApps\\pwsh.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"scripts/verify-roblox-mcp.ps1"
+			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": false,
+				"showReuseMessage": false
+			},
+			"problemMatcher": [],
+			"detail": "Checks the robloxstudio-mcp bridge, plugin connection, and callable MCP endpoints."
+		},
+		{
+			"label": "Roblox: Reset MCP bridge",
+			"type": "shell",
+			"command": "${env:LOCALAPPDATA}\\Microsoft\\WindowsApps\\pwsh.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"scripts/reset-roblox-mcp.ps1",
+				"-InstallPlugin"
+			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": false,
+				"showReuseMessage": false
+			},
+			"problemMatcher": [],
+			"detail": "Restarts the local MCP bridge flow and reinstalls the Studio plugin manifest if needed."
+		},
+		{
+			"label": "Roblox: Start 1vsCOM playtest",
+			"type": "shell",
+			"command": "${env:LOCALAPPDATA}\\Microsoft\\WindowsApps\\pwsh.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"scripts/start-1vscom-playtest.ps1"
+			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": false,
+				"showReuseMessage": false
+			},
+			"problemMatcher": [],
+			"detail": "Sets ArenaDuelAutoQueueMode=Bot and starts a single-player Studio playtest."
+		},
+		{
+			"label": "Roblox: Clear 1vsCOM autoqueue",
+			"type": "shell",
+			"command": "${env:LOCALAPPDATA}\\Microsoft\\WindowsApps\\pwsh.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"scripts/start-1vscom-playtest.ps1",
+				"-Clear"
+			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": false,
+				"showReuseMessage": false
+			},
+			"problemMatcher": [],
+			"detail": "Clears ArenaDuelAutoQueueMode so subsequent Studio playtests stay manual."
 		}
 	],
 	"inputs": [

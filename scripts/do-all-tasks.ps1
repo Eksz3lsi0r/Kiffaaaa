@@ -1,6 +1,7 @@
 #requires -Version 5.1
 param(
     [switch]$Once,
+    [int]$MaxIterations = 12,
     [int]$LoopDelaySeconds = 5,
     [int]$McpRetryAttempts = 3,
     [string]$QualityFile = (Join-Path $PSScriptRoot "..\.refine-quality.txt"),
@@ -557,6 +558,15 @@ else {
     Write-Host ("-> active game brief: " + $activeGameBrief) -ForegroundColor DarkGray
 }
 
+Write-Host ("-> game brief file: " + $GameBriefFile) -ForegroundColor DarkGray
+Write-Host ("-> live telemetry file: " + $LiveTelemetryPath) -ForegroundColor DarkGray
+if ($MaxIterations -le 0) {
+    Write-Host "-> max iterations: unbounded" -ForegroundColor DarkGray
+}
+else {
+    Write-Host ("-> max iterations: " + $MaxIterations) -ForegroundColor DarkGray
+}
+
 $requiredCommands = @("rojo", "wally", "stylua", "selene")
 $missingCommands = @()
 foreach ($commandName in $requiredCommands) {
@@ -679,11 +689,21 @@ if (-not $Once -and (Test-QualityReached -Path $QualityFile)) {
 $reportPath = Join-Path $repoRoot ".playtest-report.json"
 $awaitingSentinel = Join-Path $repoRoot ".awaiting-ai-analysis"
 $doneSentinel = Join-Path $repoRoot ".ai-analysis-applied"
+
+Remove-Item -LiteralPath $awaitingSentinel -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath $doneSentinel -Force -ErrorAction SilentlyContinue
+
 $iteration = 0
 
-while ($true) {
+while ($MaxIterations -le 0 -or $iteration -lt $MaxIterations) {
     $iteration++
-    Write-Banner ("do-all loop iteration " + $iteration) "Magenta"
+    $iterationLabel = if ($MaxIterations -gt 0) {
+        "do-all loop iteration {0}/{1}" -f $iteration, $MaxIterations
+    }
+    else {
+        "do-all loop iteration " + $iteration
+    }
+    Write-Banner $iterationLabel "Magenta"
 
     $activeGameBrief = Get-GameBriefText -Path $GameBriefFile
     if (-not [string]::IsNullOrWhiteSpace($activeGameBrief)) {
@@ -760,17 +780,26 @@ while ($true) {
                 Write-Host " Loop resumes automatically once that file appears." -ForegroundColor Yellow
                 Write-Host ("=" * 72) -ForegroundColor Yellow
 
+                $analysisApplied = $false
                 $aiDeadline = (Get-Date).AddSeconds($AiAnalysisTimeoutSeconds)
                 while ((Get-Date) -lt $aiDeadline) {
                     if (Test-Path -LiteralPath $doneSentinel) {
                         Remove-Item -LiteralPath $doneSentinel -Force -ErrorAction SilentlyContinue
                         Remove-Item -LiteralPath $awaitingSentinel -Force -ErrorAction SilentlyContinue
                         Write-Host "   AI analysis applied. Resuming loop." -ForegroundColor Green
+                        $analysisApplied = $true
                         break
                     }
 
                     if (Test-QualityReached -Path $QualityFile) { break }
                     Start-Sleep -Seconds 3
+                }
+
+                if (-not $analysisApplied -and -not (Test-QualityReached -Path $QualityFile)) {
+                    Remove-Item -LiteralPath $awaitingSentinel -Force -ErrorAction SilentlyContinue
+                    Write-Host (
+                        "   AI analysis timeout reached; continuing with the current workspace state."
+                    ) -ForegroundColor DarkYellow
                 }
             }
         }
@@ -800,4 +829,10 @@ while ($true) {
 
     Write-Host "Press Ctrl+C to stop, or write DONE to .refine-quality.txt to finish automatically." -ForegroundColor Cyan
     Start-Sleep -Seconds $LoopDelaySeconds
+}
+
+if (-not $Once -and $MaxIterations -gt 0 -and -not (Test-QualityReached -Path $QualityFile)) {
+    Write-Banner (
+        "Maximum iteration count reached ({0}). Stopping loop safely." -f $MaxIterations
+    ) "Yellow"
 }
