@@ -94,3 +94,5 @@
 - Keep changes minimal, consistent with existing code, and scoped to the requested behavior.
 - Do not hand-edit generated files unless the task is specifically about the generator output.
 - Do not add new abstractions, remotes, or shared modules until the current local path is insufficient.
+- When adding new code, follow existing patterns and naming conventions. When in doubt, copy a nearby similar implementation and modify it.
+- After making a change, validate it immediately with the narrowest useful check before making more changes.

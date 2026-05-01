@@ -39,10 +39,9 @@ ArenaDuelConfig.BotAi = {
 
 -- Priest excluded from bot rotation: all abilities are friendly (heals/shields),
 -- so a Priest bot never deals damage and becomes unkillable.
+-- Keep the first automated slice on one fixed matchup: Mage player vs Warrior bot.
 ArenaDuelConfig.BotClassRotation = {
-    "Mage",
     "Warrior",
-    "Rogue",
 }
 
 ArenaDuelConfig.MatchModes = {

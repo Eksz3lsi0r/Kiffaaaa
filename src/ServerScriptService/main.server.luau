@@ -877,6 +877,24 @@ local function teleportPlayer(player: Player, partName: string, offsetIndex: num
     root.CFrame = CFrame.new(destination.Position + offset)
 end
 
+local function placeBot(fighter: FighterState, partName: string, offsetIndex: number)
+    local destination = getWorldPart(partName)
+    if not destination or not fighter.botModel or not fighter.botModel.PrimaryPart then
+        return
+    end
+
+    local offset = Vector3.new((offsetIndex - 1) * 5, 4.5, 0)
+    fighter.botModel.PrimaryPart.CFrame = CFrame.new(destination.Position + offset)
+end
+
+local function placeFighterAtMarker(fighter: FighterState, partName: string, offsetIndex: number)
+    if fighter.player then
+        teleportPlayer(fighter.player, partName, offsetIndex)
+    elseif fighter.isBot then
+        placeBot(fighter, partName, offsetIndex)
+    end
+end
+
 local function resetPlayerCharacter(player: Player)
     local classId = selectedClassByPlayer[player] or "Warrior"
     local classConfig = getClassConfig(classId)
@@ -973,9 +991,63 @@ local function getFighterPosition(fighter: FighterState): Vector3?
     return nil
 end
 
+local function getFighterMovementState(fighter: FighterState): (number, boolean)
+    local classConfig = getClassConfig(fighter.classId)
+    local walkSpeed = classConfig.baseWalkSpeed
+    local rooted = false
+    local stunned = false
+    local now = os.clock()
+
+    for _, effect in fighter.effects do
+        if effect.expiresAt > now then
+            if effect.kind == "Root" then
+                rooted = true
+            elseif effect.kind == "Stun" or effect.kind == "Blind" then
+                stunned = true
+            elseif effect.kind == "Fear" then
+                walkSpeed = math.max(walkSpeed, classConfig.baseWalkSpeed + 4)
+            elseif effect.kind == "Slow" and effect.amount then
+                walkSpeed = math.min(walkSpeed, classConfig.baseWalkSpeed * effect.amount)
+            end
+        end
+    end
+
+    return if rooted or stunned then 0 else walkSpeed, rooted or stunned
+end
+
 local function moveBotTo(fighter: FighterState, position: Vector3)
     if fighter.botModel and fighter.botModel.PrimaryPart then
-        fighter.botModel.PrimaryPart.CFrame = CFrame.new(position)
+        local root = fighter.botModel.PrimaryPart
+        local desiredPosition = Vector3.new(position.X, root.Position.Y, position.Z)
+        local delta = desiredPosition - root.Position
+        local classConfig = getClassConfig(fighter.classId)
+        local walkSpeed = classConfig.baseWalkSpeed
+        local now = os.clock()
+
+        for _, effect in fighter.effects do
+            if effect.expiresAt > now then
+                if effect.kind == "Root" or effect.kind == "Stun" or effect.kind == "Blind" then
+                    walkSpeed = 0
+                    break
+                elseif effect.kind == "Fear" then
+                    walkSpeed = math.max(walkSpeed, classConfig.baseWalkSpeed + 4)
+                elseif effect.kind == "Slow" and effect.amount then
+                    walkSpeed = math.min(walkSpeed, classConfig.baseWalkSpeed * effect.amount)
+                end
+            end
+        end
+
+        local maxStep = walkSpeed * Config.BotAi.tickSeconds
+
+        if maxStep <= 0 then
+            return
+        end
+
+        if delta.Magnitude > maxStep and delta.Magnitude > 0 then
+            desiredPosition = root.Position + delta.Unit * maxStep
+        end
+
+        root.CFrame = CFrame.new(desiredPosition)
     end
 end
 
@@ -1097,32 +1169,10 @@ local function applyMovementState(fighter: FighterState)
         return
     end
 
-    local classConfig = getClassConfig(fighter.classId)
-    local walkSpeed = classConfig.baseWalkSpeed
-    local rooted = false
-    local stunned = false
-    local now = os.clock()
-
-    for _, effect in fighter.effects do
-        if effect.expiresAt > now then
-            if effect.kind == "Root" then
-                rooted = true
-            elseif effect.kind == "Stun" or effect.kind == "Blind" then
-                stunned = true
-            elseif effect.kind == "Fear" then
-                walkSpeed = math.max(walkSpeed, classConfig.baseWalkSpeed + 4)
-            elseif effect.kind == "Slow" and effect.amount then
-                walkSpeed = math.min(walkSpeed, classConfig.baseWalkSpeed * effect.amount)
-            end
-        end
-    end
-
-    if rooted or stunned then
-        walkSpeed = 0
-    end
+    local walkSpeed, movementLocked = getFighterMovementState(fighter)
 
     humanoid.WalkSpeed = walkSpeed
-    humanoid.JumpPower = if rooted or stunned then 0 else 50
+    humanoid.JumpPower = if movementLocked then 0 else 50
 end
 
 local function buildEffectList(fighter: FighterState)
@@ -1800,18 +1850,29 @@ local function canBotCast(bot: FighterState, abilityId: string): boolean
 end
 
 local function chooseBotAbility(bot: FighterState, target: FighterState): string
+    local botPosition = getFighterPosition(bot)
+    local targetPosition = getFighterPosition(target)
+    local distance = if botPosition and targetPosition
+        then (botPosition - targetPosition).Magnitude
+        else math.huge
+
     if target.health / target.maxHealth <= 0.35 and canBotCast(bot, "Ability4") then
         return "Ability4"
     end
 
-    local botPosition = getFighterPosition(bot)
-    local targetPosition = getFighterPosition(target)
-    if
-        botPosition
-        and targetPosition
-        and (botPosition - targetPosition).Magnitude <= 16
-        and canBotCast(bot, "Ability3")
-    then
+    if bot.classId == "Mage" then
+        if distance <= 18 and canBotCast(bot, "Ability3") then
+            return "Ability3"
+        end
+
+        if canBotCast(bot, "Ability2") then
+            return "Ability2"
+        end
+
+        return "Ability1"
+    end
+
+    if distance <= 16 and canBotCast(bot, "Ability3") then
         return "Ability3"
     end
 
@@ -1824,7 +1885,6 @@ end
 
 local function runPlayerAutoAi(matchState: MatchState, fighter: FighterState)
     -- Only run when the match was started by Studio automation (no human input).
-    -- Move the player character via PivotTo since it has a real Humanoid.
     task.spawn(function()
         while activeMatch == matchState and matchState.phase ~= "Finished" and isAlive(fighter) do
             if matchState.phase == "Active" then
@@ -1841,18 +1901,37 @@ local function runPlayerAutoAi(matchState: MatchState, fighter: FighterState)
                         local preferredDist = if isMelee
                             then Config.BotAi.meleePreferredDistance
                             else Config.BotAi.rangedPreferredDistance
+                        local strafeDistance = if isMelee then 2 else Config.BotAi.strafeDistance
 
                         local dist = (myPosition - targetPosition).Magnitude
+                        local desiredPosition = nil
                         if dist > preferredDist + 2 then
                             local dir = (targetPosition - myPosition).Unit
-                            local newPos = targetPosition - dir * preferredDist
+                            desiredPosition = targetPosition - dir * preferredDist
+                        elseif not isMelee and dist < preferredDist - 4 then
+                            local dir = (myPosition - targetPosition)
+                            if dir.Magnitude > 0.001 then
+                                desiredPosition = targetPosition
+                                    + dir.Unit * preferredDist
+                                    + Vector3.new(
+                                        0,
+                                        0,
+                                        math.random(-strafeDistance, strafeDistance)
+                                    )
+                            end
+                        elseif not isMelee then
+                            desiredPosition = myPosition
+                                + Vector3.new(0, 0, math.random(-strafeDistance, strafeDistance))
+                        end
+
+                        if desiredPosition then
                             local character = fighter.player and fighter.player.Character
                             local humanoid = character
                                 and character:FindFirstChildOfClass("Humanoid") :: Humanoid?
                             if humanoid and humanoid.Health > 0 then
-                                -- Use Humanoid:MoveTo so the character walks normally
-                                -- instead of PivotTo which caused repeated falling.
-                                humanoid:MoveTo(Vector3.new(newPos.X, 0, newPos.Z))
+                                humanoid:MoveTo(
+                                    Vector3.new(desiredPosition.X, myPosition.Y, desiredPosition.Z)
+                                )
                             end
                         end
                     end
@@ -1861,7 +1940,7 @@ local function runPlayerAutoAi(matchState: MatchState, fighter: FighterState)
                 end
             end
 
-            task.wait(Config.BotAi.tickSeconds + 0.15)
+            task.wait(Config.BotAi.tickSeconds)
         end
     end)
 end
@@ -1906,13 +1985,18 @@ local function prepareFighterCharacter(fighter: FighterState, spawnIndex: number
     if fighter.player then
         selectedClassByPlayer[fighter.player] = fighter.classId
         resetPlayerCharacter(fighter.player)
-        teleportPlayer(
-            fighter.player,
+        placeFighterAtMarker(
+            fighter,
             if fighter.team == TEAM_ONE then "TeamOnePrepSpawn" else "TeamTwoPrepSpawn",
             spawnIndex
         )
     elseif fighter.isBot then
         createBotModel(fighter)
+        placeFighterAtMarker(
+            fighter,
+            if fighter.team == TEAM_ONE then "TeamOnePrepSpawn" else "TeamTwoPrepSpawn",
+            spawnIndex
+        )
     end
 end
 
@@ -2018,6 +2102,17 @@ local function startMatch(mode: string, playersForMatch: { Player }, includeBot:
         matchState.countdown = 0
         matchState.gatesOpen = true
         setGatesOpen(true)
+
+        local entryCounts = { [TEAM_ONE] = 0, [TEAM_TWO] = 0 }
+        for _, fighter in fighters do
+            entryCounts[fighter.team] += 1
+            placeFighterAtMarker(
+                fighter,
+                if fighter.team == TEAM_ONE then "TeamOneArenaEntry" else "TeamTwoArenaEntry",
+                entryCounts[fighter.team]
+            )
+        end
+
         broadcastMatchMessage(matchState, "Die Tore sind offen. Kampf beginnt!")
         broadcastMatchState(matchState)
         startHeartbeat(matchState)

@@ -168,6 +168,34 @@ local function createButton(text: string, parent: Instance, height: number): Tex
     return button
 end
 
+local function animateButtonPress(button: TextButton)
+    local scale = button:FindFirstChild("PressScale")
+    if not scale or not scale:IsA("UIScale") then
+        scale = Instance.new("UIScale")
+        scale.Name = "PressScale"
+        scale.Parent = button
+    end
+
+    scale.Scale = 1
+
+    task.spawn(function()
+        local shrink = TweenService:Create(
+            scale,
+            TweenInfo.new(0.055, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            { Scale = 0.96 }
+        )
+        local expand = TweenService:Create(
+            scale,
+            TweenInfo.new(0.11, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            { Scale = 1 }
+        )
+
+        shrink:Play()
+        shrink.Completed:Wait()
+        expand:Play()
+    end)
+end
+
 createPanelLabel("Klassenwahl", leftPanel, 24)
 
 for _, classId in Config.ClassOrder do
@@ -175,6 +203,7 @@ for _, classId in Config.ClassOrder do
     local button = createButton(classConfig.displayName, leftPanel, 38)
     classButtons[classId] = button
     button.Activated:Connect(function()
+        animateButtonPress(button)
         selectedClass = classId
         classSelectEvent:FireServer(classId)
     end)
@@ -184,17 +213,20 @@ createPanelLabel("Matchmaking", leftPanel, 24)
 
 local queueOneButton = createButton("1vs1 suchen", leftPanel, 42)
 queueOneButton.Activated:Connect(function()
+    animateButtonPress(queueOneButton)
     queueRequestEvent:FireServer("Duel1v1")
 end)
 
 local queueTwoButton = createButton("2vs2 suchen", leftPanel, 42)
 queueTwoButton.Activated:Connect(function()
+    animateButtonPress(queueTwoButton)
     queueRequestEvent:FireServer("Duel2v2")
 end)
 
 local botButton = createButton("1vsCOM Test", leftPanel, 42)
 botButton.BackgroundColor3 = Color3.fromRGB(87, 61, 126)
 botButton.Activated:Connect(function()
+    animateButtonPress(botButton)
     queueRequestEvent:FireServer("Bot")
 end)
 
@@ -264,6 +296,7 @@ for slot = 1, 4 do
     button.LayoutOrder = slot
     abilityButtons[slot] = button
     button.Activated:Connect(function()
+        animateButtonPress(button)
         local abilityId = Config.AbilityOrder[slot]
         if abilityId then
             abilityCastEvent:FireServer(abilityId)
@@ -731,6 +764,7 @@ local function makeTargetButton(fighter, localFighter)
         button.TextSize = 14
         targetButtons[fighter.id] = button
         button.Activated:Connect(function()
+            animateButtonPress(button)
             selectedTargetId = fighter.id
             targetSelectEvent:FireServer(fighter.id)
         end)
@@ -1015,12 +1049,16 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     end
 
     if input.KeyCode == Enum.KeyCode.One then
+        animateButtonPress(abilityButtons[1])
         abilityCastEvent:FireServer("Ability1")
     elseif input.KeyCode == Enum.KeyCode.Two then
+        animateButtonPress(abilityButtons[2])
         abilityCastEvent:FireServer("Ability2")
     elseif input.KeyCode == Enum.KeyCode.Three then
+        animateButtonPress(abilityButtons[3])
         abilityCastEvent:FireServer("Ability3")
     elseif input.KeyCode == Enum.KeyCode.Four then
+        animateButtonPress(abilityButtons[4])
         abilityCastEvent:FireServer("Ability4")
     elseif input.KeyCode == Enum.KeyCode.T and currentState and currentState.kind == "Match" then
         local localFighter = getLocalFighter(currentState)
