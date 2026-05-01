@@ -11,6 +11,12 @@
 			"type": "promptString",
 			"description": "API key for authentication",
 			"password": true
+		},
+		{
+			"id": "CONTEXT7_CLIENT_IP_ENCRYPTION_KEY",
+			"type": "promptString",
+			"description": "Context7 client IP encryption key (any random secret, suppresses default-key warning)",
+			"password": true
 		}
 	],
 	"servers": {
@@ -25,7 +31,8 @@
 				"@upstash/context7-mcp@1.0.31"
 			],
 			"env": {
-				"CONTEXT7_API_KEY": "${input:CONTEXT7_API_KEY}"
+				"CONTEXT7_API_KEY": "${input:CONTEXT7_API_KEY}",
+				"CLIENT_IP_ENCRYPTION_KEY": "${input:CONTEXT7_CLIENT_IP_ENCRYPTION_KEY}"
 			},
 			"gallery": "https://api.mcp.github.com",
 			"version": "1.0.31"
