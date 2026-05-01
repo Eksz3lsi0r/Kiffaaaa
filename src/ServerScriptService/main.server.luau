@@ -110,25 +110,33 @@ type MatchState = {
 }
 
 local remotesFolder = ReplicatedStorage:FindFirstChild(Config.RemoteFolderName)
-if not remotesFolder then
-    remotesFolder = Instance.new("Folder")
-    remotesFolder.Name = Config.RemoteFolderName
-    remotesFolder.Parent = ReplicatedStorage
+if remotesFolder and not remotesFolder:IsA("Folder") then
+    remotesFolder:Destroy()
+    remotesFolder = nil
 end
+if not remotesFolder then
+    local createdFolder = Instance.new("Folder")
+    createdFolder.Name = Config.RemoteFolderName
+    createdFolder.Parent = ReplicatedStorage
+    remotesFolder = createdFolder
+end
+local remoteFolder = remotesFolder :: Folder
 
 local function getRemote(remoteName: string): RemoteEvent
-    local remote = remotesFolder:FindFirstChild(remoteName)
-    if not remote or not remote:IsA("RemoteEvent") then
-        if remote then
-            remote:Destroy()
-        end
-
-        remote = Instance.new("RemoteEvent")
-        remote.Name = remoteName
-        remote.Parent = remotesFolder
+    local remote = remoteFolder:FindFirstChild(remoteName)
+    if remote and remote:IsA("RemoteEvent") then
+        return remote
     end
 
-    return remote :: RemoteEvent
+    if remote then
+        remote:Destroy()
+    end
+
+    local createdRemote = Instance.new("RemoteEvent")
+    createdRemote.Name = remoteName
+    createdRemote.Parent = remoteFolder
+
+    return createdRemote
 end
 
 local queueRequestEvent = getRemote(Config.Remotes.QueueRequest)
@@ -205,20 +213,24 @@ local function makeTorch(parent: Instance, name: string, position: Vector3): Par
     return flame
 end
 
+local function makeBanner(
+    parent: Instance,
+    name: string,
+    position: Vector3,
+    size: Vector3,
+    color: Color3,
+    rotation: Vector3?
+): Part
+    local banner = makePart(parent, name, position, size, color, Enum.Material.Fabric, 0.08)
+    if rotation then
+        banner.Orientation = rotation
+    end
+    banner.CastShadow = false
+    return banner
+end
+
 -- ─────────────────────────────────────────────────────────────────────────────
--- buildArenaWorld  –  WoW "Ruins of Lordaeron"-style enclosed PvP arena
---
--- Layout (top-down, X horizontal, Z vertical, lobby behind south wall):
---
---        [NW tower]  North Wall (crenellated)  [NE tower]
---   Prep1 ══[W gate]════ Arena Floor (100×64) ════[E gate]══ Prep2
---        [SW tower]  South Wall (crenellated)  [SE tower]
---                        |
---                      Lobby (Z=84)
---
--- All floor surfaces sit at Y=0.5 (part center Y=0).
--- Spawn markers sit at Y=1 (part center). teleportPlayer adds Y=4 → root Y=5,
--- feet ~Y=2 → falls ≤2 studs onto floor. No void gaps anywhere.
+-- buildArenaWorld  –  heroic fantasy arena with broader sightlines and warmer light
 -- ─────────────────────────────────────────────────────────────────────────────
 local function buildArenaWorld()
     local existingWorld = workspace:FindFirstChild(WORLD_FOLDER_NAME)
@@ -233,95 +245,102 @@ local function buildArenaWorld()
     table.clear(gateParts)
 
     -- Colour palette (Ruins of Lordaeron grey-brown stone)
-    local stone = Color3.fromRGB(105, 100, 94) -- weathered limestone walls
-    local darkStone = Color3.fromRGB(55, 52, 47) -- towers & shadow faces
-    local merlon = Color3.fromRGB(78, 74, 69) -- battlement blocks
-    local cobble = Color3.fromRGB(118, 112, 104) -- arena floor cobblestone
-    local pillarColor = Color3.fromRGB(112, 107, 100) -- LoS column stone
-    local prepGround = Color3.fromRGB(82, 72, 58) -- prep room dirt/earth
-    local lobbyGray = Color3.fromRGB(66, 74, 88) -- lobby concrete
+    local stone = Color3.fromRGB(136, 123, 104)
+    local darkStone = Color3.fromRGB(76, 65, 53)
+    local merlon = Color3.fromRGB(106, 90, 72)
+    local cobble = Color3.fromRGB(152, 141, 120)
+    local pillarColor = Color3.fromRGB(157, 145, 126)
+    local prepGround = Color3.fromRGB(108, 94, 72)
+    local lobbyGray = Color3.fromRGB(109, 110, 118)
     local blue = Color3.fromRGB(54, 105, 170)
     local red = Color3.fromRGB(170, 61, 54)
     local lobbyGreen = Color3.fromRGB(101, 179, 104)
+    local hedgeGreen = Color3.fromRGB(78, 124, 70)
+    local marble = Color3.fromRGB(186, 178, 168)
 
-    -- ── ARENA FLOOR  (100 × 64, cobblestone) ────────────────────────────────
-    -- Top surface at Y = 0.5
+    -- ── ARENA FLOOR  (184 × 120, brighter coliseum stone) ───────────────────
     makePart(
         world,
         "ArenaFloor",
         Vector3.new(0, 0, 0),
-        Vector3.new(100, 1, 64),
+        Vector3.new(184, 1, 120),
         cobble,
         Enum.Material.Cobblestone
     )
 
-    -- Centre sigil ring (darker inlay so fighters can see the middle)
+    makePart(
+        world,
+        "ArenaInnerApron",
+        Vector3.new(0, 0.15, 0),
+        Vector3.new(176, 0.2, 112),
+        Color3.fromRGB(131, 120, 101),
+        Enum.Material.Slate,
+        0.16
+    )
+
+    -- Centre sigil ring
     makePart(
         world,
         "ArenaCentreInlay",
         Vector3.new(0, 0.01, 0),
-        Vector3.new(28, 0.1, 28),
+        Vector3.new(56, 0.1, 56),
         merlon,
         Enum.Material.SmoothPlastic,
         0.1
     )
 
-    -- ── GATE ARCH FLOORS (under the 4-stud gate walls) ──────────────────────
-    -- Seamlessly bridges arena floor (X ±50) to prep floors (X ±54 onwards).
+    -- ── GATE ARCH FLOORS ─────────────────────────────────────────────────────
     makePart(
         world,
         "WestGateFloor",
-        Vector3.new(-52, 0, 0),
-        Vector3.new(4, 1, 12),
+        Vector3.new(-95, 0, 0),
+        Vector3.new(6, 1, 24),
         cobble,
         Enum.Material.Cobblestone
     )
     makePart(
         world,
         "EastGateFloor",
-        Vector3.new(52, 0, 0),
-        Vector3.new(4, 1, 12),
+        Vector3.new(95, 0, 0),
+        Vector3.new(6, 1, 24),
         cobble,
         Enum.Material.Cobblestone
     )
 
-    -- ── PREP ROOM FLOORS  (Team 1 west / Team 2 east) ───────────────────────
-    -- Each spans X ±54 → ±110 (56 wide), Z ±20 (40 deep). Meets gate floor.
+    -- ── PREP ROOM FLOORS ─────────────────────────────────────────────────────
     makePart(
         world,
         "TeamOnePrepFloor",
-        Vector3.new(-82, 0, 0),
-        Vector3.new(56, 1, 40),
+        Vector3.new(-146, 0, 0),
+        Vector3.new(96, 1, 72),
         prepGround,
         Enum.Material.Ground
     )
     makePart(
         world,
         "TeamTwoPrepFloor",
-        Vector3.new(82, 0, 0),
-        Vector3.new(56, 1, 40),
+        Vector3.new(146, 0, 0),
+        Vector3.new(96, 1, 72),
         prepGround,
         Enum.Material.Ground
     )
 
     -- ── LOBBY FLOOR ──────────────────────────────────────────────────────────
-    -- Sits behind the south wall (Z+), separated but clearly a waiting area.
     makePart(
         world,
         "LobbyFloor",
-        Vector3.new(0, 0, 84),
-        Vector3.new(72, 1, 30),
+        Vector3.new(0, 0, 150),
+        Vector3.new(136, 1, 56),
         lobbyGray,
         Enum.Material.Concrete
     )
 
-    -- ── NORTH WALL  (full, no gate, crenellated top) ─────────────────────────
-    -- 108 wide covers arena + tower overhangs. Centre at Z=−34, height 14.
+    -- ── NORTH WALL ───────────────────────────────────────────────────────────
     makePart(
         world,
         "NorthWall",
-        Vector3.new(0, 7, -34),
-        Vector3.new(108, 14, 4),
+        Vector3.new(0, 7, -62),
+        Vector3.new(196, 14, 4),
         stone,
         Enum.Material.Brick
     )
@@ -330,166 +349,162 @@ local function buildArenaWorld()
     makePart(
         world,
         "SouthWall",
-        Vector3.new(0, 7, 34),
-        Vector3.new(108, 14, 4),
+        Vector3.new(0, 7, 62),
+        Vector3.new(196, 14, 4),
         stone,
         Enum.Material.Brick
     )
 
-    -- ── WEST WALL  (gate opening: 12 Z-wide, 10 Y-tall at centre) ───────────
-    -- North half: Z −32 → −6 (26 studs), centre Z=−19
+    -- ── WEST WALL  (gate opening: 20 Z-wide) ─────────────────────────────────
     makePart(
         world,
         "WestWallNorth",
-        Vector3.new(-52, 7, -19),
-        Vector3.new(4, 14, 26),
+        Vector3.new(-95, 7, -37),
+        Vector3.new(6, 14, 50),
         stone,
         Enum.Material.Brick
     )
-    -- South half: Z +6 → +32 (26 studs), centre Z=+19
     makePart(
         world,
         "WestWallSouth",
-        Vector3.new(-52, 7, 19),
-        Vector3.new(4, 14, 26),
+        Vector3.new(-95, 7, 37),
+        Vector3.new(6, 14, 50),
         stone,
         Enum.Material.Brick
     )
-    -- Lintel above gate opening (Y 10→14, 12 Z-wide)
     makePart(
         world,
         "WestGateLintel",
-        Vector3.new(-52, 12, 0),
-        Vector3.new(4, 4, 12),
+        Vector3.new(-95, 12, 0),
+        Vector3.new(6, 4, 24),
         stone,
         Enum.Material.Brick
     )
 
-    -- ── EAST WALL ────────────────────────────────────────────────────────────
+    -- ── EAST WALL ─────────────────────────────────────────────────────────────
     makePart(
         world,
         "EastWallNorth",
-        Vector3.new(52, 7, -19),
-        Vector3.new(4, 14, 26),
+        Vector3.new(95, 7, -37),
+        Vector3.new(6, 14, 50),
         stone,
         Enum.Material.Brick
     )
     makePart(
         world,
         "EastWallSouth",
-        Vector3.new(52, 7, 19),
-        Vector3.new(4, 14, 26),
+        Vector3.new(95, 7, 37),
+        Vector3.new(6, 14, 50),
         stone,
         Enum.Material.Brick
     )
     makePart(
         world,
         "EastGateLintel",
-        Vector3.new(52, 12, 0),
-        Vector3.new(4, 4, 12),
+        Vector3.new(95, 12, 0),
+        Vector3.new(6, 4, 24),
         stone,
         Enum.Material.Brick
     )
 
-    -- ── CORNER TOWERS  (8×16×8, slightly taller than walls) ─────────────────
+    -- ── CORNER TOWERS ────────────────────────────────────────────────────────
     makePart(
         world,
         "TowerNW",
-        Vector3.new(-52, 8, -34),
-        Vector3.new(8, 16, 8),
+        Vector3.new(-95, 8, -62),
+        Vector3.new(12, 18, 12),
         darkStone,
         Enum.Material.Slate
     )
     makePart(
         world,
         "TowerNE",
-        Vector3.new(52, 8, -34),
-        Vector3.new(8, 16, 8),
+        Vector3.new(95, 8, -62),
+        Vector3.new(12, 18, 12),
         darkStone,
         Enum.Material.Slate
     )
     makePart(
         world,
         "TowerSW",
-        Vector3.new(-52, 8, 34),
-        Vector3.new(8, 16, 8),
+        Vector3.new(-95, 8, 62),
+        Vector3.new(12, 18, 12),
         darkStone,
         Enum.Material.Slate
     )
     makePart(
         world,
         "TowerSE",
-        Vector3.new(52, 8, 34),
-        Vector3.new(8, 16, 8),
+        Vector3.new(95, 8, 62),
+        Vector3.new(12, 18, 12),
         darkStone,
         Enum.Material.Slate
     )
 
     -- ── BATTLEMENTS (merlons) on North & South walls ─────────────────────────
-    -- 4×4×4 blocks spaced 8 studs, from X=−44 to X=44 (clear of corner towers)
-    for ix = -44, 44, 8 do
+    for ix = -84, 84, 14 do
         makePart(
             world,
             "MerlonN_" .. ix,
-            Vector3.new(ix, 16, -34),
-            Vector3.new(4, 4, 4),
+            Vector3.new(ix, 16, -62),
+            Vector3.new(6, 4, 4),
             merlon,
             Enum.Material.Slate
         )
         makePart(
             world,
             "MerlonS_" .. ix,
-            Vector3.new(ix, 16, 34),
-            Vector3.new(4, 4, 4),
+            Vector3.new(ix, 16, 62),
+            Vector3.new(6, 4, 4),
             merlon,
             Enum.Material.Slate
         )
     end
-    -- Merlons on West & East wall sections (north + south halves)
-    for iz = -26, -12, 7 do
+    -- Merlons on West & East wall sections
+    for iz = -50, -18, 16 do
         makePart(
             world,
             "MerlonWN_" .. iz,
-            Vector3.new(-52, 16, iz),
-            Vector3.new(4, 4, 4),
+            Vector3.new(-95, 16, iz),
+            Vector3.new(6, 4, 6),
             merlon,
             Enum.Material.Slate
         )
         makePart(
             world,
             "MerlonEN_" .. iz,
-            Vector3.new(52, 16, iz),
-            Vector3.new(4, 4, 4),
+            Vector3.new(95, 16, iz),
+            Vector3.new(6, 4, 6),
             merlon,
             Enum.Material.Slate
         )
     end
-    for iz = 12, 26, 7 do
+    for iz = 18, 50, 16 do
         makePart(
             world,
             "MerlonWS_" .. iz,
-            Vector3.new(-52, 16, iz),
-            Vector3.new(4, 4, 4),
+            Vector3.new(-95, 16, iz),
+            Vector3.new(6, 4, 6),
             merlon,
             Enum.Material.Slate
         )
         makePart(
             world,
             "MerlonES_" .. iz,
-            Vector3.new(52, 16, iz),
-            Vector3.new(4, 4, 4),
+            Vector3.new(95, 16, iz),
+            Vector3.new(6, 4, 6),
             merlon,
             Enum.Material.Slate
         )
     end
-    -- Tower cap battlements (flat slab on each tower top)
-    for _, tx in { -52, 52 } do
-        for _, tz in { -34, 34 } do
+    -- Tower cap battlements
+    for _, tx in { -83, 83 } do
+        for _, tz in { -62, 62 } do
             makePart(
                 world,
                 "TowerCap_" .. tx .. "_" .. tz,
-                Vector3.new(tx, 17, tz),
-                Vector3.new(9, 2, 9),
+                Vector3.new(tx, 18, tz),
+                Vector3.new(14, 2, 14),
                 darkStone,
                 Enum.Material.Slate
             )
@@ -497,33 +512,29 @@ local function buildArenaWorld()
     end
 
     -- ── LINE-OF-SIGHT PILLARS (4 stone columns inside arena) ─────────────────
-    -- Classic WoW layout: two pairs symmetrically placed at ±22 / ±18
-    for _, px in { -22, 22 } do
-        for _, pz in { -18, 18 } do
-            -- Column body (4×12×4)
+    for _, px in { -42, 42 } do
+        for _, pz in { -33, 33 } do
             makePart(
                 world,
                 "Pillar_" .. px .. "_" .. pz,
                 Vector3.new(px, 6, pz),
-                Vector3.new(4, 12, 4),
+                Vector3.new(6, 14, 6),
                 pillarColor,
                 Enum.Material.SmoothPlastic
             )
-            -- Column capital (wider slab on top)
             makePart(
                 world,
                 "PillarCap_" .. px .. "_" .. pz,
-                Vector3.new(px, 12.8, pz),
-                Vector3.new(6, 1.6, 6),
+                Vector3.new(px, 13.5, pz),
+                Vector3.new(9, 2, 9),
                 pillarColor,
                 Enum.Material.SmoothPlastic
             )
-            -- Column base (wider slab at bottom)
             makePart(
                 world,
                 "PillarBase_" .. px .. "_" .. pz,
                 Vector3.new(px, 0.8, pz),
-                Vector3.new(6, 1.6, 6),
+                Vector3.new(9, 1.6, 9),
                 pillarColor,
                 Enum.Material.SmoothPlastic
             )
@@ -531,63 +542,60 @@ local function buildArenaWorld()
     end
 
     -- ── PREP ROOM WALLS ───────────────────────────────────────────────────────
-    -- Team 1 (west) enclosure: back wall X=−111, north/south walls
     makePart(
         world,
         "TeamOnePrepBackWall",
-        Vector3.new(-111, 7, 0),
-        Vector3.new(4, 14, 40),
+        Vector3.new(-194, 7, 0),
+        Vector3.new(6, 14, 72),
         darkStone,
         Enum.Material.Slate
     )
     makePart(
         world,
         "TeamOnePrepNorthWall",
-        Vector3.new(-82, 7, -21),
-        Vector3.new(56, 14, 4),
+        Vector3.new(-146, 7, -38),
+        Vector3.new(96, 14, 6),
         darkStone,
         Enum.Material.Slate
     )
     makePart(
         world,
         "TeamOnePrepSouthWall",
-        Vector3.new(-82, 7, 21),
-        Vector3.new(56, 14, 4),
+        Vector3.new(-146, 7, 38),
+        Vector3.new(96, 14, 6),
         darkStone,
         Enum.Material.Slate
     )
-    -- Team 2 (east) enclosure
     makePart(
         world,
         "TeamTwoPrepBackWall",
-        Vector3.new(111, 7, 0),
-        Vector3.new(4, 14, 40),
+        Vector3.new(194, 7, 0),
+        Vector3.new(6, 14, 72),
         darkStone,
         Enum.Material.Slate
     )
     makePart(
         world,
         "TeamTwoPrepNorthWall",
-        Vector3.new(82, 7, -21),
-        Vector3.new(56, 14, 4),
+        Vector3.new(146, 7, -38),
+        Vector3.new(96, 14, 6),
         darkStone,
         Enum.Material.Slate
     )
     makePart(
         world,
         "TeamTwoPrepSouthWall",
-        Vector3.new(82, 7, 21),
-        Vector3.new(56, 14, 4),
+        Vector3.new(146, 7, 38),
+        Vector3.new(96, 14, 6),
         darkStone,
         Enum.Material.Slate
     )
 
-    -- Team-colour accent strip on prep room floors (thin coloured slab)
     makePart(
         world,
         "Prep1ColourStrip",
-        Vector3.new(-82, 0.6, 0),
-        Vector3.new(54, 0.2, 38),
+        Vector3.new(-146, 0.6, 0),
+        Vector3.new(94, 0.2, 70),
         blue,
         Enum.Material.SmoothPlastic,
         0.6
@@ -595,16 +603,14 @@ local function buildArenaWorld()
     makePart(
         world,
         "Prep2ColourStrip",
-        Vector3.new(82, 0.6, 0),
-        Vector3.new(54, 0.2, 38),
+        Vector3.new(146, 0.6, 0),
+        Vector3.new(94, 0.2, 70),
         red,
         Enum.Material.SmoothPlastic,
         0.6
     )
 
-    -- ── PORTCULLIS GATES  (iron bars that slide upward when fight starts) ─────
-    -- Each gate: top crossbeam + bottom sill (static frame) + 6 vertical bars
-    -- + horizontal mid-rail. All parts are stored in gateParts and slide up on open.
+    -- ── PORTCULLIS GATES  (wider gate for the expanded arena) ────────────────
     local gateBarColor = Color3.fromRGB(58, 54, 46)
     local gateFrameColor = Color3.fromRGB(36, 32, 24)
     local gateAccentColor = Color3.fromRGB(170, 142, 40)
@@ -624,37 +630,33 @@ local function buildArenaWorld()
             gateClosedCFrames[p] = p.CFrame
         end
 
-        -- Top crossbeam
         addPart(
             "Beam",
             Vector3.new(centreX, 10.7, 0),
-            Vector3.new(3.6, 1.4, 14.5),
+            Vector3.new(5, 1.4, 26),
             gateFrameColor,
             Enum.Material.Metal
         )
-        -- Bottom sill
         addPart(
             "Sill",
             Vector3.new(centreX, 1.0, 0),
-            Vector3.new(3.6, 1.0, 14.5),
+            Vector3.new(5, 1.0, 26),
             gateFrameColor,
             Enum.Material.Metal
         )
-        -- Horizontal mid-rail (decorative accent)
         addPart(
             "Rail",
             Vector3.new(centreX, 7.5, 0),
-            Vector3.new(3.6, 0.5, 12.5),
+            Vector3.new(5, 0.5, 23),
             gateAccentColor,
             Enum.Material.Metal
         )
-        -- 6 vertical bars spaced across Z = -5 … +5
-        for i = 0, 5 do
-            local bz = -5 + i * 2
+        for i = 0, 9 do
+            local bz = -9 + i * 2
             addPart(
                 "Bar" .. tostring(i),
                 Vector3.new(centreX, 5.5, bz),
-                Vector3.new(3.6, 9.5, 0.65),
+                Vector3.new(5, 9.5, 0.65),
                 gateBarColor,
                 Enum.Material.Metal
             )
@@ -664,19 +666,19 @@ local function buildArenaWorld()
     end
 
     table.clear(gateParts)
-    for _, p in buildPortcullis(-52, "WestGate") do
+    for _, p in buildPortcullis(-95, "WestGate") do
         table.insert(gateParts, p)
     end
-    for _, p in buildPortcullis(52, "EastGate") do
+    for _, p in buildPortcullis(95, "EastGate") do
         table.insert(gateParts, p)
     end
 
-    -- ── SPAWN MARKERS (thin neon pads; teleportPlayer adds Y=4 above centre) ──
+    -- ── SPAWN MARKERS ─────────────────────────────────────────────────────────
     makePart(
         world,
         "LobbySpawn",
-        Vector3.new(0, 1, 84),
-        Vector3.new(6, 1, 6),
+        Vector3.new(0, 1, 150),
+        Vector3.new(9, 1, 9),
         lobbyGreen,
         Enum.Material.Neon,
         0.25
@@ -684,8 +686,8 @@ local function buildArenaWorld()
     makePart(
         world,
         "TeamOnePrepSpawn",
-        Vector3.new(-90, 1, 0),
-        Vector3.new(6, 1, 6),
+        Vector3.new(-160, 1, 0),
+        Vector3.new(8, 1, 8),
         blue,
         Enum.Material.Neon,
         0.2
@@ -693,8 +695,8 @@ local function buildArenaWorld()
     makePart(
         world,
         "TeamTwoPrepSpawn",
-        Vector3.new(90, 1, 0),
-        Vector3.new(6, 1, 6),
+        Vector3.new(160, 1, 0),
+        Vector3.new(8, 1, 8),
         red,
         Enum.Material.Neon,
         0.2
@@ -702,8 +704,8 @@ local function buildArenaWorld()
     makePart(
         world,
         "TeamOneArenaEntry",
-        Vector3.new(-42, 1, 0),
-        Vector3.new(5, 1, 5),
+        Vector3.new(-79, 1, 0),
+        Vector3.new(7, 1, 7),
         blue,
         Enum.Material.Neon,
         0.35
@@ -711,58 +713,158 @@ local function buildArenaWorld()
     makePart(
         world,
         "TeamTwoArenaEntry",
-        Vector3.new(42, 1, 0),
-        Vector3.new(5, 1, 5),
+        Vector3.new(79, 1, 0),
+        Vector3.new(7, 1, 7),
         red,
         Enum.Material.Neon,
         0.35
     )
 
-    -- ── TORCHES  (neon flame + PointLight at key positions) ──────────────────
-    -- 4 × atop arena wall corners (on the merlon level)
-    for _, tx in { -44, 44 } do
-        for _, tz in { -34, 34 } do
+    -- ── TORCHES ───────────────────────────────────────────────────────────────
+    for _, tx in { -82, 82 } do
+        for _, tz in { -62, 62 } do
             makeTorch(world, "TorchCorner_" .. tx .. "_" .. tz, Vector3.new(tx, 18, tz))
         end
     end
-    -- 4 × flanking each gate archway (inner face of west/east wall)
-    for _, gx in { -52, 52 } do
+    for _, gx in { -95, 95 } do
         makeTorch(
             world,
             "TorchGate_" .. gx .. "N",
-            Vector3.new(gx + (if gx < 0 then 3 else -3), 8, -7)
+            Vector3.new(gx + (if gx < 0 then 4 else -4), 8, -13)
         )
         makeTorch(
             world,
             "TorchGate_" .. gx .. "S",
-            Vector3.new(gx + (if gx < 0 then 3 else -3), 8, 7)
+            Vector3.new(gx + (if gx < 0 then 4 else -4), 8, 13)
         )
     end
-    -- 4 × prep room back walls
-    for _, px in { -108, 108 } do
+    for _, px in { -188, 188 } do
         makeTorch(
             world,
             "TorchPrep_" .. px .. "N",
-            Vector3.new(px + (if px < 0 then 3 else -3), 9, -8)
+            Vector3.new(px + (if px < 0 then 4 else -4), 9, -12)
         )
         makeTorch(
             world,
             "TorchPrep_" .. px .. "S",
-            Vector3.new(px + (if px < 0 then 3 else -3), 9, 8)
+            Vector3.new(px + (if px < 0 then 4 else -4), 9, 12)
         )
     end
-    -- 2 × flanking the centre dais pillars
-    makeTorch(world, "TorchDaisNW", Vector3.new(-14, 2.5, -14))
-    makeTorch(world, "TorchDaisNE", Vector3.new(14, 2.5, -14))
-    makeTorch(world, "TorchDaisSW", Vector3.new(-14, 2.5, 14))
-    makeTorch(world, "TorchDaisSE", Vector3.new(14, 2.5, 14))
+    makeTorch(world, "TorchDaisNW", Vector3.new(-26, 2.5, -26))
+    makeTorch(world, "TorchDaisNE", Vector3.new(26, 2.5, -26))
+    makeTorch(world, "TorchDaisSW", Vector3.new(-26, 2.5, 26))
+    makeTorch(world, "TorchDaisSE", Vector3.new(26, 2.5, 26))
 
-    -- ── CENTRE DAIS  (low raised platform at the arena heart) ────────────────
+    for _, bannerX in { -54, 0, 54 } do
+        makeBanner(
+            world,
+            "NorthBanner_" .. bannerX,
+            Vector3.new(bannerX, 8.5, -59.6),
+            Vector3.new(10, 14, 0.7),
+            blue,
+            nil
+        )
+        makeBanner(
+            world,
+            "SouthBanner_" .. bannerX,
+            Vector3.new(bannerX, 8.5, 59.6),
+            Vector3.new(10, 14, 0.7),
+            red,
+            Vector3.new(0, 180, 0)
+        )
+    end
+
+    makePart(
+        world,
+        "NorthStandLower",
+        Vector3.new(0, 2.5, -84),
+        Vector3.new(200, 5, 18),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "NorthStandUpper",
+        Vector3.new(0, 6.5, -94),
+        Vector3.new(188, 4, 16),
+        stone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "SouthStandLower",
+        Vector3.new(0, 2.5, 84),
+        Vector3.new(200, 5, 18),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "SouthStandUpper",
+        Vector3.new(0, 6.5, 94),
+        Vector3.new(188, 4, 16),
+        stone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "WestStand",
+        Vector3.new(-122, 2.5, 0),
+        Vector3.new(18, 5, 88),
+        darkStone,
+        Enum.Material.Slate
+    )
+    makePart(
+        world,
+        "EastStand",
+        Vector3.new(122, 2.5, 0),
+        Vector3.new(18, 5, 88),
+        darkStone,
+        Enum.Material.Slate
+    )
+
+    for _, hedgeZ in { 134, 166 } do
+        makePart(
+            world,
+            "LobbyHedgeL_" .. hedgeZ,
+            Vector3.new(-52, 2, hedgeZ),
+            Vector3.new(14, 4, 6),
+            hedgeGreen,
+            Enum.Material.Grass
+        )
+        makePart(
+            world,
+            "LobbyHedgeR_" .. hedgeZ,
+            Vector3.new(52, 2, hedgeZ),
+            Vector3.new(14, 4, 6),
+            hedgeGreen,
+            Enum.Material.Grass
+        )
+    end
+
+    makePart(
+        world,
+        "EntryArchBase",
+        Vector3.new(0, 6, 124),
+        Vector3.new(56, 12, 6),
+        marble,
+        Enum.Material.Marble
+    )
+    makePart(
+        world,
+        "EntryArchTop",
+        Vector3.new(0, 13, 124),
+        Vector3.new(62, 2, 8),
+        darkStone,
+        Enum.Material.Marble
+    )
+
+    -- ── CENTRE DAIS ───────────────────────────────────────────────────────────
     makePart(
         world,
         "CentreDais",
         Vector3.new(0, 0.8, 0),
-        Vector3.new(24, 0.6, 24),
+        Vector3.new(46, 0.6, 46),
         merlon,
         Enum.Material.SmoothPlastic
     )
@@ -770,20 +872,39 @@ local function buildArenaWorld()
         world,
         "CentreDaisInner",
         Vector3.new(0, 1.05, 0),
-        Vector3.new(12, 0.1, 12),
+        Vector3.new(24, 0.1, 24),
         darkStone,
         Enum.Material.SmoothPlastic,
         0.15
     )
 
+    makePart(
+        world,
+        "CentreSigilCrossA",
+        Vector3.new(0, 1.1, 0),
+        Vector3.new(34, 0.12, 4),
+        marble,
+        Enum.Material.Marble,
+        0.1
+    )
+    makePart(
+        world,
+        "CentreSigilCrossB",
+        Vector3.new(0, 1.1, 0),
+        Vector3.new(4, 0.12, 34),
+        marble,
+        Enum.Material.Marble,
+        0.1
+    )
+
     -- ── PREP ROOM STONE BENCHES ───────────────────────────────────────────────
-    for _, bx in { -101, 101 } do
-        for _, bz in { -8, 8 } do
+    for _, bx in { -162, 162 } do
+        for _, bz in { -12, 12 } do
             makePart(
                 world,
                 "Bench_" .. bx .. "_" .. bz,
                 Vector3.new(bx, 1.5, bz),
-                Vector3.new(12, 1, 2.5),
+                Vector3.new(16, 1, 3),
                 darkStone,
                 Enum.Material.SmoothPlastic
             )
@@ -791,13 +912,51 @@ local function buildArenaWorld()
     end
 
     -- ── ATMOSPHERIC LIGHTING ─────────────────────────────────────────────────
-    Lighting.Ambient = Color3.fromRGB(65, 58, 88)
-    Lighting.Brightness = 2.0
-    Lighting.ClockTime = 20.2
+    Lighting.Ambient = Color3.fromRGB(118, 104, 90)
+    Lighting.OutdoorAmbient = Color3.fromRGB(107, 124, 138)
+    Lighting.Brightness = 3.4
+    Lighting.ClockTime = 17.4
     Lighting.GeographicLatitude = 42
-    Lighting.FogStart = 220
-    Lighting.FogEnd = 520
-    Lighting.FogColor = Color3.fromRGB(26, 22, 40)
+    Lighting.FogStart = 540
+    Lighting.FogEnd = 1500
+    Lighting.FogColor = Color3.fromRGB(164, 154, 149)
+
+    for _, effectName in { "ArenaAtmosphere", "ArenaBloom", "ArenaColorGrade", "ArenaSunRays" } do
+        local existingEffect = Lighting:FindFirstChild(effectName)
+        if existingEffect then
+            existingEffect:Destroy()
+        end
+    end
+
+    local atmosphere = Instance.new("Atmosphere")
+    atmosphere.Name = "ArenaAtmosphere"
+    atmosphere.Color = Color3.fromRGB(195, 178, 160)
+    atmosphere.Decay = Color3.fromRGB(128, 140, 168)
+    atmosphere.Density = 0.22
+    atmosphere.Glare = 0.24
+    atmosphere.Haze = 1.2
+    atmosphere.Parent = Lighting
+
+    local bloom = Instance.new("BloomEffect")
+    bloom.Name = "ArenaBloom"
+    bloom.Intensity = 0.55
+    bloom.Size = 26
+    bloom.Threshold = 1.1
+    bloom.Parent = Lighting
+
+    local colorGrade = Instance.new("ColorCorrectionEffect")
+    colorGrade.Name = "ArenaColorGrade"
+    colorGrade.Brightness = 0.05
+    colorGrade.Contrast = 0.08
+    colorGrade.Saturation = 0.12
+    colorGrade.TintColor = Color3.fromRGB(255, 238, 221)
+    colorGrade.Parent = Lighting
+
+    local sunRays = Instance.new("SunRaysEffect")
+    sunRays.Name = "ArenaSunRays"
+    sunRays.Intensity = 0.06
+    sunRays.Spread = 0.78
+    sunRays.Parent = Lighting
 end
 
 local function setGatesOpen(open: boolean)
@@ -1017,6 +1176,9 @@ end
 
 local function moveBotTo(fighter: FighterState, position: Vector3)
     if fighter.botModel and fighter.botModel.PrimaryPart then
+        if fighter.casting then
+            return
+        end
         local root = fighter.botModel.PrimaryPart
         local desiredPosition = Vector3.new(position.X, root.Position.Y, position.Z)
         local delta = desiredPosition - root.Position
@@ -1169,6 +1331,13 @@ local function applyMovementState(fighter: FighterState)
         return
     end
 
+    -- WoW-style: casting a spell roots the player in place
+    if fighter.casting then
+        humanoid.WalkSpeed = 0
+        humanoid.JumpPower = 0
+        return
+    end
+
     local walkSpeed, movementLocked = getFighterMovementState(fighter)
 
     humanoid.WalkSpeed = walkSpeed
@@ -1177,7 +1346,7 @@ end
 
 local function buildEffectList(fighter: FighterState)
     local now = os.clock()
-    local effects = {}
+    local effects: { { name: string, remaining: number, amount: number? } } = {}
 
     if fighter.shield > 0 and fighter.shieldExpiresAt > now then
         table.insert(effects, {
@@ -1924,7 +2093,7 @@ local function runPlayerAutoAi(matchState: MatchState, fighter: FighterState)
                                 + Vector3.new(0, 0, math.random(-strafeDistance, strafeDistance))
                         end
 
-                        if desiredPosition then
+                        if desiredPosition and not fighter.casting then
                             local character = fighter.player and fighter.player.Character
                             local humanoid = character
                                 and character:FindFirstChildOfClass("Humanoid") :: Humanoid?

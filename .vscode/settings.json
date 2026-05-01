@@ -62,7 +62,7 @@
     "luau-lsp.completion.imports.stringRequires.enabled": true,
     "stylua.searchBinaryInPATH": true,
     "stylua.verify": true,
-    "editor.formatOnSaveMode": "file",
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
     "terminal.integrated.profiles.windows": {
         "PowerShell (Store)": {
             "path": "C:\\Users\\cooli\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe",
