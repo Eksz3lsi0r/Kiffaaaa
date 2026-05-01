@@ -4,3 +4,7 @@ sourcemap.json
 *.rbxl
 *.rbxl.lock
 *.rbxmx
+.playtest-report.json
+.awaiting-ai-analysis
+.ai-analysis-applied
+.refine-quality.txt

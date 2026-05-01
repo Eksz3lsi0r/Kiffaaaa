@@ -15,8 +15,8 @@ ArenaDuelConfig.StudioAutomation = {
     AutoQueueModeAttribute = "ArenaDuelAutoQueueMode",
 }
 
-ArenaDuelConfig.PreparationSeconds = 12
-ArenaDuelConfig.BotPreparationSeconds = 4
+ArenaDuelConfig.PreparationSeconds = 15
+ArenaDuelConfig.BotPreparationSeconds = 6
 ArenaDuelConfig.FinishedReturnSeconds = 5
 ArenaDuelConfig.MaxFocus = 5
 ArenaDuelConfig.DRWindowSeconds = 18
@@ -37,11 +37,12 @@ ArenaDuelConfig.BotAi = {
     strafeDistance = 9,
 }
 
+-- Priest excluded from bot rotation: all abilities are friendly (heals/shields),
+-- so a Priest bot never deals damage and becomes unkillable.
 ArenaDuelConfig.BotClassRotation = {
     "Mage",
-    "Priest",
-    "Rogue",
     "Warrior",
+    "Rogue",
 }
 
 ArenaDuelConfig.MatchModes = {
@@ -88,10 +89,10 @@ ArenaDuelConfig.Classes = {
         abilities = {
             Ability1 = {
                 displayName = "Sword Attack",
-                cooldown = 2,
+                cooldown = 2.2,
                 castTime = 0,
                 range = 10,
-                damage = 15,
+                damage = 12,
             },
             Ability2 = {
                 displayName = "Hinrichten",
@@ -167,23 +168,23 @@ ArenaDuelConfig.Classes = {
         abilities = {
             Ability1 = {
                 displayName = "Feuerball",
-                cooldown = 0,
-                castTime = 1,
+                cooldown = 2.5,
+                castTime = 0.7,
                 range = 70,
-                damage = 10,
-                dotDamage = 5,
-                dotDuration = 8,
+                damage = 18,
+                dotDamage = 7,
+                dotDuration = 6,
                 dotInterval = 1,
             },
             Ability2 = {
                 displayName = "Frostbolt",
-                cooldown = 4,
-                castTime = 1.5,
+                cooldown = 3.5,
+                castTime = 1.1,
                 range = 70,
-                damage = 16,
+                damage = 22,
                 crowdControl = "Slow",
                 crowdControlDuration = 8,
-                slowMultiplier = 0.75,
+                slowMultiplier = 0.72,
             },
             Ability3 = {
                 displayName = "Frost Nova",
@@ -211,10 +212,10 @@ ArenaDuelConfig.Classes = {
         abilities = {
             Ability1 = {
                 displayName = "Stich",
-                cooldown = 0.5,
+                cooldown = 0.35,
                 castTime = 0,
                 range = 8,
-                damage = 9,
+                damage = 11,
                 focusGain = 1,
             },
             Ability2 = {

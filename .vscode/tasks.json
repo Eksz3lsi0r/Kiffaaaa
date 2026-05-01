@@ -15,6 +15,14 @@
 				"-File",
 				"scripts/do-all-tasks.ps1",
 				"-McpRetryAttempts",
+				"3",
+				"-GameBrief",
+				"${input:robloxGameBrief}",
+				"-GameBriefFile",
+				".game-brief.txt",
+				"-LiveTelemetryPath",
+				".playtest-live.json",
+				"-LivePollSeconds",
 				"3"
 			],
 			"presentation": {
@@ -28,7 +36,43 @@
 				"isDefault": true
 			},
 			"problemMatcher": [],
-			"detail": "Single entrypoint: setup, connect, and iterative Roblox dev loop until Ctrl+C or DONE sentinel."
+			"detail": "Single entrypoint: asks for a game brief, writes .game-brief.txt, streams .playtest-live.json during playtests, and runs the iterative Roblox dev loop until Ctrl+C or DONE sentinel."
+		},
+		{
+			"label": "Roblox: Do all tasks (reuse last brief)",
+			"type": "shell",
+			"command": "${env:LOCALAPPDATA}\\Microsoft\\WindowsApps\\pwsh.exe",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"scripts/do-all-tasks.ps1",
+				"-McpRetryAttempts",
+				"3",
+				"-GameBriefFile",
+				".game-brief.txt",
+				"-LiveTelemetryPath",
+				".playtest-live.json",
+				"-LivePollSeconds",
+				"3"
+			],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": false,
+				"showReuseMessage": false
+			},
+			"problemMatcher": [],
+			"detail": "Runs the same iterative loop, but reuses the last saved .game-brief.txt without prompting again."
+		}
+	],
+	"inputs": [
+		{
+			"id": "robloxGameBrief",
+			"type": "promptString",
+			"description": "Beschreibe das Zielspiel, die Arena, Combat-Ziele und was der Loop verbessern soll.",
+			"default": "WoW Arena Clone mit Vorbereitungsraum, Countdown, Toren, sauberem Combat-Feedback, Fehlerbehebung und logischen Verbesserungen waehrend der Iterationen"
 		}
 	]
 }

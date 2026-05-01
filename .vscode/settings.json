@@ -62,12 +62,14 @@
     "luau-lsp.completion.imports.stringRequires.enabled": true,
     "stylua.searchBinaryInPATH": true,
     "stylua.verify": true,
-    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "editor.formatOnSaveMode": "file",
     "terminal.integrated.profiles.windows": {
         "PowerShell (Store)": {
-            "path": "C:\\Users\\cooli\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe"
+            "path": "C:\\Users\\cooli\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe",
+            "env": {
+                "TERM_PROGRAM": "vscode-terminal"
+            }
         }
     },
-    "terminal.integrated.defaultProfile.windows": "PowerShell (Store)",
-    "powershell.powerShellDefaultVersion": "PowerShell (Store)"
+    "terminal.integrated.defaultProfile.windows": "PowerShell (Store)"
 }

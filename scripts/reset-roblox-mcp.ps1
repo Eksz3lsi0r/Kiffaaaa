@@ -93,5 +93,5 @@ else {
         Write-Host "Port 58741 is clear."
     }
 
-    Write-Host "Restart the VS Code MCP server, then run Roblox: Verify MCP bridge to trigger the plugin hot-reload/reconnect check."
+    Write-Host "Run Roblox: Verify MCP bridge. The verify task will start the bridge process automatically if it is not already running."
 }

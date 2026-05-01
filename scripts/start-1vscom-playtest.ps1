@@ -86,7 +86,7 @@ try {
     }
     catch {
         if ($_.Exception.Message -match "already running") {
-            Write-Host "Playtest already running — ArenaDuelAutoQueueMode=Bot set."
+            Write-Host "Playtest already running - ArenaDuelAutoQueueMode=Bot set."
         }
         else {
             throw

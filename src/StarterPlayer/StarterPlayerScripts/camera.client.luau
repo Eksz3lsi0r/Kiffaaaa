@@ -54,6 +54,12 @@ local function requestStudioAutoQueue()
     end
 
     studioAutoQueueRequested = true
+    -- In automated playtests there is no human at the keyboard.
+    -- Force Mage so the player fighter can attack from range (70 studs)
+    -- instead of defaulting to Warrior and never reaching melee range.
+    if studioAutoQueueMode == "Bot" then
+        classSelectEvent:FireServer("Mage")
+    end
     queueRequestEvent:FireServer(studioAutoQueueMode)
 end
 
@@ -314,6 +320,123 @@ messageLabel.TextStrokeTransparency = 0.35
 messageLabel.Text = ""
 messageLabel.Parent = root
 
+-- ── PHASE ANNOUNCEMENT BANNER  (WoW-style centre-screen overlay) ─────────────
+local phaseAnnouncement = Instance.new("TextLabel")
+phaseAnnouncement.Name = "PhaseAnnouncement"
+phaseAnnouncement.AnchorPoint = Vector2.new(0.5, 0.5)
+phaseAnnouncement.Position = UDim2.fromScale(0.5, 0.36)
+phaseAnnouncement.Size = UDim2.fromOffset(760, 120)
+phaseAnnouncement.BackgroundTransparency = 1
+phaseAnnouncement.Font = Enum.Font.GothamBlack
+phaseAnnouncement.TextColor3 = Color3.fromRGB(255, 220, 55)
+phaseAnnouncement.TextSize = 80
+phaseAnnouncement.TextStrokeTransparency = 0.05
+phaseAnnouncement.TextStrokeColor3 = Color3.fromRGB(60, 28, 0)
+phaseAnnouncement.Text = ""
+phaseAnnouncement.TextTransparency = 1
+phaseAnnouncement.ZIndex = 12
+phaseAnnouncement.Parent = root
+
+local phaseAnnouncementSub = Instance.new("TextLabel")
+phaseAnnouncementSub.Name = "PhaseAnnouncementSub"
+phaseAnnouncementSub.AnchorPoint = Vector2.new(0.5, 0.5)
+phaseAnnouncementSub.Position = UDim2.fromScale(0.5, 0.45)
+phaseAnnouncementSub.Size = UDim2.fromOffset(520, 46)
+phaseAnnouncementSub.BackgroundTransparency = 1
+phaseAnnouncementSub.Font = Enum.Font.GothamBold
+phaseAnnouncementSub.TextColor3 = Color3.fromRGB(240, 240, 240)
+phaseAnnouncementSub.TextSize = 28
+phaseAnnouncementSub.TextStrokeTransparency = 0.3
+phaseAnnouncementSub.Text = ""
+phaseAnnouncementSub.TextTransparency = 1
+phaseAnnouncementSub.ZIndex = 12
+phaseAnnouncementSub.Parent = root
+
+-- ── SELF UNIT FRAME  (WoW-style player health frame, visible during match) ───
+local selfFrame = Instance.new("Frame")
+selfFrame.Name = "SelfFrame"
+selfFrame.Position = UDim2.fromOffset(18, 130)
+selfFrame.Size = UDim2.fromOffset(280, 92)
+selfFrame.BackgroundColor3 = Color3.fromRGB(16, 18, 22)
+selfFrame.BackgroundTransparency = 0.08
+selfFrame.BorderSizePixel = 0
+selfFrame.Visible = false
+selfFrame.Parent = root
+
+local selfFrameCorner = Instance.new("UICorner")
+selfFrameCorner.CornerRadius = UDim.new(0, 8)
+selfFrameCorner.Parent = selfFrame
+
+local selfNameLabel = Instance.new("TextLabel")
+selfNameLabel.Name = "NameLabel"
+selfNameLabel.BackgroundTransparency = 1
+selfNameLabel.Position = UDim2.fromOffset(10, 8)
+selfNameLabel.Size = UDim2.new(1, -20, 0, 20)
+selfNameLabel.Font = Enum.Font.GothamBold
+selfNameLabel.TextColor3 = Color3.fromRGB(220, 235, 255)
+selfNameLabel.TextSize = 14
+selfNameLabel.TextXAlignment = Enum.TextXAlignment.Left
+selfNameLabel.Text = "Spieler"
+selfNameLabel.Parent = selfFrame
+
+local selfClassLabel = Instance.new("TextLabel")
+selfClassLabel.Name = "ClassLabel"
+selfClassLabel.BackgroundTransparency = 1
+selfClassLabel.Position = UDim2.fromOffset(10, 26)
+selfClassLabel.Size = UDim2.new(1, -20, 0, 14)
+selfClassLabel.Font = Enum.Font.Gotham
+selfClassLabel.TextColor3 = Color3.fromRGB(175, 195, 255)
+selfClassLabel.TextSize = 12
+selfClassLabel.TextXAlignment = Enum.TextXAlignment.Left
+selfClassLabel.Text = "Klasse"
+selfClassLabel.Parent = selfFrame
+
+local selfHealthBack = Instance.new("Frame")
+selfHealthBack.Name = "HealthBack"
+selfHealthBack.Position = UDim2.fromOffset(10, 44)
+selfHealthBack.Size = UDim2.new(1, -20, 0, 18)
+selfHealthBack.BackgroundColor3 = Color3.fromRGB(30, 32, 38)
+selfHealthBack.BorderSizePixel = 0
+selfHealthBack.Parent = selfFrame
+
+local selfHealthBackCorner = Instance.new("UICorner")
+selfHealthBackCorner.CornerRadius = UDim.new(0, 4)
+selfHealthBackCorner.Parent = selfHealthBack
+
+local selfHealthFill = Instance.new("Frame")
+selfHealthFill.Name = "Fill"
+selfHealthFill.BackgroundColor3 = Color3.fromRGB(68, 200, 96)
+selfHealthFill.BorderSizePixel = 0
+selfHealthFill.Size = UDim2.fromScale(1, 1)
+selfHealthFill.Parent = selfHealthBack
+
+local selfHealthFillCorner = Instance.new("UICorner")
+selfHealthFillCorner.CornerRadius = UDim.new(0, 4)
+selfHealthFillCorner.Parent = selfHealthFill
+
+local selfHPLabel = Instance.new("TextLabel")
+selfHPLabel.Name = "HPLabel"
+selfHPLabel.BackgroundTransparency = 1
+selfHPLabel.Size = UDim2.fromScale(1, 1)
+selfHPLabel.Font = Enum.Font.GothamBold
+selfHPLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+selfHPLabel.TextSize = 11
+selfHPLabel.TextStrokeTransparency = 0.2
+selfHPLabel.Text = ""
+selfHPLabel.Parent = selfHealthBack
+
+local selfEffectsLabel = Instance.new("TextLabel")
+selfEffectsLabel.Name = "Effects"
+selfEffectsLabel.BackgroundTransparency = 1
+selfEffectsLabel.Position = UDim2.fromOffset(10, 66)
+selfEffectsLabel.Size = UDim2.new(1, -20, 0, 18)
+selfEffectsLabel.Font = Enum.Font.Gotham
+selfEffectsLabel.TextColor3 = Color3.fromRGB(180, 200, 255)
+selfEffectsLabel.TextSize = 11
+selfEffectsLabel.TextXAlignment = Enum.TextXAlignment.Left
+selfEffectsLabel.Text = ""
+selfEffectsLabel.Parent = selfFrame
+
 local function tweenGuiTree(container: GuiObject, visible: boolean)
     local descendants = container:GetDescendants()
     table.insert(descendants, 1, container)
@@ -395,6 +518,36 @@ local function fadeSystemMessage()
         if os.clock() >= messageExpiresAt then
             messageLabel.Text = ""
         end
+    end)
+end
+
+local phaseAnnouncementTween: Tween? = nil
+local function showPhaseAnnouncement(mainText: string, subText: string, holdDuration: number)
+    if phaseAnnouncementTween then
+        phaseAnnouncementTween:Cancel()
+        phaseAnnouncementTween = nil
+    end
+
+    phaseAnnouncement.Text = mainText
+    phaseAnnouncement.TextTransparency = 0
+    phaseAnnouncement.TextStrokeTransparency = 0.05
+    phaseAnnouncementSub.Text = subText
+    phaseAnnouncementSub.TextTransparency = if subText ~= "" then 0 else 1
+    phaseAnnouncementSub.TextStrokeTransparency = if subText ~= "" then 0.3 else 1
+
+    task.delay(holdDuration, function()
+        local t = TweenService:Create(
+            phaseAnnouncement,
+            TweenInfo.new(0.75, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            { TextTransparency = 1, TextStrokeTransparency = 1 }
+        )
+        phaseAnnouncementTween = t
+        t:Play()
+        TweenService:Create(
+            phaseAnnouncementSub,
+            TweenInfo.new(0.75, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            { TextTransparency = 1, TextStrokeTransparency = 1 }
+        ):Play()
     end)
 end
 
@@ -754,6 +907,10 @@ local function updatePanelVisibility()
     tweenGuiTree(rightPanel, inMatch)
     tweenGuiTree(bottomBar, inMatch)
     tweenGuiTree(castBar, inMatch and castBar.Visible)
+    -- selfFrame is managed by updateSelfFrame; hide it when not in a match
+    if not inMatch then
+        selfFrame.Visible = false
+    end
 end
 
 local function processCombatEvents()
@@ -779,6 +936,38 @@ local function processCombatEvents()
     end
 end
 
+local function updateSelfFrame()
+    local localFighter = getLocalFighter(currentState)
+    if not localFighter then
+        selfFrame.Visible = false
+        return
+    end
+
+    selfFrame.Visible = true
+    selfNameLabel.Text = tostring(localFighter.name or "Spieler")
+    selfClassLabel.Text = tostring(localFighter.className or localFighter.classId or "?")
+
+    local hpNum: number = tonumber(localFighter.health) or 0
+    local maxNum: number = tonumber(localFighter.maxHealth) or 1
+    local hpPct = math.clamp(hpNum / math.max(maxNum, 1), 0, 1)
+    local hpColor = if hpPct <= 0.3
+        then Color3.fromRGB(220, 60, 60)
+        elseif hpPct <= 0.6 then Color3.fromRGB(220, 175, 40)
+        else Color3.fromRGB(68, 200, 96)
+    TweenService:Create(
+        selfHealthFill,
+        TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        { Size = UDim2.fromScale(hpPct, 1), BackgroundColor3 = hpColor }
+    ):Play()
+    selfHPLabel.Text = string.format("%d / %d", math.floor(hpNum), math.floor(maxNum))
+
+    local effectParts: { string } = {}
+    for _, eff in localFighter.effects or {} do
+        table.insert(effectParts, string.format("%s %.0fs", eff.name, eff.remaining or 0))
+    end
+    selfEffectsLabel.Text = table.concat(effectParts, "  ")
+end
+
 local function render()
     updateClassButtons()
     updateAbilityButtons()
@@ -786,15 +975,32 @@ local function render()
     updateTargets()
     updateTimer()
     updatePanelVisibility()
+    updateSelfFrame()
     processCombatEvents()
 end
 
 stateUpdateEvent.OnClientEvent:Connect(function(state)
+    local previousKind = currentState and currentState.kind
+    local previousPhase = currentState and currentState.phase
     currentState = state
     stateReceivedAt = os.clock()
     if state.kind == "Lobby" then
         selectedClass = state.selectedClass or selectedClass
+        if previousKind == "Match" then
+            studioAutoQueueRequested = false
+        end
         requestStudioAutoQueue()
+    elseif state.kind == "Match" then
+        -- Phase transition announcements
+        if previousPhase ~= "Active" and state.phase == "Active" then
+            showPhaseAnnouncement("FIGHT!", "", 1.8)
+        elseif state.phase == "Preparing" and previousKind ~= "Match" then
+            showPhaseAnnouncement("VORBEREITUNGSPHASE", "Vorbereitung laeuft...", 2.6)
+        elseif state.phase == "Finished" and previousPhase ~= "Finished" then
+            local winTeam: number = state.winnerTeam or 0
+            local winText = if winTeam == 1 then "TEAM 1 SIEGT!" else "TEAM 2 SIEGT!"
+            showPhaseAnnouncement(winText, "Rueckkehr zur Lobby...", 4.0)
+        end
     end
     render()
 end)

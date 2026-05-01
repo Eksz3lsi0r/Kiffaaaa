@@ -1,14 +1,8 @@
 {
     "servers": {
         "robloxstudio-mcp": {
-            "type": "stdio",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "npx",
-                "-y",
-                "robloxstudio-mcp@latest"
-            ]
+            "type": "http",
+            "url": "http://localhost:58741/mcp"
         },
         "firecrawl/firecrawl-mcp-server": {
             "type": "stdio",

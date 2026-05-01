@@ -7,12 +7,36 @@ param(
     [switch]$ForceSetup,
     [switch]$SkipRojoServe,
     [switch]$SkipPlaytest,
-    [int]$StudioReadyTimeoutSeconds = 180
+    [int]$StudioReadyTimeoutSeconds = 180,
+    [int]$PlaytestRunSeconds = 35,
+    [int]$AiAnalysisTimeoutSeconds = 300,
+    [string]$GameBrief = "",
+    [string]$GameBriefFile = (Join-Path $PSScriptRoot "..\.game-brief.txt"),
+    [string]$LiveTelemetryPath = (Join-Path $PSScriptRoot "..\.playtest-live.json"),
+    [int]$LivePollSeconds = 3
 )
 
 $ErrorActionPreference = "Stop"
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 Set-Location $repoRoot
+
+function Resolve-RepoPath {
+    param([string]$Path)
+
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        return $Path
+    }
+
+    if ([System.IO.Path]::IsPathRooted($Path)) {
+        return $Path
+    }
+
+    return (Join-Path $repoRoot $Path)
+}
+
+$QualityFile = Resolve-RepoPath -Path $QualityFile
+$GameBriefFile = Resolve-RepoPath -Path $GameBriefFile
+$LiveTelemetryPath = Resolve-RepoPath -Path $LiveTelemetryPath
 
 function Write-Banner {
     param([string]$Text, [string]$Color = "Cyan")
@@ -60,6 +84,39 @@ function Test-QualityReached {
     }
 
     return ($content.Trim() -match '^(?i)done$')
+}
+
+function Get-GameBriefText {
+    param([string]$Path)
+
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return ""
+    }
+
+    $content = Get-Content -LiteralPath $Path -Raw -ErrorAction SilentlyContinue
+    if ($null -eq $content) {
+        return ""
+    }
+
+    return $content.Trim()
+}
+
+function Save-GameBrief {
+    param(
+        [string]$Path,
+        [string]$Brief
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Brief)) {
+        return
+    }
+
+    $parent = Split-Path -Parent $Path
+    if (-not [string]::IsNullOrWhiteSpace($parent) -and -not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    }
+
+    Set-Content -LiteralPath $Path -Value $Brief.Trim() -Encoding UTF8
 }
 
 function Test-IsPortListening {
@@ -244,6 +301,204 @@ function Show-LuauLspStudioSettings {
     }
 }
 
+function Invoke-McpTool {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Tool,
+
+        [hashtable]$Body = @{}
+    )
+
+    $jsonBody = $Body | ConvertTo-Json -Depth 8 -Compress
+    $response = Invoke-RestMethod -Uri "http://localhost:58741/mcp/$Tool" -Method Post `
+        -ContentType "application/json" -Body $jsonBody -TimeoutSec 20
+
+    if ($null -ne $response.content -and $response.content.Count -gt 0) {
+        $text = $response.content[0].text
+        if (-not [string]::IsNullOrWhiteSpace($text)) {
+            try {
+                return ($text | ConvertFrom-Json)
+            }
+            catch {
+                return $text
+            }
+        }
+    }
+
+    return $response
+}
+
+function Get-PlaytestSnapshot {
+    param([int]$OutputLogLines = 160)
+
+    $snapshot = [ordered]@{
+        timestamp      = (Get-Date -Format "o")
+        isRunning      = $false
+        playtestOutput = $null
+        outputLog      = $null
+        playtestError  = $null
+        outputLogError = $null
+    }
+
+    try {
+        $playtest = Invoke-McpTool -Tool "get_playtest_output" -Body @{}
+        $snapshot.playtestOutput = $playtest
+
+        if ($playtest -and $playtest.PSObject.Properties.Name -contains "isRunning") {
+            $snapshot.isRunning = [bool]$playtest.isRunning
+        }
+    }
+    catch {
+        $snapshot.playtestError = $_.Exception.Message
+    }
+
+    try {
+        $snapshot.outputLog = Invoke-McpTool -Tool "get_output_log" -Body @{ maxLines = $OutputLogLines }
+    }
+    catch {
+        $snapshot.outputLogError = $_.Exception.Message
+    }
+
+    return [pscustomobject]$snapshot
+}
+
+function Write-JsonFile {
+    param(
+        [string]$Path,
+        $Value
+    )
+
+    $parent = Split-Path -Parent $Path
+    if (-not [string]::IsNullOrWhiteSpace($parent) -and -not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    }
+
+    $Value | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $Path -Encoding UTF8
+}
+
+function Invoke-PlaytestCycle {
+    param(
+        [Parameter(Mandatory = $true)]
+        [int]$RunSeconds,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ReportPath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$LivePath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$GameBriefPath,
+
+        [Parameter(Mandatory = $true)]
+        [int]$PollSeconds
+    )
+
+    # Check if a playtest is already running
+    $playtestRunning = $false
+    try {
+        $statusCheck = Invoke-McpTool -Tool "get_playtest_output" -Body @{}
+        if ($null -ne $statusCheck.isRunning) {
+            $playtestRunning = [bool]$statusCheck.isRunning
+        }
+        elseif ($statusCheck.content -and $statusCheck.content.Count -gt 0) {
+            $parsed = $statusCheck.content[0].text | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($null -ne $parsed -and $null -ne $parsed.isRunning) {
+                $playtestRunning = [bool]$parsed.isRunning
+            }
+        }
+    }
+    catch {}
+
+    if ($playtestRunning) {
+        Write-Host "   Playtest already running; stopping it first..." -ForegroundColor DarkGray
+        try { Invoke-McpTool -Tool "stop_playtest" -Body @{} | Out-Null } catch {}
+        Start-Sleep -Seconds 3
+    }
+
+    # Set bot auto-queue attribute then start a fresh playtest
+    Invoke-McpTool -Tool "execute_luau" -Body @{
+        code = 'game:GetService("ReplicatedStorage"):SetAttribute("ArenaDuelAutoQueueMode", "Bot")'
+    } | Out-Null
+
+    Write-Host "   Starting playtest..." -ForegroundColor DarkGray
+    Invoke-McpTool -Tool "start_playtest" -Body @{ mode = "play"; numPlayers = 1 } | Out-Null
+    Write-Host "   Playtest started." -ForegroundColor DarkGray
+
+    $gameBriefText = Get-GameBriefText -Path $GameBriefPath
+    $liveTelemetry = [ordered]@{
+        timestamp         = (Get-Date -Format "o")
+        iteration         = $script:iteration
+        runSeconds        = $RunSeconds
+        pollSeconds       = $PollSeconds
+        gameBriefPath     = $GameBriefPath
+        gameBrief         = $gameBriefText
+        reportPath        = $ReportPath
+        playtestLivePath  = $LivePath
+        samples           = @()
+    }
+    Write-JsonFile -Path $LivePath -Value $liveTelemetry
+
+    Write-Host ("   Running for " + $RunSeconds + " seconds with live telemetry...") -ForegroundColor DarkGray
+    $startedAt = Get-Date
+    $deadline = $startedAt.AddSeconds($RunSeconds)
+    while ((Get-Date) -lt $deadline) {
+        $snapshot = Get-PlaytestSnapshot
+        $elapsedSeconds = [Math]::Round(((Get-Date) - $startedAt).TotalSeconds, 1)
+        $sample = [ordered]@{
+            timestamp      = (Get-Date -Format "o")
+            elapsedSeconds = $elapsedSeconds
+            isRunning      = $snapshot.isRunning
+            playtestOutput = $snapshot.playtestOutput
+            outputLog      = $snapshot.outputLog
+            playtestError  = $snapshot.playtestError
+            outputLogError = $snapshot.outputLogError
+        }
+
+        $liveTelemetry.samples += [pscustomobject]$sample
+        $liveTelemetry.lastSample = [pscustomobject]$sample
+        $liveTelemetry.isRunning = $snapshot.isRunning
+        Write-JsonFile -Path $LivePath -Value $liveTelemetry
+
+        Write-Host (
+            "   live sample t=" + $elapsedSeconds + "s running=" + $snapshot.isRunning
+        ) -ForegroundColor DarkGray
+
+        Start-Sleep -Seconds ([Math]::Max(1, $PollSeconds))
+    }
+
+    $finalSnapshotBeforeStop = Get-PlaytestSnapshot -OutputLogLines 300
+
+    # Stop playtest
+    Write-Host "   Stopping playtest..." -ForegroundColor DarkGray
+    try {
+        Invoke-McpTool -Tool "stop_playtest" -Body @{} | Out-Null
+        Write-Host "   Playtest stopped." -ForegroundColor DarkGray
+    }
+    catch {
+        Write-Host ("   stop_playtest: " + $_.Exception.Message) -ForegroundColor DarkYellow
+    }
+
+    $finalSnapshotAfterStop = Get-PlaytestSnapshot -OutputLogLines 300
+
+    # Write structured report
+    $report = [ordered]@{
+        timestamp           = (Get-Date -Format "o")
+        iteration           = $script:iteration
+        gameBriefPath       = $GameBriefPath
+        gameBrief           = $gameBriefText
+        liveTelemetryPath   = $LivePath
+        playtestOutput      = $finalSnapshotBeforeStop.playtestOutput
+        outputLog           = $finalSnapshotAfterStop.outputLog
+        finalBeforeStop     = $finalSnapshotBeforeStop
+        finalAfterStop      = $finalSnapshotAfterStop
+        liveSampleCount     = $liveTelemetry.samples.Count
+        liveTelemetrySample = $liveTelemetry.lastSample
+    }
+    Write-JsonFile -Path $ReportPath -Value $report
+    Write-Host ("   Report saved: " + $ReportPath) -ForegroundColor Cyan
+}
+
 function Invoke-ManagedScript {
     param(
         [Parameter(Mandatory = $true)]
@@ -252,7 +507,7 @@ function Invoke-ManagedScript {
         [string[]]$Arguments = @()
     )
 
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $Path @Arguments | Out-Host
+    & pwsh -NoProfile -ExecutionPolicy Bypass -File $Path @Arguments | Out-Host
     if ($LASTEXITCODE -ne 0) {
         throw ((Split-Path -Leaf $Path) + " exited with code " + $LASTEXITCODE)
     }
@@ -286,6 +541,21 @@ function Invoke-McpVerifyWithRetries {
 }
 
 Write-Banner "Roblox do-all bootstrap" "Cyan"
+
+if (-not [string]::IsNullOrWhiteSpace($GameBrief)) {
+    Invoke-Step "save game brief" {
+        Save-GameBrief -Path $GameBriefFile -Brief $GameBrief
+        Write-Host ("   saved to: " + $GameBriefFile) -ForegroundColor DarkGray
+    } | Out-Null
+}
+
+$activeGameBrief = Get-GameBriefText -Path $GameBriefFile
+if ([string]::IsNullOrWhiteSpace($activeGameBrief)) {
+    Write-Host "-> no game brief set yet (.game-brief.txt is empty)" -ForegroundColor DarkYellow
+}
+else {
+    Write-Host ("-> active game brief: " + $activeGameBrief) -ForegroundColor DarkGray
+}
 
 $requiredCommands = @("rojo", "wally", "stylua", "selene")
 $missingCommands = @()
@@ -406,12 +676,19 @@ if (-not $Once -and (Test-QualityReached -Path $QualityFile)) {
     Remove-Item -LiteralPath $QualityFile -Force -ErrorAction SilentlyContinue
 }
 
-$startPlaytestScript = Join-Path $PSScriptRoot "start-1vscom-playtest.ps1"
+$reportPath = Join-Path $repoRoot ".playtest-report.json"
+$awaitingSentinel = Join-Path $repoRoot ".awaiting-ai-analysis"
+$doneSentinel = Join-Path $repoRoot ".ai-analysis-applied"
 $iteration = 0
 
 while ($true) {
     $iteration++
     Write-Banner ("do-all loop iteration " + $iteration) "Magenta"
+
+    $activeGameBrief = Get-GameBriefText -Path $GameBriefFile
+    if (-not [string]::IsNullOrWhiteSpace($activeGameBrief)) {
+        Write-Host ("Goal brief: " + $activeGameBrief) -ForegroundColor DarkGray
+    }
 
     if (Test-QualityReached -Path $QualityFile) {
         Write-Banner "Quality sentinel reached. Loop complete." "Green"
@@ -460,12 +737,49 @@ while ($true) {
     }
 
     if (-not $SkipPlaytest) {
-        Invoke-Step "start/update 1vsCOM playtest automation" {
-            Invoke-ManagedScript -Path $startPlaytestScript
-        } -ContinueOnError | Out-Null
+        if ($bridgeHealthy) {
+            $playtestOk = Invoke-Step ("playtest cycle (start -> run " + $PlaytestRunSeconds + "s -> collect -> stop)") {
+                Invoke-PlaytestCycle `
+                    -RunSeconds $PlaytestRunSeconds `
+                    -ReportPath $reportPath `
+                    -LivePath $LiveTelemetryPath `
+                    -GameBriefPath $GameBriefFile `
+                    -PollSeconds $LivePollSeconds
+            } -ContinueOnError
+
+            if ($playtestOk) {
+                "AWAITING" | Set-Content -LiteralPath $awaitingSentinel -Encoding UTF8
+                Write-Host "" -ForegroundColor Yellow
+                Write-Host ("=" * 72) -ForegroundColor Yellow
+                Write-Host " AWAITING AI ANALYSIS" -ForegroundColor Yellow
+                Write-Host (" Brief  : " + $GameBriefFile) -ForegroundColor Yellow
+                Write-Host (" Live   : " + $LiveTelemetryPath) -ForegroundColor Yellow
+                Write-Host (" Report : " + $reportPath) -ForegroundColor Yellow
+                Write-Host " Copilot will read the report, apply code changes, then" -ForegroundColor Yellow
+                Write-Host (" write   : " + $doneSentinel) -ForegroundColor Yellow
+                Write-Host " Loop resumes automatically once that file appears." -ForegroundColor Yellow
+                Write-Host ("=" * 72) -ForegroundColor Yellow
+
+                $aiDeadline = (Get-Date).AddSeconds($AiAnalysisTimeoutSeconds)
+                while ((Get-Date) -lt $aiDeadline) {
+                    if (Test-Path -LiteralPath $doneSentinel) {
+                        Remove-Item -LiteralPath $doneSentinel -Force -ErrorAction SilentlyContinue
+                        Remove-Item -LiteralPath $awaitingSentinel -Force -ErrorAction SilentlyContinue
+                        Write-Host "   AI analysis applied. Resuming loop." -ForegroundColor Green
+                        break
+                    }
+
+                    if (Test-QualityReached -Path $QualityFile) { break }
+                    Start-Sleep -Seconds 3
+                }
+            }
+        }
+        else {
+            Write-Host "-> playtest cycle skipped (MCP bridge not healthy)" -ForegroundColor DarkGray
+        }
     }
     else {
-        Write-Host "-> playtest automation skipped (-SkipPlaytest)" -ForegroundColor DarkGray
+        Write-Host "-> playtest cycle skipped (-SkipPlaytest)" -ForegroundColor DarkGray
     }
 
     if ($formatOk -and $lintOk -and $bridgeHealthy) {
