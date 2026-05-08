@@ -7,8 +7,6 @@
         100
     ],
     "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
     "[luau]": {
         "editor.defaultFormatter": "JohnnyMorganz.stylua",
         "editor.formatOnSave": true
@@ -30,7 +28,6 @@
     "chat.includeApplyingInstructions": true,
     "chat.includeReferencedInstructions": true,
     "chat.useAgentsMdFile": true,
-    "chat.useNestedAgentsMdFiles": true,
     "files.exclude": {
         ".aftman/bin/**": true,
         "Packages/**": true,
@@ -56,20 +53,23 @@
     "luau-lsp.studioPlugin.enabled": true,
     "luau-lsp.studioPlugin.port": 3667,
     "luau-lsp.diagnostics.strictDatamodelTypes": true,
-    "luau-lsp.completion.imports.enabled": true,
     "luau-lsp.completion.imports.suggestServices": true,
     "luau-lsp.completion.imports.requireStyle": "alwaysRelative",
-    "luau-lsp.completion.imports.stringRequires.enabled": true,
+    "selene.selenePath": "C:\\Users\\cooli\\.aftman\\bin\\selene.exe",
     "stylua.searchBinaryInPATH": true,
     "stylua.verify": true,
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "terminal.integrated.profiles.windows": {
-        "PowerShell (Store)": {
-            "path": "C:\\Users\\cooli\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe",
-            "env": {
-                "TERM_PROGRAM": "vscode-terminal"
-            }
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
         }
     },
-    "terminal.integrated.defaultProfile.windows": "PowerShell (Store)"
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "JohnnyMorganz.stylua",
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
 }

@@ -1,45 +1,69 @@
 # Roblox Studio MCP Setup
 
-This repo uses the `robloxstudio-mcp` package for VS Code to Roblox Studio automation. It is separate from the Luau LSP Studio plugin.
+This repo now targets the official Roblox Studio MCP server built into Roblox Studio. It is separate from the Luau LSP Studio plugin.
 
 ## Required Studio Setup
 
-1. Install the `robloxstudio-mcp` Studio plugin from `https://github.com/boshyxd/robloxstudio-mcp/releases`.
-2. In Roblox Studio, enable `Allow HTTP Requests` in Experience Settings > Security.
-3. Start the VS Code MCP server from [.vscode/mcp.json](../.vscode/mcp.json), which runs `cmd /c npx -y robloxstudio-mcp@latest` on Windows.
-4. Open Studio and wait until the plugin shows `Connected`.
-5. Run the `Roblox: Verify MCP bridge` VS Code task.
+1. Update Roblox Studio to a build that includes Studio MCP.
+2. In Roblox Studio, open Assistant.
+3. Click `...` -> `Manage MCP Servers`.
+4. Turn on `Enable Studio as MCP server`.
+5. If `Visual Studio Code` appears in the Quick connect list, enable it. Otherwise use the workspace config in [.vscode/mcp.json](../.vscode/mcp.json).
+6. Restart VS Code or restart the Roblox MCP server entry if the tools do not appear immediately.
 
-The `robloxstudio-mcp` bridge listens on **port 58741**. The local bridge endpoint is `http://localhost:58741/mcp` unless `ROBLOX_STUDIO_MCP_URL` is set.
+## VS Code Workspace Configuration
 
-The bridge status endpoint is `http://localhost:58741/health`. It should report `mcpServerActive: true` and `pluginConnected: true` before write tools or playtest automation can run.
+VS Code workspace MCP config uses the official built-in Studio launcher in [.vscode/mcp.json](../.vscode/mcp.json):
 
-If Studio hangs or the health endpoint reports an unexpected server version after updating the plugin, run `Roblox: Reset MCP bridge`. That task stops stale `robloxstudio-mcp` Node processes, clears stale MCP plugin IDE/debugger state, reinstalls the Studio plugin helper, enables local plugin auto-connect, and clears port `58741` so VS Code can start a fresh MCP server from `.vscode/mcp.json`. Then run `Roblox: Verify MCP bridge`; if the server is active but Studio has not re-registered yet, verification touches the local plugin file once so Studio hot-reloads and reconnects.
+```json
+{
+ "servers": {
+  "Roblox_Studio": {
+   "command": "cmd.exe",
+   "args": [
+    "/c",
+    "%LOCALAPPDATA%\\Roblox\\mcp.bat"
+   ]
+  }
+ }
+}
+```
 
-## Health Check
+The Roblox documentation also provides the same Windows launch command for clients that accept a raw CLI entry: `cmd.exe /c %LOCALAPPDATA%\\Roblox\\mcp.bat`.
 
-Use `get_services` as the health check. A successful response proves the edit-side Studio plugin is reachable and processing MCP requests.
+VS Code uses the `servers` schema in `.vscode/mcp.json`, not the generic `mcpServers` wrapper shown in some client-agnostic examples.
 
-`get_connected_instances` is informational. It lists registered plugin roles such as `edit`, `server`, or `client-1` when the package has registered them, but an empty result does not automatically mean the bridge is broken. In this workspace, edit-side calls such as `get_services`, `execute_luau`, and `start_playtest` are the important automation path.
+## Verify Connection
 
-## 1vsCOM Automation
+After setup, verify the connection in Studio:
 
-Run `Roblox: Start 1vsCOM playtest` while Studio is connected. The task:
+1. Open Assistant.
+2. Click `...` -> `Manage MCP Servers`.
+3. Confirm the green indicator appears for the connected client.
 
-1. Calls `get_services` to verify the bridge.
-2. Sets `ReplicatedStorage` attribute `ArenaDuelAutoQueueMode` to `Bot` through `execute_luau`.
-3. Starts Play mode through `start_playtest`.
+In VS Code, you can also use MCP server management and output logs to confirm the server started cleanly.
 
-The client reads that attribute in Studio and fires the existing server `QueueRequest` remote. This keeps the match path server-authoritative and avoids relying on MCP client UI clicks.
+When multiple Studio windows are open, use `list_roblox_studios` and `set_active_studio` to switch targets explicitly.
 
-Run `Roblox: Clear 1vsCOM autoqueue` to remove the attribute before manual playtests.
+## Current Repo Caveat
+
+The following repo scripts and tasks have not been migrated yet and still target the older `robloxstudio-mcp` HTTP bridge on port `58741`:
+
+- `scripts/verify-roblox-mcp.ps1`
+- `scripts/reset-roblox-mcp.ps1`
+- `scripts/start-1vscom-playtest.ps1`
+- `scripts/do-all-tasks.ps1`
+- `scripts/refine-game-concept.ps1`
+
+Those scripts are legacy utilities now. They do not use the official built-in Studio MCP transport described above.
+
+Until they are ported, prefer the built-in Studio MCP tools directly from chat for editing, inspection, playtesting, and multi-instance selection.
 
 ## Troubleshooting
 
-- If `Roblox: Verify MCP bridge` cannot reach `58741`, start Studio, enable the `robloxstudio-mcp` plugin, and confirm the plugin says `Connected`.
-- If `/health` reports `pluginConnected: false`, the MCP server is running but Studio is not connected to it yet.
-- If `pluginConnected: false` appears right after a reset, run `Roblox: Verify MCP bridge` again. Verification hot-reloads the local plugin after the MCP server is back; if Studio still does not reconnect, reload Studio once.
-- If `/health` reports an older server version than `.vscode/mcp.json`, run `Roblox: Reset MCP bridge`, then restart the VS Code MCP server and reload Studio.
-- If requests time out, confirm `Allow HTTP Requests` is enabled for the experience.
-- If `get_connected_instances` returns `count: 0` but `get_services` succeeds, continue using the edit-side automation path.
-- If `Roblox: Start 1vsCOM playtest` reports `A test is already running`, run `stop_playtest` or stop Play mode in Studio, then retry.
+- Restart both Roblox Studio and VS Code if the MCP tools do not appear.
+- Verify that `%LOCALAPPDATA%\\Roblox\\mcp.bat` exists on disk.
+- Check `.vscode/mcp.json` for missing commas or brackets if the server does not start.
+- If Quick connect does not list VS Code, restart Studio after installing or updating VS Code.
+- If multiple Studio instances are running and a tool hits the wrong one, switch with `list_roblox_studios` and `set_active_studio`.
+- Only connect MCP clients you trust, because they can read and modify your open places.

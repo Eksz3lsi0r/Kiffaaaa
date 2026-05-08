@@ -20,22 +20,12 @@
 		}
 	],
 	"servers": {
-		"robloxstudio-mcp": {
-			"type": "http",
-			"url": "http://localhost:58741/mcp"
-		},
-		"io.github.upstash/context7": {
-			"type": "stdio",
-			"command": "npx",
+		"Roblox_Studio": {
+			"command": "cmd.exe",
 			"args": [
-				"@upstash/context7-mcp@1.0.31"
-			],
-			"env": {
-				"CONTEXT7_API_KEY": "${input:CONTEXT7_API_KEY}",
-				"CLIENT_IP_ENCRYPTION_KEY": "${input:CONTEXT7_CLIENT_IP_ENCRYPTION_KEY}"
-			},
-			"gallery": "https://api.mcp.github.com",
-			"version": "1.0.31"
+				"/c",
+				"%LOCALAPPDATA%\\Roblox\\mcp.bat"
+			]
 		}
 	}
 }

@@ -38,7 +38,7 @@
 				"isDefault": true
 			},
 			"problemMatcher": [],
-			"detail": "Single entrypoint: asks for a game brief, writes .game-brief.txt, streams .playtest-live.json during playtests, and runs the iterative Roblox dev loop until Ctrl+C or DONE sentinel."
+			"detail": "Legacy robloxstudio-mcp bridge task: asks for a game brief, writes .game-brief.txt, streams .playtest-live.json during playtests, and runs the older HTTP-bridge dev loop until Ctrl+C or DONE sentinel."
 		},
 		{
 			"label": "Roblox: Do all tasks (reuse last brief)",
@@ -68,7 +68,7 @@
 				"showReuseMessage": false
 			},
 			"problemMatcher": [],
-			"detail": "Runs the same iterative loop, but reuses the last saved .game-brief.txt without prompting again."
+			"detail": "Legacy robloxstudio-mcp bridge task: runs the same older HTTP-bridge dev loop, but reuses the last saved .game-brief.txt without prompting again."
 		},
 		{
 			"label": "Roblox: Verify MCP bridge",
@@ -88,7 +88,7 @@
 				"showReuseMessage": false
 			},
 			"problemMatcher": [],
-			"detail": "Checks the robloxstudio-mcp bridge, plugin connection, and callable MCP endpoints."
+			"detail": "Legacy robloxstudio-mcp bridge task: checks the older HTTP bridge, plugin connection, and callable MCP endpoints on port 58741."
 		},
 		{
 			"label": "Roblox: Reset MCP bridge",
@@ -109,7 +109,7 @@
 				"showReuseMessage": false
 			},
 			"problemMatcher": [],
-			"detail": "Restarts the local MCP bridge flow and reinstalls the Studio plugin manifest if needed."
+			"detail": "Legacy robloxstudio-mcp bridge task: restarts the older local HTTP bridge flow and reinstalls the external Studio plugin manifest if needed."
 		},
 		{
 			"label": "Roblox: Start 1vsCOM playtest",
@@ -129,7 +129,7 @@
 				"showReuseMessage": false
 			},
 			"problemMatcher": [],
-			"detail": "Sets ArenaDuelAutoQueueMode=Bot and starts a single-player Studio playtest."
+			"detail": "Legacy robloxstudio-mcp bridge task: sets ArenaDuelAutoQueueMode=Bot and starts a single-player Studio playtest through the older HTTP bridge."
 		},
 		{
 			"label": "Roblox: Clear 1vsCOM autoqueue",
@@ -150,7 +150,7 @@
 				"showReuseMessage": false
 			},
 			"problemMatcher": [],
-			"detail": "Clears ArenaDuelAutoQueueMode so subsequent Studio playtests stay manual."
+			"detail": "Legacy robloxstudio-mcp bridge task: clears ArenaDuelAutoQueueMode so subsequent Studio playtests stay manual."
 		}
 	],
 	"inputs": [

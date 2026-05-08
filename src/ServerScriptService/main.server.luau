@@ -1377,6 +1377,17 @@ local function buildCooldownList(fighter: FighterState)
     return cooldowns
 end
 
+local function buildDRList(fighter: FighterState)
+    local now = os.clock()
+    local result: { [string]: { count: number } } = {}
+    for category, drEntry in fighter.dr do
+        if drEntry.expiresAt > now then
+            result[category] = { count = drEntry.count }
+        end
+    end
+    return result
+end
+
 local function buildFighterSnapshot(fighter: FighterState)
     local casting = nil
     if fighter.casting then
@@ -1403,6 +1414,7 @@ local function buildFighterSnapshot(fighter: FighterState)
         position = vectorToPayload(getFighterPosition(fighter)),
         effects = buildEffectList(fighter),
         cooldowns = buildCooldownList(fighter),
+        dr = buildDRList(fighter),
         casting = casting,
         castLockedRemaining = math.max(0, fighter.castLockedUntil - os.clock()),
     }

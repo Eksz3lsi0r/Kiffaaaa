@@ -41,7 +41,7 @@ That example is tuned for this workspace instead of using the broad generic watc
 - `port = 3667` to match `.vscode/settings.json`
 - `include` limited to `Workspace`, `ReplicatedStorage`, `ServerScriptService`, and `StarterPlayer`, which matches the services this repo actively owns
 
-This Luau LSP plugin is separate from `robloxstudio-mcp`, which uses its own Studio plugin and local bridge on port `58741`.
+This Luau LSP plugin is separate from the official Roblox Studio MCP server, which is built into Studio and can be launched for VS Code from `.vscode/mcp.json`.
 
 ## Wally Package Manager
 
@@ -51,33 +51,19 @@ Use the existing VS Code task `Roblox: Install packages` after changing `wally.t
 
 Keep `Packages/` treated as generated output. Do not hand-edit it; update dependency versions in `wally.toml`, reinstall, and then validate the gameplay code that consumes those packages.
 
-## Roblox Studio MCP 1vsCOM Test
+## Roblox Studio MCP
 
-This section covers `robloxstudio-mcp`, the VS Code MCP server and Studio plugin that talks to Studio through the local bridge on port `58741`. It is separate from the Luau LSP Studio plugin on port `3667` described above.
+This workspace now uses the official Roblox Studio MCP server that is built into Studio. It is separate from the Luau LSP Studio plugin on port `3667` described above.
 
-The `robloxstudio-mcp` bridge may expose only the edit instance during playtests. To automate the single-player 1vsCOM path anyway, run the `Roblox: Start 1vsCOM playtest` VS Code task while Studio and the `robloxstudio-mcp` plugin are active.
+The shared VS Code workspace config lives in `.vscode/mcp.json` and starts Studio MCP on Windows with `cmd.exe /c %LOCALAPPDATA%\\Roblox\\mcp.bat`.
 
-The `Roblox: Serve project` task pins Rojo to `localhost:34872`, which keeps the Studio Rojo plugin connection stable across restarts.
+In Studio, open Assistant, then `...` -> `Manage MCP Servers`, and turn on `Enable Studio as MCP server`. If `Visual Studio Code` appears under Quick connect, you can enable it there as well.
 
-Run `Roblox: Verify MCP bridge` first when diagnosing setup issues. It uses `get_services` as the health check, prints `get_connected_instances` as informational output, and can hot-reload the local MCP plugin if the bridge is active but Studio has not registered yet.
+After connection, Studio shows a green indicator with the number of connected clients. When multiple Studio windows are open, use the MCP tools `list_roblox_studios` and `set_active_studio` to target the intended instance.
 
-The task uses `robloxstudio-mcp` to set a replicated Studio attribute before starting Play mode:
+The old PowerShell automation tasks in this repo still target the legacy `robloxstudio-mcp` HTTP bridge on port `58741`. Until those scripts are migrated, use the built-in Studio MCP tools directly from chat for script edits, inspection, and playtest control.
 
-```lua
-game:GetService("ReplicatedStorage"):SetAttribute("ArenaDuelAutoQueueMode", "Bot")
-```
-
-When the client starts in Studio, it reads that attribute and fires the existing `QueueRequest` remote with `"Bot"`. The server still owns the actual match creation and validation, so this exercises the same path as the `1vsCOM Test` button without needing MCP to click a client UI element.
-
-Clear the attribute after the automated run when you want manual playtests again:
-
-```lua
-game:GetService("ReplicatedStorage"):SetAttribute("ArenaDuelAutoQueueMode", nil)
-```
-
-You can also run the `Roblox: Clear 1vsCOM autoqueue` task.
-
-See [docs/roblox-mcp-setup.md](docs/roblox-mcp-setup.md) for the complete Roblox Studio MCP setup and troubleshooting checklist.
+See [docs/roblox-mcp-setup.md](docs/roblox-mcp-setup.md) for the updated setup and the current legacy-task caveats.
 
 ## Useful tasks
 
@@ -86,10 +72,10 @@ See [docs/roblox-mcp-setup.md](docs/roblox-mcp-setup.md) for the complete Roblox
 - `Roblox: Generate sourcemap`
 - `Roblox: Setup workspace`
 - `Roblox: Serve project`
-- `Roblox: Reset MCP bridge`
-- `Roblox: Verify MCP bridge`
-- `Roblox: Start 1vsCOM playtest`
-- `Roblox: Clear 1vsCOM autoqueue`
+- `Roblox: Reset MCP bridge` (legacy bridge task)
+- `Roblox: Verify MCP bridge` (legacy bridge task)
+- `Roblox: Start 1vsCOM playtest` (legacy bridge task)
+- `Roblox: Clear 1vsCOM autoqueue` (legacy bridge task)
 - `Luau: Lint`
 - `Luau: Format check`
 - `Luau: Validate`

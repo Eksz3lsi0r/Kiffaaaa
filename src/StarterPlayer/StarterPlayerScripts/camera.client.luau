@@ -169,7 +169,7 @@ local topBar = Instance.new("Frame")
 topBar.Name = "TopBar"
 topBar.AnchorPoint = Vector2.new(0.5, 0)
 topBar.Position = UDim2.fromScale(0.5, 0.02)
-topBar.Size = UDim2.fromOffset(760, 102)
+topBar.Size = UDim2.fromOffset(280, 36)
 topBar.BackgroundColor3 = theme.panelMid
 topBar.BackgroundTransparency = 0.04
 topBar.BorderSizePixel = 0
@@ -182,31 +182,31 @@ topCorner.Parent = topBar
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Name = "Title"
 titleLabel.BackgroundTransparency = 1
-titleLabel.Position = UDim2.fromOffset(30, 14)
-titleLabel.Size = UDim2.new(1, -60, 0, 34)
+titleLabel.Position = UDim2.fromOffset(10, 5)
+titleLabel.Size = UDim2.new(1, -20, 0, 13)
 titleLabel.Font = Enum.Font.Garamond
 titleLabel.TextColor3 = theme.trimBright
 titleLabel.TextScaled = false
-titleLabel.TextSize = 26
+titleLabel.TextSize = 10
 titleLabel.Text = "Vor Lobby Matchmaking"
 titleLabel.Parent = topBar
 
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "Timer"
 timerLabel.BackgroundTransparency = 1
-timerLabel.Position = UDim2.fromOffset(30, 52)
-timerLabel.Size = UDim2.new(1, -60, 0, 28)
+timerLabel.Position = UDim2.fromOffset(10, 20)
+timerLabel.Size = UDim2.new(1, -20, 0, 10)
 timerLabel.Font = Enum.Font.Garamond
 timerLabel.TextColor3 = theme.panelText
 timerLabel.TextScaled = false
-timerLabel.TextSize = 20
+timerLabel.TextSize = 8
 timerLabel.Text = "Waehle Klasse und Matchmodus"
 timerLabel.Parent = topBar
 
 local leftPanel = Instance.new("Frame")
 leftPanel.Name = "LobbyPanel"
-leftPanel.Position = UDim2.fromOffset(22, 138)
-leftPanel.Size = UDim2.fromOffset(316, 392)
+leftPanel.Position = UDim2.fromOffset(11, 55)
+leftPanel.Size = UDim2.fromOffset(120, 155)
 leftPanel.BackgroundColor3 = theme.panelMid
 leftPanel.BackgroundTransparency = 0.04
 leftPanel.BorderSizePixel = 0
@@ -217,14 +217,14 @@ leftCorner.CornerRadius = UDim.new(0, 8)
 leftCorner.Parent = leftPanel
 
 local leftLayout = Instance.new("UIListLayout")
-leftLayout.Padding = UDim.new(0, 8)
+leftLayout.Padding = UDim.new(0, 3)
 leftLayout.SortOrder = Enum.SortOrder.LayoutOrder
 leftLayout.Parent = leftPanel
 
 local leftPadding = Instance.new("UIPadding")
-leftPadding.PaddingTop = UDim.new(0, 12)
-leftPadding.PaddingLeft = UDim.new(0, 12)
-leftPadding.PaddingRight = UDim.new(0, 12)
+leftPadding.PaddingTop = UDim.new(0, 5)
+leftPadding.PaddingLeft = UDim.new(0, 5)
+leftPadding.PaddingRight = UDim.new(0, 5)
 leftPadding.Parent = leftPanel
 
 local function createPanelLabel(text: string, parent: Instance, height: number): TextLabel
@@ -233,7 +233,7 @@ local function createPanelLabel(text: string, parent: Instance, height: number):
     label.Size = UDim2.new(1, 0, 0, height)
     label.Font = Enum.Font.Garamond
     label.TextColor3 = theme.trimBright
-    label.TextSize = 24
+    label.TextSize = 9
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.Text = text
     label.Parent = parent
@@ -248,7 +248,7 @@ local function createButton(text: string, parent: Instance, height: number): Tex
     button.BorderSizePixel = 0
     button.Font = Enum.Font.Garamond
     button.TextColor3 = theme.panelText
-    button.TextSize = 20
+    button.TextSize = 8
     button.TextWrapped = true
     button.Text = text
     button.Parent = parent
@@ -390,7 +390,7 @@ applyButtonChrome = function(button: TextButton, accentColor: Color3)
     button.BackgroundColor3 = theme.raised
     button.BackgroundTransparency = 0.02
     button.Font = Enum.Font.Garamond
-    button.TextSize = 18
+    button.TextSize = 9
     button.TextColor3 = theme.panelText
 
     local gradient = Instance.new("UIGradient")
@@ -417,7 +417,7 @@ local function createPortrait(
     local portraitFrame = Instance.new("Frame")
     portraitFrame.Name = "Portrait"
     portraitFrame.Position = position
-    portraitFrame.Size = UDim2.fromOffset(88, 88)
+    portraitFrame.Size = UDim2.fromOffset(32, 32)
     portraitFrame.BackgroundColor3 = theme.panelBottom
     portraitFrame.BorderSizePixel = 0
     portraitFrame.Parent = parent
@@ -441,8 +441,8 @@ local function createPortrait(
     local image = Instance.new("ImageLabel")
     image.Name = "PortraitImage"
     image.BackgroundTransparency = 1
-    image.Position = UDim2.fromOffset(6, 6)
-    image.Size = UDim2.fromOffset(76, 76)
+    image.Position = UDim2.fromOffset(2, 2)
+    image.Size = UDim2.fromOffset(28, 28)
     image.ScaleType = Enum.ScaleType.Crop
     image.Parent = portraitFrame
 
@@ -456,7 +456,7 @@ local function createPortrait(
     fallback.Size = UDim2.fromScale(1, 1)
     fallback.Font = Enum.Font.Garamond
     fallback.TextColor3 = accentColor:Lerp(theme.trimBright, 0.2)
-    fallback.TextSize = 30
+    fallback.TextSize = 11
     fallback.TextStrokeTransparency = 0.3
     fallback.Text = "--"
     fallback.Parent = image
@@ -554,11 +554,11 @@ local function getPowerBarInfo(fighter: any)
         )
 end
 
-createPanelLabel("Klassenwahl", leftPanel, 24)
+createPanelLabel("Klassenwahl", leftPanel, 12)
 
 for _, classId in Config.ClassOrder do
     local classConfig = Config.Classes[classId]
-    local button = createButton(classConfig.displayName, leftPanel, 38)
+    local button = createButton(classConfig.displayName, leftPanel, 15)
     classButtons[classId] = button
     button.Activated:Connect(function()
         animateButtonPress(button)
@@ -567,32 +567,33 @@ for _, classId in Config.ClassOrder do
     end)
 end
 
-createPanelLabel("Matchmaking", leftPanel, 24)
+createPanelLabel("Matchmaking", leftPanel, 12)
 
-local queueOneButton = createButton("1vs1 suchen", leftPanel, 42)
+local queueOneButton = createButton("1vs1 suchen", leftPanel, 16)
 queueOneButton.Activated:Connect(function()
     animateButtonPress(queueOneButton)
     queueRequestEvent:FireServer("Duel1v1")
 end)
 
-local queueTwoButton = createButton("2vs2 suchen", leftPanel, 42)
+local queueTwoButton = createButton("2vs2 suchen", leftPanel, 16)
 queueTwoButton.Activated:Connect(function()
     animateButtonPress(queueTwoButton)
     queueRequestEvent:FireServer("Duel2v2")
 end)
 
-local botButton = createButton("1vsCOM Test", leftPanel, 42)
+local botButton = createButton("1vsCOM Test", leftPanel, 16)
 botButton.BackgroundColor3 = Color3.fromRGB(87, 61, 126)
 botButton.Activated:Connect(function()
     animateButtonPress(botButton)
     queueRequestEvent:FireServer("Bot")
 end)
 
+-- ── GLADIUS-STYLE ARENA PANEL  (spec §5.1: enemies right side) ───────────────
 local rightPanel = Instance.new("Frame")
 rightPanel.Name = "TargetPanel"
 rightPanel.AnchorPoint = Vector2.new(1, 0)
-rightPanel.Position = UDim2.new(1, -22, 0, 138)
-rightPanel.Size = UDim2.fromOffset(286, 336)
+rightPanel.Position = UDim2.new(1, -8, 0, 124)
+rightPanel.Size = UDim2.fromOffset(210, 320)
 rightPanel.BackgroundColor3 = theme.panelMid
 rightPanel.BackgroundTransparency = 0.04
 rightPanel.BorderSizePixel = 0
@@ -602,37 +603,37 @@ local rightCorner = Instance.new("UICorner")
 rightCorner.CornerRadius = UDim.new(0, 8)
 rightCorner.Parent = rightPanel
 
-applyPanelChrome(rightPanel, Color3.fromRGB(184, 88, 74))
+applyPanelChrome(rightPanel, Color3.fromRGB(200, 60, 60))
 
 local rightPadding = Instance.new("UIPadding")
-rightPadding.PaddingTop = UDim.new(0, 12)
-rightPadding.PaddingLeft = UDim.new(0, 12)
-rightPadding.PaddingRight = UDim.new(0, 12)
+rightPadding.PaddingTop = UDim.new(0, 6)
+rightPadding.PaddingLeft = UDim.new(0, 5)
+rightPadding.PaddingRight = UDim.new(0, 5)
 rightPadding.Parent = rightPanel
 
 local rightLayout = Instance.new("UIListLayout")
-rightLayout.Padding = UDim.new(0, 8)
+rightLayout.Padding = UDim.new(0, 4)
 rightLayout.SortOrder = Enum.SortOrder.LayoutOrder
 rightLayout.Parent = rightPanel
 
-createPanelLabel("Ziele", rightPanel, 24)
+createPanelLabel("Arena", rightPanel, 12)
 
 local targetList = Instance.new("Frame")
 targetList.Name = "TargetList"
 targetList.BackgroundTransparency = 1
-targetList.Size = UDim2.new(1, 0, 1, -36)
+targetList.Size = UDim2.new(1, 0, 1, -16)
 targetList.Parent = rightPanel
 
 local targetLayout = Instance.new("UIListLayout")
-targetLayout.Padding = UDim.new(0, 6)
+targetLayout.Padding = UDim.new(0, 4)
 targetLayout.SortOrder = Enum.SortOrder.LayoutOrder
 targetLayout.Parent = targetList
 
 local bottomBar = Instance.new("Frame")
 bottomBar.Name = "AbilityBar"
 bottomBar.AnchorPoint = Vector2.new(0.5, 1)
-bottomBar.Position = UDim2.new(0.5, 0, 1, -12)
-bottomBar.Size = UDim2.fromOffset(860, 126)
+bottomBar.Position = UDim2.new(0.5, 0, 1, -6)
+bottomBar.Size = UDim2.fromOffset(350, 47)
 bottomBar.BackgroundColor3 = theme.panelMid
 bottomBar.BackgroundTransparency = 0.03
 bottomBar.BorderSizePixel = 0
@@ -655,15 +656,15 @@ buttonRow.ZIndex = 10
 buttonRow.Parent = bottomBar
 
 local bottomPadding = Instance.new("UIPadding")
-bottomPadding.PaddingTop = UDim.new(0, 16)
-bottomPadding.PaddingBottom = UDim.new(0, 16)
-bottomPadding.PaddingLeft = UDim.new(0, 18)
-bottomPadding.PaddingRight = UDim.new(0, 18)
+bottomPadding.PaddingTop = UDim.new(0, 5)
+bottomPadding.PaddingBottom = UDim.new(0, 5)
+bottomPadding.PaddingLeft = UDim.new(0, 7)
+bottomPadding.PaddingRight = UDim.new(0, 7)
 bottomPadding.Parent = buttonRow
 
 local abilityLayout = Instance.new("UIListLayout")
 abilityLayout.FillDirection = Enum.FillDirection.Horizontal
-abilityLayout.Padding = UDim.new(0, 14)
+abilityLayout.Padding = UDim.new(0, 5)
 abilityLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 abilityLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 abilityLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -671,7 +672,7 @@ abilityLayout.Parent = buttonRow
 
 for slot = 1, 4 do
     local button = createButton("", buttonRow, 92)
-    button.Size = UDim2.fromOffset(196, 92)
+    button.Size = UDim2.fromOffset(82, 37)
     button.LayoutOrder = slot
     button.Text = ""
     abilityButtons[slot] = button
@@ -682,8 +683,8 @@ for slot = 1, 4 do
     iconPanel.Name = "IconPanel"
     iconPanel.BackgroundColor3 = Color3.fromRGB(28, 21, 18)
     iconPanel.BorderSizePixel = 0
-    iconPanel.Position = UDim2.fromOffset(8, 8)
-    iconPanel.Size = UDim2.fromOffset(52, 52)
+    iconPanel.Position = UDim2.fromOffset(3, 3)
+    iconPanel.Size = UDim2.fromOffset(22, 22)
     iconPanel.ZIndex = 12
     iconPanel.Parent = button
 
@@ -699,7 +700,7 @@ for slot = 1, 4 do
     iconLabel.Size = UDim2.fromScale(1, 1)
     iconLabel.Font = Enum.Font.Garamond
     iconLabel.TextColor3 = theme.trimBright
-    iconLabel.TextSize = 28
+    iconLabel.TextSize = 10
     iconLabel.TextStrokeTransparency = 0.25
     iconLabel.Text = tostring(slot)
     iconLabel.ZIndex = 14
@@ -708,8 +709,8 @@ for slot = 1, 4 do
     local iconImage = Instance.new("ImageLabel")
     iconImage.Name = "IconImage"
     iconImage.BackgroundTransparency = 1
-    iconImage.Position = UDim2.fromOffset(4, 4)
-    iconImage.Size = UDim2.fromOffset(44, 44)
+    iconImage.Position = UDim2.fromOffset(2, 2)
+    iconImage.Size = UDim2.fromOffset(19, 19)
     iconImage.ScaleType = Enum.ScaleType.Fit
     iconImage.ImageTransparency = 0
     iconImage.Visible = false
@@ -719,13 +720,13 @@ for slot = 1, 4 do
     local keyCap = Instance.new("TextLabel")
     keyCap.Name = "KeyCap"
     keyCap.AnchorPoint = Vector2.new(1, 0)
-    keyCap.Position = UDim2.new(1, -10, 0, 8)
-    keyCap.Size = UDim2.fromOffset(32, 24)
+    keyCap.Position = UDim2.new(1, -4, 0, 3)
+    keyCap.Size = UDim2.fromOffset(13, 9)
     keyCap.BackgroundColor3 = theme.panelBottom
     keyCap.BorderSizePixel = 0
     keyCap.Font = Enum.Font.Garamond
     keyCap.TextColor3 = theme.panelText
-    keyCap.TextSize = 18
+    keyCap.TextSize = 7
     keyCap.Text = tostring(slot)
     keyCap.ZIndex = 12
     keyCap.Parent = button
@@ -739,11 +740,11 @@ for slot = 1, 4 do
     local nameLabel = Instance.new("TextLabel")
     nameLabel.Name = "NameLabel"
     nameLabel.BackgroundTransparency = 1
-    nameLabel.Position = UDim2.fromOffset(70, 12)
-    nameLabel.Size = UDim2.new(1, -118, 0, 28)
+    nameLabel.Position = UDim2.fromOffset(29, 3)
+    nameLabel.Size = UDim2.new(1, -48, 0, 11)
     nameLabel.Font = Enum.Font.Garamond
     nameLabel.TextColor3 = theme.trimBright
-    nameLabel.TextSize = 24
+    nameLabel.TextSize = 9
     nameLabel.TextXAlignment = Enum.TextXAlignment.Left
     nameLabel.Text = "Fertigkeit"
     nameLabel.ZIndex = 12
@@ -752,11 +753,11 @@ for slot = 1, 4 do
     local stateLabel = Instance.new("TextLabel")
     stateLabel.Name = "StateLabel"
     stateLabel.BackgroundTransparency = 1
-    stateLabel.Position = UDim2.fromOffset(70, 38)
-    stateLabel.Size = UDim2.new(1, -118, 0, 18)
+    stateLabel.Position = UDim2.fromOffset(29, 15)
+    stateLabel.Size = UDim2.new(1, -48, 0, 8)
     stateLabel.Font = Enum.Font.Garamond
     stateLabel.TextColor3 = theme.mutedText
-    stateLabel.TextSize = 15
+    stateLabel.TextSize = 6
     stateLabel.TextXAlignment = Enum.TextXAlignment.Left
     stateLabel.Text = "Bereit"
     stateLabel.ZIndex = 12
@@ -765,11 +766,11 @@ for slot = 1, 4 do
     local runeLabel = Instance.new("TextLabel")
     runeLabel.Name = "RuneLabel"
     runeLabel.BackgroundTransparency = 1
-    runeLabel.Position = UDim2.new(1, -118, 0, 56)
-    runeLabel.Size = UDim2.fromOffset(76, 20)
+    runeLabel.Position = UDim2.new(1, -48, 0, 24)
+    runeLabel.Size = UDim2.fromOffset(30, 8)
     runeLabel.Font = Enum.Font.Garamond
     runeLabel.TextColor3 = theme.trimBright
-    runeLabel.TextSize = 13
+    runeLabel.TextSize = 6
     runeLabel.TextXAlignment = Enum.TextXAlignment.Right
     runeLabel.Text = ""
     runeLabel.ZIndex = 12
@@ -797,7 +798,7 @@ for slot = 1, 4 do
     cooldownText.Size = UDim2.fromScale(1, 1)
     cooldownText.Font = Enum.Font.Garamond
     cooldownText.TextColor3 = Color3.fromRGB(255, 245, 214)
-    cooldownText.TextSize = 32
+    cooldownText.TextSize = 12
     cooldownText.TextStrokeTransparency = 0.2
     cooldownText.Text = ""
     cooldownText.ZIndex = 16
@@ -828,8 +829,8 @@ end
 local castBar = Instance.new("Frame")
 castBar.Name = "CastBar"
 castBar.AnchorPoint = Vector2.new(0.5, 1)
-castBar.Position = UDim2.new(0.5, 0, 1, -154)
-castBar.Size = UDim2.fromOffset(520, 32)
+castBar.Position = UDim2.new(0.5, 0, 1, -59)
+castBar.Size = UDim2.fromOffset(200, 13)
 castBar.BackgroundColor3 = theme.panelBottom
 castBar.BackgroundTransparency = 0.05
 castBar.BorderSizePixel = 0
@@ -859,15 +860,15 @@ castText.BackgroundTransparency = 1
 castText.Size = UDim2.fromScale(1, 1)
 castText.Font = Enum.Font.GothamBold
 castText.TextColor3 = Color3.fromRGB(255, 255, 255)
-castText.TextSize = 15
+castText.TextSize = 7
 castText.TextStrokeTransparency = 0.45
 castText.Parent = castBar
 
 local messageLabel = Instance.new("TextLabel")
 messageLabel.Name = "SystemMessage"
 messageLabel.AnchorPoint = Vector2.new(0.5, 1)
-messageLabel.Position = UDim2.new(0.5, 0, 1, -196)
-messageLabel.Size = UDim2.fromOffset(760, 34)
+messageLabel.Position = UDim2.new(0.5, 0, 1, -77)
+messageLabel.Size = UDim2.fromOffset(280, 14)
 messageLabel.BackgroundTransparency = 1
 messageLabel.Font = Enum.Font.Garamond
 messageLabel.TextColor3 = theme.trimBright
@@ -881,11 +882,11 @@ local phaseAnnouncement = Instance.new("TextLabel")
 phaseAnnouncement.Name = "PhaseAnnouncement"
 phaseAnnouncement.AnchorPoint = Vector2.new(0.5, 0.5)
 phaseAnnouncement.Position = UDim2.fromScale(0.5, 0.36)
-phaseAnnouncement.Size = UDim2.fromOffset(760, 120)
+phaseAnnouncement.Size = UDim2.fromOffset(380, 60)
 phaseAnnouncement.BackgroundTransparency = 1
 phaseAnnouncement.Font = Enum.Font.Garamond
 phaseAnnouncement.TextColor3 = Color3.fromRGB(255, 220, 55)
-phaseAnnouncement.TextSize = 88
+phaseAnnouncement.TextSize = 44
 phaseAnnouncement.TextStrokeTransparency = 0.05
 phaseAnnouncement.TextStrokeColor3 = Color3.fromRGB(60, 28, 0)
 phaseAnnouncement.Text = ""
@@ -897,22 +898,22 @@ local phaseAnnouncementSub = Instance.new("TextLabel")
 phaseAnnouncementSub.Name = "PhaseAnnouncementSub"
 phaseAnnouncementSub.AnchorPoint = Vector2.new(0.5, 0.5)
 phaseAnnouncementSub.Position = UDim2.fromScale(0.5, 0.45)
-phaseAnnouncementSub.Size = UDim2.fromOffset(520, 46)
+phaseAnnouncementSub.Size = UDim2.fromOffset(260, 23)
 phaseAnnouncementSub.BackgroundTransparency = 1
 phaseAnnouncementSub.Font = Enum.Font.Garamond
 phaseAnnouncementSub.TextColor3 = Color3.fromRGB(240, 240, 240)
-phaseAnnouncementSub.TextSize = 28
+phaseAnnouncementSub.TextSize = 14
 phaseAnnouncementSub.TextStrokeTransparency = 0.3
 phaseAnnouncementSub.Text = ""
 phaseAnnouncementSub.TextTransparency = 1
 phaseAnnouncementSub.ZIndex = 12
 phaseAnnouncementSub.Parent = root
 
--- ── SELF UNIT FRAME  (WoW-style player health frame, visible during match) ───
+-- ── SELF UNIT FRAME  (PvP spec §2.1: 220×68 player health frame) ─────────────
 local selfFrame = Instance.new("Frame")
 selfFrame.Name = "SelfFrame"
-selfFrame.Position = UDim2.fromOffset(18, 16)
-selfFrame.Size = UDim2.fromOffset(396, 142)
+selfFrame.Position = UDim2.fromOffset(9, 8)
+selfFrame.Size = UDim2.fromOffset(220, 68)
 selfFrame.BackgroundColor3 = theme.panelMid
 selfFrame.BackgroundTransparency = 0.04
 selfFrame.BorderSizePixel = 0
@@ -925,86 +926,110 @@ selfFrameCorner.Parent = selfFrame
 
 applyPanelChrome(selfFrame, theme.ready)
 
+-- Left class-colour accent stripe
 local selfAccentStripe = Instance.new("Frame")
 selfAccentStripe.Name = "AccentStripe"
 selfAccentStripe.BackgroundColor3 = theme.ready
 selfAccentStripe.BackgroundTransparency = 0.18
 selfAccentStripe.BorderSizePixel = 0
-selfAccentStripe.Size = UDim2.fromOffset(5, 142)
+selfAccentStripe.Size = UDim2.fromOffset(3, 68)
 selfAccentStripe.Parent = selfFrame
 
+-- Circular portrait (48 × 48)
 local selfPortraitFrame, selfPortraitImage, selfPortraitFallback =
-    createPortrait(selfFrame, UDim2.fromOffset(14, 28), theme.ready)
+    createPortrait(selfFrame, UDim2.fromOffset(5, 8), theme.ready)
+selfPortraitFrame.Size = UDim2.fromOffset(48, 48)
+selfPortraitImage.Size = UDim2.fromOffset(42, 42)
 
+-- Player name (class colour, 11 px bold)
 local selfNameLabel = Instance.new("TextLabel")
 selfNameLabel.Name = "NameLabel"
 selfNameLabel.BackgroundTransparency = 1
-selfNameLabel.Position = UDim2.fromOffset(118, 16)
-selfNameLabel.Size = UDim2.new(1, -136, 0, 24)
-selfNameLabel.Font = Enum.Font.Garamond
+selfNameLabel.Position = UDim2.fromOffset(59, 4)
+selfNameLabel.Size = UDim2.new(1, -68, 0, 13)
+selfNameLabel.Font = Enum.Font.GothamBold
 selfNameLabel.TextColor3 = theme.trimBright
-selfNameLabel.TextSize = 24
+selfNameLabel.TextSize = 11
+selfNameLabel.TextStrokeTransparency = 0.2
+selfNameLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 selfNameLabel.TextXAlignment = Enum.TextXAlignment.Left
 selfNameLabel.Text = "Spieler"
 selfNameLabel.Parent = selfFrame
 
+-- Class / role label (muted, 8 px)
 local selfClassLabel = Instance.new("TextLabel")
 selfClassLabel.Name = "ClassLabel"
 selfClassLabel.BackgroundTransparency = 1
-selfClassLabel.Position = UDim2.fromOffset(118, 42)
-selfClassLabel.Size = UDim2.new(1, -136, 0, 18)
-selfClassLabel.Font = Enum.Font.Garamond
+selfClassLabel.Position = UDim2.fromOffset(59, 18)
+selfClassLabel.Size = UDim2.new(1, -68, 0, 9)
+selfClassLabel.Font = Enum.Font.Gotham
 selfClassLabel.TextColor3 = theme.mutedText
-selfClassLabel.TextSize = 16
+selfClassLabel.TextSize = 8
 selfClassLabel.TextXAlignment = Enum.TextXAlignment.Left
 selfClassLabel.Text = "Klasse"
 selfClassLabel.Parent = selfFrame
 
+-- HP bar (gradient-filled, 18 px tall)
 local selfHealthBack = Instance.new("Frame")
 selfHealthBack.Name = "HealthBack"
-selfHealthBack.Position = UDim2.fromOffset(118, 68)
-selfHealthBack.Size = UDim2.new(1, -136, 0, 20)
-selfHealthBack.BackgroundColor3 = theme.panelBottom
+selfHealthBack.Position = UDim2.fromOffset(59, 29)
+selfHealthBack.Size = UDim2.new(1, -68, 0, 18)
+selfHealthBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+selfHealthBack.BackgroundTransparency = 0.40
 selfHealthBack.BorderSizePixel = 0
 selfHealthBack.Parent = selfFrame
 
-local selfHealthBackCorner = Instance.new("UICorner")
-selfHealthBackCorner.CornerRadius = UDim.new(0, 4)
-selfHealthBackCorner.Parent = selfHealthBack
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 3)
+    c.Parent = selfHealthBack
+    local s = Instance.new("UIStroke")
+    s.Color = Color3.fromRGB(50, 50, 50)
+    s.Thickness = 1
+    s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    s.Parent = selfHealthBack
+end
 
 local selfHealthFill = Instance.new("Frame")
 selfHealthFill.Name = "Fill"
-selfHealthFill.BackgroundColor3 = theme.ready
+selfHealthFill.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
 selfHealthFill.BorderSizePixel = 0
 selfHealthFill.Size = UDim2.fromScale(1, 1)
 selfHealthFill.Parent = selfHealthBack
 
-local selfHealthFillCorner = Instance.new("UICorner")
-selfHealthFillCorner.CornerRadius = UDim.new(0, 4)
-selfHealthFillCorner.Parent = selfHealthFill
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 3)
+    c.Parent = selfHealthFill
+end
 
 local selfHPLabel = Instance.new("TextLabel")
 selfHPLabel.Name = "HPLabel"
 selfHPLabel.BackgroundTransparency = 1
 selfHPLabel.Size = UDim2.fromScale(1, 1)
-selfHPLabel.Font = Enum.Font.Garamond
+selfHPLabel.Font = Enum.Font.GothamBold
 selfHPLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-selfHPLabel.TextSize = 14
-selfHPLabel.TextStrokeTransparency = 0.2
+selfHPLabel.TextStrokeTransparency = 0
+selfHPLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+selfHPLabel.TextSize = 9
 selfHPLabel.Text = ""
 selfHPLabel.Parent = selfHealthBack
 
+-- Resource bar (class-coloured, 5 px)
 local selfResourceBack = Instance.new("Frame")
 selfResourceBack.Name = "ResourceBack"
-selfResourceBack.Position = UDim2.fromOffset(118, 92)
-selfResourceBack.Size = UDim2.new(1, -136, 0, 14)
-selfResourceBack.BackgroundColor3 = theme.panelBottom
+selfResourceBack.Position = UDim2.fromOffset(59, 49)
+selfResourceBack.Size = UDim2.new(1, -68, 0, 5)
+selfResourceBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+selfResourceBack.BackgroundTransparency = 0.40
 selfResourceBack.BorderSizePixel = 0
 selfResourceBack.Parent = selfFrame
 
-local selfResourceBackCorner = Instance.new("UICorner")
-selfResourceBackCorner.CornerRadius = UDim.new(0, 4)
-selfResourceBackCorner.Parent = selfResourceBack
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 2)
+    c.Parent = selfResourceBack
+end
 
 local selfResourceFill = Instance.new("Frame")
 selfResourceFill.Name = "Fill"
@@ -1013,39 +1038,91 @@ selfResourceFill.BorderSizePixel = 0
 selfResourceFill.Size = UDim2.fromScale(1, 1)
 selfResourceFill.Parent = selfResourceBack
 
-local selfResourceFillCorner = Instance.new("UICorner")
-selfResourceFillCorner.CornerRadius = UDim.new(0, 4)
-selfResourceFillCorner.Parent = selfResourceFill
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 2)
+    c.Parent = selfResourceFill
+end
 
 local selfResourceLabel = Instance.new("TextLabel")
 selfResourceLabel.Name = "ResourceLabel"
 selfResourceLabel.BackgroundTransparency = 1
 selfResourceLabel.Size = UDim2.fromScale(1, 1)
-selfResourceLabel.Font = Enum.Font.Garamond
+selfResourceLabel.Font = Enum.Font.Gotham
 selfResourceLabel.TextColor3 = theme.panelText
-selfResourceLabel.TextSize = 12
+selfResourceLabel.TextSize = 7
 selfResourceLabel.TextStrokeTransparency = 0.35
 selfResourceLabel.Text = ""
 selfResourceLabel.Parent = selfResourceBack
 
+-- Debuff icon row (3 × 12 px icons, bottom of frame)
+local selfDebuffRow = Instance.new("Frame")
+selfDebuffRow.Name = "DebuffRow"
+selfDebuffRow.BackgroundTransparency = 1
+selfDebuffRow.Position = UDim2.fromOffset(59, 57)
+selfDebuffRow.Size = UDim2.new(1, -68, 0, 10)
+selfDebuffRow.Parent = selfFrame
+do
+    local l = Instance.new("UIListLayout")
+    l.FillDirection = Enum.FillDirection.Horizontal
+    l.Padding = UDim.new(0, 2)
+    l.VerticalAlignment = Enum.VerticalAlignment.Center
+    l.SortOrder = Enum.SortOrder.LayoutOrder
+    l.Parent = selfDebuffRow
+end
+
+local selfDebuffIcons: { Frame } = {}
+for di = 1, 3 do
+    local ico = Instance.new("Frame")
+    ico.Name = "SelfDebuff" .. di
+    ico.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    ico.BackgroundTransparency = 0.25
+    ico.BorderSizePixel = 0
+    ico.Size = UDim2.fromOffset(10, 10)
+    ico.Visible = false
+    ico.LayoutOrder = di
+    ico.Parent = selfDebuffRow
+    do
+        local c = Instance.new("UICorner")
+        c.CornerRadius = UDim.new(0, 2)
+        c.Parent = ico
+        local s = Instance.new("UIStroke")
+        s.Color = Color3.fromRGB(80, 140, 255)
+        s.Thickness = 1
+        s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        s.Parent = ico
+        local t = Instance.new("TextLabel")
+        t.BackgroundTransparency = 1
+        t.Size = UDim2.fromScale(1, 1)
+        t.Font = Enum.Font.GothamBold
+        t.TextColor3 = Color3.fromRGB(255, 255, 255)
+        t.TextSize = 6
+        t.Text = ""
+        t.Parent = ico
+    end
+    selfDebuffIcons[di] = ico
+end
+
+-- Hidden compatibility label (kept so existing references don't error)
 local selfEffectsLabel = Instance.new("TextLabel")
 selfEffectsLabel.Name = "Effects"
 selfEffectsLabel.BackgroundTransparency = 1
-selfEffectsLabel.Position = UDim2.fromOffset(118, 112)
-selfEffectsLabel.Size = UDim2.new(1, -136, 0, 18)
+selfEffectsLabel.Position = UDim2.fromOffset(59, 58)
+selfEffectsLabel.Size = UDim2.new(1, -68, 0, 7)
 selfEffectsLabel.Font = Enum.Font.Garamond
 selfEffectsLabel.TextColor3 = theme.mutedText
-selfEffectsLabel.TextSize = 12
+selfEffectsLabel.TextSize = 6
 selfEffectsLabel.TextXAlignment = Enum.TextXAlignment.Left
+selfEffectsLabel.Visible = false
 selfEffectsLabel.Text = ""
 selfEffectsLabel.Parent = selfFrame
 
--- ── TARGET UNIT FRAME  (WoW-style top-right enemy/ally frame) ────────────────
+-- ── TARGET UNIT FRAME  (PvP spec §2.2: 240×68, mirrored layout) ─────────────
 local targetUnitFrame = Instance.new("Frame")
 targetUnitFrame.Name = "TargetUnitFrame"
 targetUnitFrame.AnchorPoint = Vector2.new(1, 0)
-targetUnitFrame.Position = UDim2.new(1, -18, 0, 16)
-targetUnitFrame.Size = UDim2.fromOffset(396, 142)
+targetUnitFrame.Position = UDim2.new(1, -9, 0, 8)
+targetUnitFrame.Size = UDim2.fromOffset(240, 68)
 targetUnitFrame.BackgroundColor3 = theme.panelMid
 targetUnitFrame.BackgroundTransparency = 0.04
 targetUnitFrame.BorderSizePixel = 0
@@ -1058,31 +1135,37 @@ targetFrameCorner.Parent = targetUnitFrame
 
 applyPanelChrome(targetUnitFrame, theme.health)
 
--- Enemy frame: red tint left accent stripe
+-- Right accent stripe (class-coloured)
 local targetAccentStripe = Instance.new("Frame")
 targetAccentStripe.Name = "AccentStripe"
 targetAccentStripe.BackgroundColor3 = theme.health
 targetAccentStripe.BackgroundTransparency = 0.2
 targetAccentStripe.BorderSizePixel = 0
-targetAccentStripe.Position = UDim2.fromOffset(391, 0)
-targetAccentStripe.Size = UDim2.fromOffset(5, 142)
+targetAccentStripe.Position = UDim2.fromOffset(237, 0)
+targetAccentStripe.Size = UDim2.fromOffset(3, 68)
 targetAccentStripe.Parent = targetUnitFrame
 
 local targetAccentCorner = Instance.new("UICorner")
 targetAccentCorner.CornerRadius = UDim.new(0, 8)
 targetAccentCorner.Parent = targetAccentStripe
 
+-- Circular portrait (48×48) on right side
 local targetPortraitFrame, targetPortraitImage, targetPortraitFallback =
-    createPortrait(targetUnitFrame, UDim2.fromOffset(294, 28), theme.health)
+    createPortrait(targetUnitFrame, UDim2.fromOffset(183, 8), theme.health)
+targetPortraitFrame.Size = UDim2.fromOffset(48, 48)
+targetPortraitImage.Size = UDim2.fromOffset(42, 42)
 
+-- Target name (class colour, 11 px bold)
 local targetNameLabel = Instance.new("TextLabel")
 targetNameLabel.Name = "NameLabel"
 targetNameLabel.BackgroundTransparency = 1
-targetNameLabel.Position = UDim2.fromOffset(18, 16)
-targetNameLabel.Size = UDim2.new(1, -126, 0, 24)
-targetNameLabel.Font = Enum.Font.Garamond
+targetNameLabel.Position = UDim2.fromOffset(9, 4)
+targetNameLabel.Size = UDim2.new(1, -68, 0, 13)
+targetNameLabel.Font = Enum.Font.GothamBold
 targetNameLabel.TextColor3 = theme.trimBright
-targetNameLabel.TextSize = 24
+targetNameLabel.TextSize = 11
+targetNameLabel.TextStrokeTransparency = 0.2
+targetNameLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 targetNameLabel.TextXAlignment = Enum.TextXAlignment.Left
 targetNameLabel.Text = "Ziel"
 targetNameLabel.Parent = targetUnitFrame
@@ -1090,26 +1173,35 @@ targetNameLabel.Parent = targetUnitFrame
 local targetClassLabel = Instance.new("TextLabel")
 targetClassLabel.Name = "ClassLabel"
 targetClassLabel.BackgroundTransparency = 1
-targetClassLabel.Position = UDim2.fromOffset(18, 42)
-targetClassLabel.Size = UDim2.new(1, -126, 0, 18)
-targetClassLabel.Font = Enum.Font.Garamond
+targetClassLabel.Position = UDim2.fromOffset(9, 18)
+targetClassLabel.Size = UDim2.new(1, -68, 0, 9)
+targetClassLabel.Font = Enum.Font.Gotham
 targetClassLabel.TextColor3 = theme.mutedText
-targetClassLabel.TextSize = 16
+targetClassLabel.TextSize = 8
 targetClassLabel.TextXAlignment = Enum.TextXAlignment.Left
 targetClassLabel.Text = "Klasse"
 targetClassLabel.Parent = targetUnitFrame
 
+-- HP bar (gradient fill, 18 px)
 local targetHealthBack = Instance.new("Frame")
 targetHealthBack.Name = "HealthBack"
-targetHealthBack.Position = UDim2.fromOffset(18, 68)
-targetHealthBack.Size = UDim2.new(1, -126, 0, 20)
-targetHealthBack.BackgroundColor3 = theme.panelBottom
+targetHealthBack.Position = UDim2.fromOffset(9, 29)
+targetHealthBack.Size = UDim2.new(1, -68, 0, 18)
+targetHealthBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+targetHealthBack.BackgroundTransparency = 0.40
 targetHealthBack.BorderSizePixel = 0
 targetHealthBack.Parent = targetUnitFrame
 
-local targetHealthBackCorner = Instance.new("UICorner")
-targetHealthBackCorner.CornerRadius = UDim.new(0, 4)
-targetHealthBackCorner.Parent = targetHealthBack
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 3)
+    c.Parent = targetHealthBack
+    local s = Instance.new("UIStroke")
+    s.Color = Color3.fromRGB(50, 50, 50)
+    s.Thickness = 1
+    s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    s.Parent = targetHealthBack
+end
 
 local targetHealthFill = Instance.new("Frame")
 targetHealthFill.Name = "Fill"
@@ -1118,32 +1210,39 @@ targetHealthFill.BorderSizePixel = 0
 targetHealthFill.Size = UDim2.fromScale(1, 1)
 targetHealthFill.Parent = targetHealthBack
 
-local targetHealthFillCorner = Instance.new("UICorner")
-targetHealthFillCorner.CornerRadius = UDim.new(0, 4)
-targetHealthFillCorner.Parent = targetHealthFill
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 3)
+    c.Parent = targetHealthFill
+end
 
 local targetHPLabel = Instance.new("TextLabel")
 targetHPLabel.Name = "HPLabel"
 targetHPLabel.BackgroundTransparency = 1
 targetHPLabel.Size = UDim2.fromScale(1, 1)
-targetHPLabel.Font = Enum.Font.Garamond
+targetHPLabel.Font = Enum.Font.GothamBold
 targetHPLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-targetHPLabel.TextSize = 14
-targetHPLabel.TextStrokeTransparency = 0.2
+targetHPLabel.TextStrokeTransparency = 0
+targetHPLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+targetHPLabel.TextSize = 9
 targetHPLabel.Text = ""
 targetHPLabel.Parent = targetHealthBack
 
+-- Resource bar (5 px)
 local targetResourceBack = Instance.new("Frame")
 targetResourceBack.Name = "ResourceBack"
-targetResourceBack.Position = UDim2.fromOffset(18, 92)
-targetResourceBack.Size = UDim2.new(1, -126, 0, 14)
-targetResourceBack.BackgroundColor3 = theme.panelBottom
+targetResourceBack.Position = UDim2.fromOffset(9, 49)
+targetResourceBack.Size = UDim2.new(1, -68, 0, 5)
+targetResourceBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+targetResourceBack.BackgroundTransparency = 0.40
 targetResourceBack.BorderSizePixel = 0
 targetResourceBack.Parent = targetUnitFrame
 
-local targetResourceBackCorner = Instance.new("UICorner")
-targetResourceBackCorner.CornerRadius = UDim.new(0, 4)
-targetResourceBackCorner.Parent = targetResourceBack
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 2)
+    c.Parent = targetResourceBack
+end
 
 local targetResourceFill = Instance.new("Frame")
 targetResourceFill.Name = "Fill"
@@ -1152,45 +1251,106 @@ targetResourceFill.BorderSizePixel = 0
 targetResourceFill.Size = UDim2.fromScale(1, 1)
 targetResourceFill.Parent = targetResourceBack
 
-local targetResourceFillCorner = Instance.new("UICorner")
-targetResourceFillCorner.CornerRadius = UDim.new(0, 4)
-targetResourceFillCorner.Parent = targetResourceFill
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 2)
+    c.Parent = targetResourceFill
+end
 
 local targetResourceLabel = Instance.new("TextLabel")
 targetResourceLabel.Name = "ResourceLabel"
 targetResourceLabel.BackgroundTransparency = 1
 targetResourceLabel.Size = UDim2.fromScale(1, 1)
-targetResourceLabel.Font = Enum.Font.Garamond
+targetResourceLabel.Font = Enum.Font.Gotham
 targetResourceLabel.TextColor3 = theme.panelText
-targetResourceLabel.TextSize = 12
+targetResourceLabel.TextSize = 7
 targetResourceLabel.TextStrokeTransparency = 0.35
 targetResourceLabel.Text = ""
 targetResourceLabel.Parent = targetResourceBack
 
+-- Debuff icon row (3 × 10 px icons, bottom)
+local targetDebuffRow = Instance.new("Frame")
+targetDebuffRow.Name = "DebuffRow"
+targetDebuffRow.BackgroundTransparency = 1
+targetDebuffRow.Position = UDim2.fromOffset(9, 57)
+targetDebuffRow.Size = UDim2.new(1, -68, 0, 10)
+targetDebuffRow.Parent = targetUnitFrame
+do
+    local l = Instance.new("UIListLayout")
+    l.FillDirection = Enum.FillDirection.Horizontal
+    l.Padding = UDim.new(0, 2)
+    l.VerticalAlignment = Enum.VerticalAlignment.Center
+    l.SortOrder = Enum.SortOrder.LayoutOrder
+    l.Parent = targetDebuffRow
+end
+
+local targetDebuffIcons: { Frame } = {}
+for di = 1, 3 do
+    local ico = Instance.new("Frame")
+    ico.Name = "TgtDebuff" .. di
+    ico.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    ico.BackgroundTransparency = 0.25
+    ico.BorderSizePixel = 0
+    ico.Size = UDim2.fromOffset(10, 10)
+    ico.Visible = false
+    ico.LayoutOrder = di
+    ico.Parent = targetDebuffRow
+    do
+        local c = Instance.new("UICorner")
+        c.CornerRadius = UDim.new(0, 2)
+        c.Parent = ico
+        local s = Instance.new("UIStroke")
+        s.Color = Color3.fromRGB(80, 140, 255)
+        s.Thickness = 1
+        s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        s.Parent = ico
+        local t = Instance.new("TextLabel")
+        t.BackgroundTransparency = 1
+        t.Size = UDim2.fromScale(1, 1)
+        t.Font = Enum.Font.GothamBold
+        t.TextColor3 = Color3.fromRGB(255, 255, 255)
+        t.TextSize = 6
+        t.Text = ""
+        t.Parent = ico
+    end
+    targetDebuffIcons[di] = ico
+end
+
+-- Target effects text (hidden, kept for compatibility)
 local targetEffectsLabel = Instance.new("TextLabel")
 targetEffectsLabel.Name = "Effects"
 targetEffectsLabel.BackgroundTransparency = 1
-targetEffectsLabel.Position = UDim2.fromOffset(18, 112)
-targetEffectsLabel.Size = UDim2.new(1, -126, 0, 16)
+targetEffectsLabel.Position = UDim2.fromOffset(9, 57)
+targetEffectsLabel.Size = UDim2.new(1, -48, 0, 7)
 targetEffectsLabel.Font = Enum.Font.Garamond
 targetEffectsLabel.TextColor3 = theme.mutedText
-targetEffectsLabel.TextSize = 12
+targetEffectsLabel.TextSize = 6
 targetEffectsLabel.TextXAlignment = Enum.TextXAlignment.Left
+targetEffectsLabel.Visible = false
 targetEffectsLabel.Text = ""
 targetEffectsLabel.Parent = targetUnitFrame
 
+-- Target cast bar (appears over resource bar when target is casting)
 local targetCastBack = Instance.new("Frame")
 targetCastBack.Name = "CastBack"
-targetCastBack.Position = UDim2.fromOffset(18, 112)
-targetCastBack.Size = UDim2.new(1, -126, 0, 16)
-targetCastBack.BackgroundColor3 = theme.panelBottom
+targetCastBack.Position = UDim2.fromOffset(9, 49)
+targetCastBack.Size = UDim2.new(1, -68, 0, 14)
+targetCastBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+targetCastBack.BackgroundTransparency = 0.28
 targetCastBack.BorderSizePixel = 0
 targetCastBack.Visible = false
 targetCastBack.Parent = targetUnitFrame
 
-local targetCastBackCorner = Instance.new("UICorner")
-targetCastBackCorner.CornerRadius = UDim.new(0, 4)
-targetCastBackCorner.Parent = targetCastBack
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 3)
+    c.Parent = targetCastBack
+    local s = Instance.new("UIStroke")
+    s.Color = Color3.fromRGB(80, 65, 15)
+    s.Thickness = 1
+    s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    s.Parent = targetCastBack
+end
 
 local targetCastFill = Instance.new("Frame")
 targetCastFill.Name = "Fill"
@@ -1199,20 +1359,97 @@ targetCastFill.BorderSizePixel = 0
 targetCastFill.Size = UDim2.fromScale(0, 1)
 targetCastFill.Parent = targetCastBack
 
-local targetCastFillCorner = Instance.new("UICorner")
-targetCastFillCorner.CornerRadius = UDim.new(0, 4)
-targetCastFillCorner.Parent = targetCastFill
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 3)
+    c.Parent = targetCastFill
+end
 
 local targetCastText = Instance.new("TextLabel")
 targetCastText.Name = "CastText"
 targetCastText.BackgroundTransparency = 1
 targetCastText.Size = UDim2.fromScale(1, 1)
-targetCastText.Font = Enum.Font.Garamond
-targetCastText.TextColor3 = theme.panelText
-targetCastText.TextSize = 12
-targetCastText.TextStrokeTransparency = 0.4
+targetCastText.Font = Enum.Font.GothamBold
+targetCastText.TextColor3 = Color3.fromRGB(255, 245, 200)
+targetCastText.TextStrokeTransparency = 0.2
+targetCastText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+targetCastText.TextSize = 8
 targetCastText.Text = ""
 targetCastText.Parent = targetCastBack
+
+-- ── TARGET-OF-TARGET FRAME  (spec §2.2, 120×36 below target frame) ───────────
+local totFrame = Instance.new("Frame")
+totFrame.Name = "TotFrame"
+totFrame.AnchorPoint = Vector2.new(1, 0)
+totFrame.Position = UDim2.new(1, -9, 0, 82)
+totFrame.Size = UDim2.fromOffset(130, 36)
+totFrame.BackgroundColor3 = theme.panelMid
+totFrame.BackgroundTransparency = 0.08
+totFrame.BorderSizePixel = 0
+totFrame.Visible = false
+totFrame.Parent = root
+
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 6)
+    c.Parent = totFrame
+    local s = Instance.new("UIStroke")
+    s.Color = Color3.fromRGB(100, 70, 20)
+    s.Thickness = 1.5
+    s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    s.Parent = totFrame
+end
+
+-- Small arrow label pointing left
+local totArrow = Instance.new("TextLabel")
+totArrow.BackgroundTransparency = 1
+totArrow.Position = UDim2.fromOffset(3, 0)
+totArrow.Size = UDim2.fromOffset(10, 36)
+totArrow.Font = Enum.Font.Gotham
+totArrow.TextColor3 = theme.mutedText
+totArrow.TextSize = 10
+totArrow.Text = "▶"
+totArrow.Parent = totFrame
+
+local totNameLabel = Instance.new("TextLabel")
+totNameLabel.Name = "TotName"
+totNameLabel.BackgroundTransparency = 1
+totNameLabel.Position = UDim2.fromOffset(16, 3)
+totNameLabel.Size = UDim2.new(1, -20, 0, 12)
+totNameLabel.Font = Enum.Font.GothamBold
+totNameLabel.TextColor3 = theme.trimBright
+totNameLabel.TextSize = 10
+totNameLabel.TextXAlignment = Enum.TextXAlignment.Left
+totNameLabel.Text = ""
+totNameLabel.Parent = totFrame
+
+local totHPBack = Instance.new("Frame")
+totHPBack.Name = "TotHP"
+totHPBack.Position = UDim2.fromOffset(16, 18)
+totHPBack.Size = UDim2.new(1, -22, 0, 10)
+totHPBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+totHPBack.BackgroundTransparency = 0.4
+totHPBack.BorderSizePixel = 0
+totHPBack.Parent = totFrame
+
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 2)
+    c.Parent = totHPBack
+end
+
+local totHPFill = Instance.new("Frame")
+totHPFill.Name = "Fill"
+totHPFill.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
+totHPFill.BorderSizePixel = 0
+totHPFill.Size = UDim2.fromScale(1, 1)
+totHPFill.Parent = totHPBack
+
+do
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 2)
+    c.Parent = totHPFill
+end
 
 local function tweenGuiTree(container: GuiObject, visible: boolean)
     local descendants = container:GetDescendants()
@@ -1589,9 +1826,11 @@ local function makeTargetButton(fighter: any, localFighter: any)
     if not button then
         local createdButton = createButton("", targetList, 92)
         button = createdButton
+        -- Gladius-style entry: 198 × 88 px
+        createdButton.Size = UDim2.fromOffset(198, 88)
+        createdButton.Text = ""
         createdButton.TextXAlignment = Enum.TextXAlignment.Left
         createdButton.TextYAlignment = Enum.TextYAlignment.Top
-        createdButton.TextSize = 16
         targetButtons[fighter.id] = createdButton
         createdButton.Activated:Connect(function()
             animateButtonPress(createdButton)
@@ -1599,156 +1838,409 @@ local function makeTargetButton(fighter: any, localFighter: any)
             targetSelectEvent:FireServer(fighter.id)
         end)
 
-        local padding = Instance.new("UIPadding")
-        padding.PaddingTop = UDim.new(0, 10)
-        padding.PaddingLeft = UDim.new(0, 70)
-        padding.PaddingRight = UDim.new(0, 12)
-        padding.Parent = createdButton
+        -- Class-colour badge (top-left, 14 × 14)
+        local classBadge = Instance.new("Frame")
+        classBadge.Name = "ClassBadge"
+        classBadge.Position = UDim2.fromOffset(5, 5)
+        classBadge.Size = UDim2.fromOffset(14, 14)
+        classBadge.BackgroundColor3 = theme.trim
+        classBadge.BorderSizePixel = 0
+        classBadge.ZIndex = 12
+        classBadge.Parent = createdButton
+        do
+            local c = Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, 3)
+            c.Parent = classBadge
+        end
 
+        -- Portrait (36 × 36)
         local portraitFrame, portraitImage, _portraitFallback =
-            createPortrait(createdButton, UDim2.fromOffset(8, 8), theme.trim)
-        portraitFrame.Size = UDim2.fromOffset(48, 48)
-        portraitImage.Size = UDim2.fromOffset(40, 40)
+            createPortrait(createdButton, UDim2.fromOffset(4, 20), theme.trim)
+        portraitFrame.Size = UDim2.fromOffset(36, 36)
+        portraitImage.Size = UDim2.fromOffset(30, 30)
 
-        local metaLabel = Instance.new("TextLabel")
-        metaLabel.Name = "Meta"
-        metaLabel.BackgroundTransparency = 1
-        metaLabel.Position = UDim2.fromOffset(70, 34)
-        metaLabel.Size = UDim2.new(1, -82, 0, 16)
-        metaLabel.Font = Enum.Font.Garamond
-        metaLabel.TextColor3 = theme.mutedText
-        metaLabel.TextSize = 13
-        metaLabel.TextXAlignment = Enum.TextXAlignment.Left
-        metaLabel.Text = ""
-        metaLabel.Parent = createdButton
+        -- Name label (class colour, 11 px)
+        local nameLabel = Instance.new("TextLabel")
+        nameLabel.Name = "NameLabel"
+        nameLabel.BackgroundTransparency = 1
+        nameLabel.Position = UDim2.fromOffset(44, 4)
+        nameLabel.Size = UDim2.new(1, -52, 0, 12)
+        nameLabel.Font = Enum.Font.GothamBold
+        nameLabel.TextColor3 = theme.trimBright
+        nameLabel.TextSize = 10
+        nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+        nameLabel.ZIndex = 12
+        nameLabel.Parent = createdButton
 
+        -- HP bar (150 × 16)
         local healthBack = Instance.new("Frame")
         healthBack.Name = "HealthBack"
-        healthBack.AnchorPoint = Vector2.new(0.5, 1)
-        healthBack.Position = UDim2.new(0.5, 0, 1, -10)
-        healthBack.Size = UDim2.new(1, -22, 0, 10)
-        healthBack.BackgroundColor3 = theme.panelBottom
+        healthBack.Position = UDim2.fromOffset(44, 18)
+        healthBack.Size = UDim2.new(1, -52, 0, 16)
+        healthBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        healthBack.BackgroundTransparency = 0.4
         healthBack.BorderSizePixel = 0
+        healthBack.ZIndex = 12
         healthBack.Parent = createdButton
+        do
+            local c = Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, 3)
+            c.Parent = healthBack
+            local s = Instance.new("UIStroke")
+            s.Color = Color3.fromRGB(50, 50, 50)
+            s.Thickness = 1
+            s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+            s.Parent = healthBack
+        end
 
         local healthFill = Instance.new("Frame")
         healthFill.Name = "Fill"
-        healthFill.BackgroundColor3 = Color3.fromRGB(91, 202, 118)
+        healthFill.BackgroundColor3 = Color3.fromRGB(0, 190, 60)
         healthFill.BorderSizePixel = 0
         healthFill.Size = UDim2.fromScale(1, 1)
+        healthFill.ZIndex = 13
         healthFill.Parent = healthBack
+        do
+            local c = Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, 3)
+            c.Parent = healthFill
+        end
 
-        local effectsLabel = Instance.new("TextLabel")
-        effectsLabel.Name = "Effects"
-        effectsLabel.BackgroundTransparency = 1
-        effectsLabel.Position = UDim2.fromOffset(70, 52)
-        effectsLabel.Size = UDim2.new(1, -82, 0, 16)
-        effectsLabel.Font = Enum.Font.Garamond
-        effectsLabel.TextColor3 = theme.mutedText
-        effectsLabel.TextSize = 12
-        effectsLabel.TextXAlignment = Enum.TextXAlignment.Left
-        effectsLabel.Text = ""
-        effectsLabel.Parent = createdButton
+        local hpTextLabel = Instance.new("TextLabel")
+        hpTextLabel.Name = "HPText"
+        hpTextLabel.BackgroundTransparency = 1
+        hpTextLabel.Size = UDim2.fromScale(1, 1)
+        hpTextLabel.Font = Enum.Font.GothamBold
+        hpTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        hpTextLabel.TextStrokeTransparency = 0
+        hpTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+        hpTextLabel.TextSize = 9
+        hpTextLabel.Text = ""
+        hpTextLabel.ZIndex = 14
+        hpTextLabel.Parent = healthBack
 
+        -- Resource bar (5 px)
+        local resBack = Instance.new("Frame")
+        resBack.Name = "ResBack"
+        resBack.Position = UDim2.fromOffset(44, 36)
+        resBack.Size = UDim2.new(1, -52, 0, 5)
+        resBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        resBack.BackgroundTransparency = 0.4
+        resBack.BorderSizePixel = 0
+        resBack.ZIndex = 12
+        resBack.Parent = createdButton
+        do
+            local c = Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, 2)
+            c.Parent = resBack
+        end
+
+        local resFill = Instance.new("Frame")
+        resFill.Name = "Fill"
+        resFill.BackgroundColor3 = theme.mana
+        resFill.BorderSizePixel = 0
+        resFill.Size = UDim2.fromScale(1, 1)
+        resFill.ZIndex = 13
+        resFill.Parent = resBack
+        do
+            local c = Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, 2)
+            c.Parent = resFill
+        end
+
+        -- DR Tracker  (3 × 20 px squares: Stun / Fear / Root)
+        local drRow = Instance.new("Frame")
+        drRow.Name = "DRRow"
+        drRow.BackgroundTransparency = 1
+        drRow.Position = UDim2.fromOffset(44, 44)
+        drRow.Size = UDim2.new(1, -52, 0, 20)
+        drRow.ZIndex = 12
+        drRow.Parent = createdButton
+        do
+            local l = Instance.new("UIListLayout")
+            l.FillDirection = Enum.FillDirection.Horizontal
+            l.Padding = UDim.new(0, 3)
+            l.VerticalAlignment = Enum.VerticalAlignment.Center
+            l.SortOrder = Enum.SortOrder.LayoutOrder
+            l.Parent = drRow
+        end
+
+        local drCategories = { "Stun", "Fear", "Root" }
+        for di, catName in drCategories do
+            local drIcon = Instance.new("Frame")
+            drIcon.Name = "DR_" .. catName
+            drIcon.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            drIcon.BackgroundTransparency = 0.3
+            drIcon.BorderSizePixel = 0
+            drIcon.Size = UDim2.fromOffset(20, 20)
+            drIcon.LayoutOrder = di
+            drIcon.ZIndex = 13
+            drIcon.Parent = drRow
+            do
+                local c = Instance.new("UICorner")
+                c.CornerRadius = UDim.new(0, 4)
+                c.Parent = drIcon
+
+                local s = Instance.new("UIStroke")
+                s.Color = Color3.fromRGB(200, 200, 200) -- white = no DR
+                s.Thickness = 1.5
+                s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                s.Name = "DRStroke"
+                s.Parent = drIcon
+
+                local drLabel = Instance.new("TextLabel")
+                drLabel.Name = "DRLabel"
+                drLabel.BackgroundTransparency = 1
+                drLabel.Size = UDim2.fromScale(1, 1)
+                drLabel.Font = Enum.Font.GothamBold
+                drLabel.TextColor3 = Color3.fromRGB(220, 220, 220)
+                drLabel.TextSize = 7
+                drLabel.Text = string.sub(catName, 1, 2)
+                drLabel.ZIndex = 14
+                drLabel.Parent = drIcon
+            end
+        end
+
+        -- Cast bar (above the frame)
         local castBack = Instance.new("Frame")
         castBack.Name = "CastBack"
-        castBack.AnchorPoint = Vector2.new(0.5, 1)
-        castBack.Position = UDim2.new(0.5, 0, 1, -24)
-        castBack.Size = UDim2.new(1, -20, 0, 5)
-        castBack.BackgroundColor3 = theme.panelBottom
+        castBack.Position = UDim2.fromOffset(44, 67)
+        castBack.Size = UDim2.new(1, -52, 0, 10)
+        castBack.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        castBack.BackgroundTransparency = 0.35
         castBack.BorderSizePixel = 0
         castBack.Visible = false
+        castBack.ZIndex = 12
         castBack.Parent = createdButton
+        do
+            local c = Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, 2)
+            c.Parent = castBack
+            local s = Instance.new("UIStroke")
+            s.Color = Color3.fromRGB(80, 65, 15)
+            s.Thickness = 1
+            s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+            s.Parent = castBack
+        end
 
         local castProgress = Instance.new("Frame")
         castProgress.Name = "Fill"
-        castProgress.BackgroundColor3 = Color3.fromRGB(244, 205, 92)
+        castProgress.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
         castProgress.BorderSizePixel = 0
         castProgress.Size = UDim2.fromScale(0, 1)
+        castProgress.ZIndex = 13
         castProgress.Parent = castBack
+        do
+            local c = Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, 2)
+            c.Parent = castProgress
+        end
+
+        local castLabel = Instance.new("TextLabel")
+        castLabel.Name = "CastLabel"
+        castLabel.BackgroundTransparency = 1
+        castLabel.Position = UDim2.fromOffset(3, 0)
+        castLabel.Size = UDim2.new(1, -6, 1, 0)
+        castLabel.Font = Enum.Font.Gotham
+        castLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        castLabel.TextStrokeTransparency = 0.2
+        castLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+        castLabel.TextSize = 8
+        castLabel.TextXAlignment = Enum.TextXAlignment.Left
+        castLabel.Text = ""
+        castLabel.ZIndex = 14
+        castLabel.Parent = castBack
+
+        -- Debuff icons row (right side, 3 × 16 px)
+        local debuffRow = Instance.new("Frame")
+        debuffRow.Name = "DebuffIcons"
+        debuffRow.BackgroundTransparency = 1
+        debuffRow.AnchorPoint = Vector2.new(1, 0)
+        debuffRow.Position = UDim2.new(1, -2, 0, 20)
+        debuffRow.Size = UDim2.fromOffset(18, 60)
+        debuffRow.ZIndex = 12
+        debuffRow.Parent = createdButton
+        do
+            local l = Instance.new("UIListLayout")
+            l.FillDirection = Enum.FillDirection.Vertical
+            l.Padding = UDim.new(0, 2)
+            l.HorizontalAlignment = Enum.HorizontalAlignment.Center
+            l.SortOrder = Enum.SortOrder.LayoutOrder
+            l.Parent = debuffRow
+        end
+        for ei = 1, 3 do
+            local dico = Instance.new("Frame")
+            dico.Name = "Debuff" .. ei
+            dico.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+            dico.BackgroundTransparency = 0.2
+            dico.BorderSizePixel = 0
+            dico.Size = UDim2.fromOffset(16, 16)
+            dico.Visible = false
+            dico.LayoutOrder = ei
+            dico.ZIndex = 13
+            dico.Parent = debuffRow
+            do
+                local c = Instance.new("UICorner")
+                c.CornerRadius = UDim.new(0, 3)
+                c.Parent = dico
+                local s = Instance.new("UIStroke")
+                s.Color = Color3.fromRGB(80, 140, 255)
+                s.Thickness = 1
+                s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                s.Parent = dico
+                local t = Instance.new("TextLabel")
+                t.BackgroundTransparency = 1
+                t.Size = UDim2.fromScale(1, 1)
+                t.Font = Enum.Font.GothamBold
+                t.TextColor3 = Color3.fromRGB(255, 255, 255)
+                t.TextSize = 6
+                t.Text = ""
+                t.ZIndex = 14
+                t.Parent = dico
+            end
+        end
     end
 
     local targetButton = button :: TextButton
     local healthPercent = if fighter.maxHealth > 0 then fighter.health / fighter.maxHealth else 0
     local relation = if localFighter and fighter.team == localFighter.team then "Team" else "Gegner"
-    local targetMarker = if selectedTargetId == fighter.id then " >" else ""
-    targetButton.Text = string.format(
-        "%s%s\n%d/%d HP",
-        fighter.name,
-        targetMarker,
-        fighter.health,
-        fighter.maxHealth
-    )
 
+    -- Class badge colour
+    local classBadge = targetButton:FindFirstChild("ClassBadge") :: Frame?
+    if classBadge then
+        classBadge.BackgroundColor3 = getClassTint(fighter.classId)
+    end
+
+    -- Portrait
     local portraitFrame = targetButton:FindFirstChild("Portrait")
-    local portraitImage = if portraitFrame
-        then portraitFrame:FindFirstChild("PortraitImage")
-        else nil
+    local portraitImage = if portraitFrame then portraitFrame:FindFirstChild("PortraitImage") else nil
     local portraitFallback = if portraitImage then portraitImage:FindFirstChild("Fallback") else nil
-    if
-        portraitImage
-        and portraitImage:IsA("ImageLabel")
-        and portraitFallback
-        and portraitFallback:IsA("TextLabel")
-    then
+    if portraitImage and portraitImage:IsA("ImageLabel") and portraitFallback and portraitFallback:IsA("TextLabel") then
         setPortraitImage(portraitImage, portraitFallback, fighter.id, fighter.classId)
     end
 
-    local metaLabel = targetButton:FindFirstChild("Meta")
-    if metaLabel and metaLabel:IsA("TextLabel") then
-        metaLabel.Text = string.format(
-            "%s | %s",
-            relation,
-            tostring(fighter.className or fighter.classId or "?")
-        )
+    -- Name (class colour)
+    local nameLabel = targetButton:FindFirstChild("NameLabel") :: TextLabel?
+    if nameLabel then
+        nameLabel.Text = tostring(fighter.name or "?")
+        nameLabel.TextColor3 = getClassTint(fighter.classId)
     end
 
+    -- HP bar gradient fill
     local healthBack = targetButton:FindFirstChild("HealthBack")
     local healthFill = if healthBack then healthBack:FindFirstChild("Fill") else nil
+    local hpText = if healthBack then healthBack:FindFirstChild("HPText") else nil
     if healthFill and healthFill:IsA("Frame") then
-        local fillColor = if healthPercent <= 0.35
-            then Color3.fromRGB(230, 76, 68)
-            else Color3.fromRGB(91, 202, 118)
-        healthFill.BackgroundColor3 = fillColor
+        local fillColor = if healthPercent > 0.5
+            then Color3.fromRGB(math.floor(200 * (1 - healthPercent) * 2), 190, 0)
+            elseif healthPercent > 0 then Color3.fromRGB(200, math.floor(200 * healthPercent * 2), 0)
+            else Color3.fromRGB(80, 80, 80)
         TweenService:Create(
             healthFill,
-            TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-            { Size = UDim2.fromScale(math.clamp(healthPercent, 0, 1), 1) }
+            TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            { Size = UDim2.fromScale(math.clamp(healthPercent, 0, 1), 1), BackgroundColor3 = fillColor }
+        ):Play()
+    end
+    if hpText and hpText:IsA("TextLabel") then
+        hpText.Text = string.format("%d / %d  %d%%", fighter.health, fighter.maxHealth, math.floor(healthPercent * 100))
+    end
+
+    -- Resource bar
+    local resBack = targetButton:FindFirstChild("ResBack")
+    local resFill = if resBack then resBack:FindFirstChild("Fill") else nil
+    if resFill and resFill:IsA("Frame") then
+        local _, resPct, resClr, _ = getPowerBarInfo(fighter)
+        TweenService:Create(
+            resFill,
+            TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            { Size = UDim2.fromScale(resPct, 1), BackgroundColor3 = resClr }
         ):Play()
     end
 
-    local effectsLabel = targetButton:FindFirstChild("Effects")
-    if effectsLabel and effectsLabel:IsA("TextLabel") then
-        local effectTexts = {}
-        for _, effect in fighter.effects or {} do
-            table.insert(effectTexts, string.format("%s %.0fs", effect.name, effect.remaining or 0))
+    -- DR tracker (Stun / Fear / Root)
+    local drRow = targetButton:FindFirstChild("DRRow") :: Frame?
+    if drRow and fighter.dr then
+        local DR_COLORS = {
+            none   = Color3.fromRGB(200, 200, 200),
+            first  = Color3.fromRGB(255, 220, 0),
+            second = Color3.fromRGB(255, 130, 0),
+            immune = Color3.fromRGB(255, 60, 60),
+        }
+        for _, catName in { "Stun", "Fear", "Root" } do
+            local drIcon = drRow:FindFirstChild("DR_" .. catName) :: Frame?
+            if drIcon then
+                local drData = fighter.dr and fighter.dr[catName]
+                local stroke = drIcon:FindFirstChild("DRStroke") :: UIStroke?
+                if stroke then
+                    stroke.Color = DR_COLORS.none
+                    if drData then
+                        if drData.count >= 3 then
+                            stroke.Color = DR_COLORS.immune
+                        elseif drData.count == 2 then
+                            stroke.Color = DR_COLORS.second
+                        elseif drData.count == 1 then
+                            stroke.Color = DR_COLORS.first
+                        end
+                    end
+                end
+            end
         end
-        effectsLabel.Text = table.concat(effectTexts, "  ")
     end
 
+    -- Debuff icons
+    local debuffRow = targetButton:FindFirstChild("DebuffIcons") :: Frame?
+    if debuffRow then
+        local effects = fighter.effects or {}
+        for ei = 1, 3 do
+            local dico = debuffRow:FindFirstChild("Debuff" .. ei) :: Frame?
+            if not dico then continue end
+            local eff = (effects :: { any })[ei]
+            if eff then
+                dico.Visible = true
+                local t = dico:FindFirstChildOfClass("TextLabel")
+                if t then
+                    t.Text = string.upper(string.sub(tostring(eff.name or "?"), 1, 2))
+                end
+            else
+                dico.Visible = false
+            end
+        end
+    end
+
+    -- Cast bar
     local castBack = targetButton:FindFirstChild("CastBack")
     local castProgress = if castBack then castBack:FindFirstChild("Fill") else nil
+    local castLabel = if castBack then castBack:FindFirstChild("CastLabel") else nil
     if castBack and castBack:IsA("Frame") and castProgress and castProgress:IsA("Frame") then
         if fighter.casting then
-            local duration =
-                math.max(fighter.casting.duration or fighter.casting.remaining or 0.01, 0.01)
-            local remaining =
-                math.max(0, (fighter.casting.remaining or 0) - (os.clock() - stateReceivedAt))
+            local dur = math.max(fighter.casting.duration or 0.01, 0.01)
+            local rem = math.max(0, (fighter.casting.remaining or 0) - (os.clock() - stateReceivedAt))
             castBack.Visible = true
-            castProgress.Size = UDim2.fromScale(math.clamp(1 - remaining / duration, 0, 1), 1)
+            castProgress.Size = UDim2.fromScale(math.clamp(1 - rem / dur, 0, 1), 1)
+            if castLabel and castLabel:IsA("TextLabel") then
+                castLabel.Text = string.format(
+                    "%s  %.1fs",
+                    tostring(fighter.casting.displayName or fighter.casting.abilityId or ""),
+                    rem
+                )
+            end
         else
             castBack.Visible = false
+            if castLabel and castLabel:IsA("TextLabel") then
+                castLabel.Text = ""
+            end
         end
     end
 
+    -- Frame background colour by relation / selection / death
     if selectedTargetId == fighter.id then
-        targetButton.BackgroundColor3 = Color3.fromRGB(128, 84, 46)
+        targetButton.BackgroundColor3 = Color3.fromRGB(110, 72, 30)
     elseif relation == "Team" then
-        targetButton.BackgroundColor3 = Color3.fromRGB(54, 86, 72)
+        targetButton.BackgroundColor3 = Color3.fromRGB(34, 68, 56)
     elseif healthPercent <= 0 then
-        targetButton.BackgroundColor3 = Color3.fromRGB(45, 45, 48)
+        targetButton.BackgroundColor3 = Color3.fromRGB(38, 38, 42)
     else
-        targetButton.BackgroundColor3 = Color3.fromRGB(92, 54, 54)
+        targetButton.BackgroundColor3 = Color3.fromRGB(72, 34, 34)
     end
 end
 
@@ -1811,10 +2303,11 @@ local function updatePanelVisibility()
     tweenGuiTree(rightPanel, inMatch)
     tweenGuiTree(bottomBar, true)
     tweenGuiTree(castBar, inMatch and castBar.Visible)
-    -- selfFrame is managed by updateSelfFrame; hide it when not in a match
+    -- selfFrame and targetUnitFrame/totFrame are managed by their update functions
     if not inMatch then
         selfFrame.Visible = false
         targetUnitFrame.Visible = false
+        totFrame.Visible = false
     end
 end
 
@@ -1850,21 +2343,31 @@ local function updateSelfFrame()
 
     selfFrame.Visible = true
     selfNameLabel.Text = tostring(localFighter.name or "Spieler")
+    selfNameLabel.TextColor3 = getClassTint(localFighter.classId)
     selfClassLabel.Text = tostring(localFighter.className or localFighter.classId or "?")
 
     local hpNum: number = tonumber(localFighter.health) or 0
     local maxNum: number = tonumber(localFighter.maxHealth) or 1
     local hpPct = math.clamp(hpNum / math.max(maxNum, 1), 0, 1)
-    local hpColor = if hpPct <= 0.3
-        then Color3.fromRGB(220, 60, 60)
-        elseif hpPct <= 0.6 then Color3.fromRGB(220, 175, 40)
-        else Color3.fromRGB(68, 200, 96)
+    local hpColor: Color3
+    if hpPct > 0.5 then
+        hpColor = Color3.fromRGB(math.floor(200 * (1 - hpPct) * 2), 200, 0)
+    elseif hpPct > 0 then
+        hpColor = Color3.fromRGB(200, math.floor(200 * hpPct * 2), 0)
+    else
+        hpColor = Color3.fromRGB(60, 60, 60)
+    end
     TweenService:Create(
         selfHealthFill,
-        TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
         { Size = UDim2.fromScale(hpPct, 1), BackgroundColor3 = hpColor }
     ):Play()
-    selfHPLabel.Text = string.format("%d / %d", math.floor(hpNum), math.floor(maxNum))
+    selfHPLabel.Text = string.format(
+        "%d / %d  %d%%",
+        math.floor(hpNum),
+        math.floor(maxNum),
+        math.floor(hpPct * 100)
+    )
     setPortraitImage(selfPortraitImage, selfPortraitFallback, localFighter.id, localFighter.classId)
     selfPortraitFrame.BackgroundColor3 =
         getClassTint(localFighter.classId):Lerp(theme.panelBottom, 0.8)
@@ -1873,21 +2376,33 @@ local function updateSelfFrame()
     local _, resourcePct, resourceColor, resourceText = getPowerBarInfo(localFighter)
     TweenService:Create(
         selfResourceFill,
-        TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
         { Size = UDim2.fromScale(resourcePct, 1), BackgroundColor3 = resourceColor }
     ):Play()
     selfResourceLabel.Text = resourceText
 
-    local effectParts: { string } = {}
-    for _, eff in localFighter.effects or {} do
-        table.insert(effectParts, string.format("%s %.0fs", eff.name, eff.remaining or 0))
+    -- Update debuff icon row
+    local effects = localFighter.effects or {}
+    for di = 1, 3 do
+        local ico = selfDebuffIcons[di]
+        if not ico then continue end
+        local eff = (effects :: { any })[di]
+        if eff then
+            ico.Visible = true
+            local t = ico:FindFirstChildOfClass("TextLabel")
+            if t then
+                t.Text = string.upper(string.sub(tostring(eff.name or "?"), 1, 2))
+            end
+        else
+            ico.Visible = false
+        end
     end
-    selfEffectsLabel.Text = table.concat(effectParts, "  ")
 end
 
 local function updateTargetUnitFrame()
     if not currentState or currentState.kind ~= "Match" or not selectedTargetId then
         targetUnitFrame.Visible = false
+        totFrame.Visible = false
         return
     end
 
@@ -1901,11 +2416,13 @@ local function updateTargetUnitFrame()
 
     if not targetFighter then
         targetUnitFrame.Visible = false
+        totFrame.Visible = false
         return
     end
 
     targetUnitFrame.Visible = true
     targetNameLabel.Text = tostring(targetFighter.name or "Ziel")
+    targetNameLabel.TextColor3 = getClassTint(targetFighter.classId)
     targetClassLabel.Text = tostring(targetFighter.className or targetFighter.classId or "?")
     setPortraitImage(
         targetPortraitImage,
@@ -1921,31 +2438,52 @@ local function updateTargetUnitFrame()
     local hpNum: number = tonumber(targetFighter.health) or 0
     local maxNum: number = tonumber(targetFighter.maxHealth) or 1
     local hpPct = math.clamp(hpNum / math.max(maxNum, 1), 0, 1)
-    local hpColor = if hpPct <= 0.3
-        then Color3.fromRGB(220, 60, 60)
-        elseif hpPct <= 0.6 then Color3.fromRGB(220, 140, 40)
-        else Color3.fromRGB(200, 68, 68)
+    local hpColor: Color3
+    if hpPct > 0.5 then
+        hpColor = Color3.fromRGB(math.floor(200 * (1 - hpPct) * 2), 200, 0)
+    elseif hpPct > 0 then
+        hpColor = Color3.fromRGB(200, math.floor(200 * hpPct * 2), 0)
+    else
+        hpColor = Color3.fromRGB(60, 60, 60)
+    end
     TweenService:Create(
         targetHealthFill,
-        TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
         { Size = UDim2.fromScale(hpPct, 1), BackgroundColor3 = hpColor }
     ):Play()
-    targetHPLabel.Text = string.format("%d / %d", math.floor(hpNum), math.floor(maxNum))
+    targetHPLabel.Text = string.format(
+        "%d / %d  %d%%",
+        math.floor(hpNum),
+        math.floor(maxNum),
+        math.floor(hpPct * 100)
+    )
 
     local _, resourcePct, resourceColor, resourceText = getPowerBarInfo(targetFighter)
     TweenService:Create(
         targetResourceFill,
-        TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
         { Size = UDim2.fromScale(resourcePct, 1), BackgroundColor3 = resourceColor }
     ):Play()
     targetResourceLabel.Text = resourceText
 
-    local effectParts: { string } = {}
-    for _, eff in targetFighter.effects or {} do
-        table.insert(effectParts, string.format("%s %.0fs", eff.name, eff.remaining or 0))
+    -- Debuff icons
+    local effects = targetFighter.effects or {}
+    for di = 1, 3 do
+        local ico = targetDebuffIcons[di]
+        if not ico then continue end
+        local eff = (effects :: { any })[di]
+        if eff then
+            ico.Visible = true
+            local t = ico:FindFirstChildOfClass("TextLabel")
+            if t then
+                t.Text = string.upper(string.sub(tostring(eff.name or "?"), 1, 2))
+            end
+        else
+            ico.Visible = false
+        end
     end
-    targetEffectsLabel.Text = table.concat(effectParts, "  ")
 
+    -- Cast bar
     if targetFighter.casting then
         local duration = math.max(targetFighter.casting.duration or 0.01, 0.01)
         local remaining =
@@ -1954,12 +2492,49 @@ local function updateTargetUnitFrame()
         targetCastFill.Size = UDim2.fromScale(math.clamp(1 - remaining / duration, 0, 1), 1)
         targetCastText.Text = string.format(
             "Zaubert: %s  %.1fs",
-            targetFighter.casting.displayName or targetFighter.casting.abilityId,
+            tostring(targetFighter.casting.displayName or targetFighter.casting.abilityId),
             remaining
         )
     else
         targetCastBack.Visible = false
         targetCastText.Text = ""
+    end
+
+    -- ── Target-of-Target frame ────────────────────────────────────────────
+    local totTargetId = targetFighter.targetId
+    local totFighter: any = nil
+    if totTargetId then
+        for _, f in currentState.fighters do
+            if f.id == totTargetId then
+                totFighter = f
+                break
+            end
+        end
+    end
+
+    if totFighter then
+        totFrame.Visible = true
+        totNameLabel.Text = tostring(totFighter.name or "?")
+        totNameLabel.TextColor3 = getClassTint(totFighter.classId)
+        local totHpPct = math.clamp(
+            (tonumber(totFighter.health) or 0) / math.max(tonumber(totFighter.maxHealth) or 1, 1),
+            0, 1
+        )
+        local totColor: Color3
+        if totHpPct > 0.5 then
+            totColor = Color3.fromRGB(math.floor(200 * (1 - totHpPct) * 2), 200, 0)
+        elseif totHpPct > 0 then
+            totColor = Color3.fromRGB(200, math.floor(200 * totHpPct * 2), 0)
+        else
+            totColor = Color3.fromRGB(60, 60, 60)
+        end
+        TweenService:Create(
+            totHPFill,
+            TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            { Size = UDim2.fromScale(totHpPct, 1), BackgroundColor3 = totColor }
+        ):Play()
+    else
+        totFrame.Visible = false
     end
 end
 
